@@ -44,5 +44,10 @@ namespace OsuHelper.Views
         {
             Persistence.Default.MainWindowRect = new Rect(Left, Top, Width, Height);
         }
+
+        private void BeatmapInfoPopup_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            BeatmapInfoPopup.IsOpen = false;
+        }
     }
 }

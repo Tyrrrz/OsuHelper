@@ -168,7 +168,7 @@
                DataContext="{Binding RecommenderViewModel.SelectedRecommendation,
                                      Source={StaticResource Locator}}"
                Placement="MousePoint"
-               StaysOpen="True">
+               StaysOpen="True" MouseLeave="BeatmapInfoPopup_MouseLeave">
             <materialDesign:Card HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Grid.RowDefinitions>

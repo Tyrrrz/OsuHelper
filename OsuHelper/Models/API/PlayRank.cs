@@ -6,11 +6,10 @@
 //  Date: 20/08/2016
 // ------------------------------------------------------------------ 
 
-using System.Diagnostics.CodeAnalysis;
+// ReSharper disable InconsistentNaming (not my fault they're all caps)
 
-namespace OsuHelper.Models
+namespace OsuHelper.Models.API
 {
-    [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Not my fault they're all caps")]
     public enum PlayRank
     {
         D,

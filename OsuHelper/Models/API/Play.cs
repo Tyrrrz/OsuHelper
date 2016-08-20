@@ -13,7 +13,7 @@ using NegativeLayer.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace OsuHelper.Models
+namespace OsuHelper.Models.API
 {
     public class Play
     {

@@ -8,7 +8,7 @@
 
 using System;
 
-namespace OsuHelper.Models
+namespace OsuHelper.Models.API
 {
     [Flags]
     public enum EnabledMods

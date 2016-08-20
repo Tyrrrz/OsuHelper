@@ -96,12 +96,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Locator.cs" />
-    <Compile Include="Models\Beatmap.cs" />
-    <Compile Include="Models\BeatmapRankingStatus.cs" />
+    <Compile Include="Models\API\Beatmap.cs" />
+    <Compile Include="Models\API\BeatmapRankingStatus.cs" />
+    <Compile Include="Models\API\EnabledMods.cs" />
+    <Compile Include="Models\API\Play.cs" />
+    <Compile Include="Models\API\PlayRank.cs" />
     <Compile Include="Models\Converters\SecondsToTimespanConverter.cs" />
-    <Compile Include="Models\EnabledMods.cs" />
-    <Compile Include="Models\Play.cs" />
-    <Compile Include="Models\PlayRank.cs" />
+    <Compile Include="Models\Internal\BeatmapRecommendation.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ViewModels\RecommenderViewModel.cs" />
     <Compile Include="ViewModels\SetupViewModel.cs" />

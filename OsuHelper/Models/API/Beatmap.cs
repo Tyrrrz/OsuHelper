@@ -6,13 +6,13 @@
 //  Date: 20/08/2016
 // ------------------------------------------------------------------ 
 
+// ReSharper disable UnusedAutoPropertyAccessor.Local (serialization)
+
 using System;
 using Newtonsoft.Json;
 using OsuHelper.Models.Converters;
 
-// ReSharper disable UnusedAutoPropertyAccessor.Local (serialization)
-
-namespace OsuHelper.Models
+namespace OsuHelper.Models.API
 {
     public class Beatmap
     {
@@ -30,6 +30,13 @@ namespace OsuHelper.Models
 
         public string FullName => $"{Artist} - {Title} [{DifficultyName}]";
 
+        [JsonConverter(typeof(SecondsToTimespanConverter))]
+        public TimeSpan TotalLength { get; private set; }
+        [JsonConverter(typeof(SecondsToTimespanConverter))]
+        public TimeSpan HitLength { get; private set; }
+        [JsonProperty("max_combo")]
+        public int MaxCombo { get; private set; }
+
         public double BeatsPerMinute { get; private set; }
         [JsonProperty("difficultyrating")]
         public double Stars { get; private set; }
@@ -41,11 +48,6 @@ namespace OsuHelper.Models
         public double ApproachRate { get; private set; }
         [JsonProperty("diff_drain")]
         public double Drain { get; private set; }
-
-        [JsonConverter(typeof(SecondsToTimespanConverter))]
-        public TimeSpan TotalLength { get; private set; }
-        [JsonConverter(typeof(SecondsToTimespanConverter))]
-        public TimeSpan HitLength { get; private set; }
 
         private Beatmap() { }
     }

@@ -6,7 +6,7 @@
 //  Date: 20/08/2016
 // ------------------------------------------------------------------ 
 
-namespace OsuHelper.Models
+namespace OsuHelper.Models.API
 {
     public enum BeatmapRankingStatus
     {

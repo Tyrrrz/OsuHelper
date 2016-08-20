@@ -6,6 +6,7 @@
 //  Date: 20/08/2016
 // ------------------------------------------------------------------ 
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -15,7 +16,7 @@ using OsuHelper.Models.API;
 
 namespace OsuHelper.Services
 {
-    public class APIService
+    public sealed class APIService : IDisposable
     {
         private const string APIHome = "https://osu.ppy.sh/api/";
         private static string APIKey => Settings.Default.APIKey;
@@ -29,20 +30,25 @@ namespace OsuHelper.Services
             return JsonConvert.DeserializeObject<Beatmap[]>(response).FirstOrDefault();
         }
 
-        public async Task<IEnumerable<Play>> GetUserTopPlays(string userID)
+        public async Task<IEnumerable<Play>> GetUserTopPlaysAsync(string userID)
         {
             string url = APIHome + $"get_user_best?k={APIKey}&u={userID}&limit=100";
             string response = await _client.DownloadStringTaskAsync(url);
             return JsonConvert.DeserializeObject<Play[]>(response);
         }
 
-        public async Task<IEnumerable<Play>> GetBeatmapTopPlays(string mapID, EnabledMods mods = EnabledMods.Any)
+        public async Task<IEnumerable<Play>> GetBeatmapTopPlaysAsync(string mapID, EnabledMods mods = EnabledMods.Any)
         {
             string url = APIHome + $"get_scores?k={APIKey}&b={mapID}&limit=100";
             if (mods != EnabledMods.Any)
                 url += $"&mods={(int) mods}";
             string response = await _client.DownloadStringTaskAsync(url);
             return JsonConvert.DeserializeObject<Play[]>(response);
+        }
+
+        public void Dispose()
+        {
+            _client.Dispose();
         }
     }
 }

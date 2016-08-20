@@ -22,7 +22,7 @@ namespace OsuHelper.Models.Converters
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             if (reader.Value == null) { return null; }
-            return TimeSpan.FromSeconds((double) reader.Value);
+            return TimeSpan.FromSeconds(double.Parse((string) reader.Value));
         }
     }
 }

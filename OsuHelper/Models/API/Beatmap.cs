@@ -22,9 +22,14 @@ namespace OsuHelper.Models.API
         [JsonProperty("approved")]
         public BeatmapRankingStatus Status { get; private set; }
 
+        public string ThumbnailURL => $"https://b.ppy.sh/thumb/{ID}l.jpg";
+
+        [JsonProperty("creator")]
         public string Creator { get; private set; }
 
+        [JsonProperty("artist")]
         public string Artist { get; private set; }
+        [JsonProperty("title")]
         public string Title { get; private set; }
         [JsonProperty("version")]
         public string DifficultyName { get; private set; }
@@ -32,12 +37,15 @@ namespace OsuHelper.Models.API
         public string FullName => $"{Artist} - {Title} [{DifficultyName}]";
 
         [JsonConverter(typeof(SecondsToTimespanConverter))]
+        [JsonProperty("total_length")]
         public TimeSpan TotalLength { get; private set; }
         [JsonConverter(typeof(SecondsToTimespanConverter))]
+        [JsonProperty("hit_length")]
         public TimeSpan HitLength { get; private set; }
         [JsonProperty("max_combo")]
         public int MaxCombo { get; private set; }
 
+        [JsonProperty("bpm")]
         public double BeatsPerMinute { get; private set; }
         [JsonProperty("difficultyrating")]
         public double Stars { get; private set; }

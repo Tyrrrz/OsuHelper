@@ -17,8 +17,8 @@ namespace OsuHelper.Models.API
         B,
         A,
         S,
-        SS,
-        SH,
-        XH
+        X, // SS
+        SH, // S with HD
+        XH // SS with HD
     }
 }

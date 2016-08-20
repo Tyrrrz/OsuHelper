@@ -14,6 +14,9 @@ namespace OsuHelper
     {
         private string _userID;
         private string _apiKey;
+        private int _ownPlayCountToScan = 20;
+        private int _othersPlayCountToScan = 5;
+        private int _similarPlayCount = 5;
 
         public static Settings Default { get; } = new Settings();
 
@@ -27,6 +30,24 @@ namespace OsuHelper
         {
             get { return _apiKey; }
             set { Set(ref _apiKey, value); }
+        }
+
+        public int OwnPlayCountToScan
+        {
+            get { return _ownPlayCountToScan; }
+            set { Set(ref _ownPlayCountToScan, value); }
+        }
+
+        public int OthersPlayCountToScan
+        {
+            get { return _othersPlayCountToScan; }
+            set { Set(ref _othersPlayCountToScan, value); }
+        }
+
+        public int SimilarPlayCount
+        {
+            get { return _similarPlayCount; }
+            set { Set(ref _similarPlayCount, value); }
         }
 
         public Settings()

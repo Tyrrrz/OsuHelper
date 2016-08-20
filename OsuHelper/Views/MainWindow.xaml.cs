@@ -17,7 +17,9 @@ namespace OsuHelper.Views
 
         private void BeatmapListDataGrid_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            BeatmapInfoPopup.IsOpen = BeatmapListDataGrid.SelectedItem != null;
+            BeatmapInfoPopup.IsOpen = false; // setting it to false first resets its position
+            if (BeatmapListDataGrid.SelectedItem != null)
+                BeatmapInfoPopup.IsOpen = true;
         }
     }
 }

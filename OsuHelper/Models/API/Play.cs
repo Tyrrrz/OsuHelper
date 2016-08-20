@@ -24,51 +24,29 @@ namespace OsuHelper.Models.API
         public string UserID { get; private set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty("rank")]
         public PlayRank Rank { get; private set; }
 
+        [JsonProperty("count300")]
         public int Count300 { get; private set; }
+        [JsonProperty("count100")]
         public int Count100 { get; private set; }
+        [JsonProperty("count50")]
         public int Count50 { get; private set; }
+        [JsonProperty("countmiss")]
         public int CountMiss { get; private set; }
 
         public double Accuracy
-            => (Count50*50.0 + Count100*100.0 + Count300*300.0)/(Count50 + Count100 + Count300 + CountMiss);
+            => (Count50*50 + Count100*100 + Count300*300)/(300.0*(Count50 + Count100 + Count300 + CountMiss));
 
+        [JsonProperty("maxcombo")]
         public int MaxCombo { get; private set; }
 
         [JsonProperty("pp")]
         public double PerformancePoints { get; private set; }
 
-        public EnabledMods ModsUsed { get; private set; }
-
-        public string ModsUsedString 
-        {
-            get
-            {
-                if (ModsUsed == EnabledMods.None) return string.Empty;
-
-                var mods = new List<string>();
-                // Only mods that influence PP and/or are ranked
-                if (ModsUsed.HasFlag(EnabledMods.NoFail))
-                    mods.Add("NF");
-                if (ModsUsed.HasFlag(EnabledMods.Easy))
-                    mods.Add("EZ");
-                if (ModsUsed.HasFlag(EnabledMods.Hidden))
-                    mods.Add("HD");
-                if (ModsUsed.HasFlag(EnabledMods.HardRock))
-                    mods.Add("HR");
-                if (ModsUsed.HasFlag(EnabledMods.DoubleTime) || ModsUsed.HasFlag(EnabledMods.Nightcore))
-                    mods.Add("DT");
-                if (ModsUsed.HasFlag(EnabledMods.HalfTime))
-                    mods.Add("HT");
-                if (ModsUsed.HasFlag(EnabledMods.Flashlight))
-                    mods.Add("FL");
-                if (ModsUsed.HasFlag(EnabledMods.SpunOut))
-                    mods.Add("SO");
-
-                return mods.JoinToString();
-            }
-        }
+        [JsonProperty("enabled_mods")]
+        public EnabledMods Mods { get; private set; }
 
         private Play() { }
     }

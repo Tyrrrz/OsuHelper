@@ -109,6 +109,7 @@
                               CanUserDeleteRows="False"
                               CanUserResizeRows="False"
                               ColumnWidth="SizeToHeader"
+                              HorizontalScrollBarVisibility="Disabled"
                               IsReadOnly="True"
                               ItemsSource="{Binding Recommendations}"
                               MouseLeftButtonUp="BeatmapListDataGrid_MouseLeftButtonUp"

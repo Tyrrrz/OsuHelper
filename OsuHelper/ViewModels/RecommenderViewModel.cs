@@ -94,6 +94,9 @@ namespace OsuHelper.ViewModels
             double minPP = userTopPlays.Min(p => p.PerformancePoints);
             Debug.WriteLine("Obtained user's top plays", "Beatmap Recommender");
 
+            var ignoredBeatmaps = userTopPlays.Select(p => p.BeatmapID);
+            Debug.WriteLine("Composed a list of ignored beatmaps", "Beatmap Recommender");
+
             // Loop through first XX top plays
             foreach (var userPlay in userTopPlays.AsParallel())
             {
@@ -121,6 +124,7 @@ namespace OsuHelper.ViewModels
                     var potentialRecommendations = similarUserTopPlays
                         .OrderBy(p => Math.Abs(p.PerformancePoints - userPlay.PerformancePoints))
                         .Where(p => p.PerformancePoints >= minPP)
+                        .Where(p => !ignoredBeatmaps.Contains(p.BeatmapID))
                         .Take(Settings.Default.OthersPlayCountToScan);
 
                     // Add to list

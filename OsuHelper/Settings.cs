@@ -1,20 +1,20 @@
 ﻿// ------------------------------------------------------------------ 
 //  Solution: <OsuHelper>
 //  Project: <OsuHelper>
-//  File: <App.xaml.cs>
+//  File: <Settings.cs>
 //  Created By: Alexey Golub
 //  Date: 20/08/2016
 // ------------------------------------------------------------------ 
 
-using GalaSoft.MvvmLight.Threading;
+using NegativeLayer.Settings;
 
 namespace OsuHelper
 {
-    public partial class App
+    public class Settings : SettingsManager
     {
-        static App()
-        {
-            DispatcherHelper.Initialize();
-        }
+        public static Settings Default { get; } = new Settings();
+
+        public string UserName { get; set; }
+        public string APIKey { get; set; }
     }
 }

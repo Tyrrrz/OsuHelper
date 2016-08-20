@@ -1,20 +1,16 @@
 ﻿// ------------------------------------------------------------------ 
 //  Solution: <OsuHelper>
 //  Project: <OsuHelper>
-//  File: <App.xaml.cs>
+//  File: <SetupViewModel.cs>
 //  Created By: Alexey Golub
 //  Date: 20/08/2016
 // ------------------------------------------------------------------ 
 
-using GalaSoft.MvvmLight.Threading;
+using GalaSoft.MvvmLight;
 
-namespace OsuHelper
+namespace OsuHelper.ViewModels
 {
-    public partial class App
+    public class SetupViewModel : ViewModelBase
     {
-        static App()
-        {
-            DispatcherHelper.Initialize();
-        }
     }
 }

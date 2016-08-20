@@ -24,7 +24,7 @@
     <Grid>
         <TabControl>
 
-            <TabItem Header="Setup">
+            <TabItem DataContext="{Binding SetupViewModel, Source={StaticResource Locator}}" Header="Setup">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -37,9 +37,9 @@
                               Header="Core">
                         <StackPanel>
                             <TextBlock Margin="5" Text="osu! Username or UserID:" />
-                            <TextBox Margin="5" />
+                            <TextBox Margin="5" Text="{Binding Settings.UserName}" />
                             <TextBlock Margin="5" Text="API key:" />
-                            <TextBox Margin="5" />
+                            <TextBox Margin="5" Text="{Binding Settings.APIKey}" />
                         </StackPanel>
                     </GroupBox>
 
@@ -53,9 +53,15 @@
                                  Margin="5"
                                  HorizontalAlignment="Center"
                                  Columns="3">
-                        <Button Margin="2" Content="Save" />
-                        <Button Margin="2" Content="Reverse" />
-                        <Button Margin="2" Content="Defaults" />
+                        <Button Margin="2"
+                                Command="{Binding SaveCommand}"
+                                Content="Save" />
+                        <Button Margin="2"
+                                Command="{Binding LoadCommand}"
+                                Content="Cancel" />
+                        <Button Margin="2"
+                                Command="{Binding ResetDefaultsCommand}"
+                                Content="Defaults" />
                     </UniformGrid>
                 </Grid>
             </TabItem>
@@ -78,6 +84,7 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{x:Null}" Header="Map Name" />
                             <DataGridTextColumn Binding="{x:Null}" Header="Mods" />
+                            <DataGridTextColumn Binding="{x:Null}" Header="★" />
                             <DataGridTextColumn Binding="{x:Null}" Header="BPM" />
                             <DataGridTextColumn Binding="{x:Null}" Header="AR" />
                             <DataGridTextColumn Binding="{x:Null}" Header="OD" />

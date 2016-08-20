@@ -38,7 +38,9 @@ namespace OsuHelper.Services
 
         public async Task<IEnumerable<Play>> GetBeatmapTopPlays(string mapID, EnabledMods mods = EnabledMods.Any)
         {
-            string url = APIHome + $"get_scores?k={APIKey}&b={mapID}&mods={(int) mods}&limit=100";
+            string url = APIHome + $"get_scores?k={APIKey}&b={mapID}&limit=100";
+            if (mods != EnabledMods.Any)
+                url += $"&mods={(int) mods}";
             string response = await _client.DownloadStringTaskAsync(url);
             return JsonConvert.DeserializeObject<Play[]>(response);
         }

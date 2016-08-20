@@ -55,6 +55,9 @@ namespace OsuHelper.ViewModels
 
         // Commands
         public RelayCommand UpdateCommand { get; }
+        public RelayCommand<Beatmap> OpenBeatmapPageCommand { get; }
+        public RelayCommand<Beatmap> DownloadBeatmapCommand { get; }
+        public RelayCommand<Beatmap> BloodcatDownloadBeatmapCommand { get; }
 
         public RecommenderViewModel(APIService apiService)
         {
@@ -69,6 +72,9 @@ namespace OsuHelper.ViewModels
             // Commands
             UpdateCommand = new RelayCommand(Update,
                 () => CanUpdate && Settings.Default.APIKey.IsNotBlank() && Settings.Default.UserID.IsNotBlank());
+            OpenBeatmapPageCommand = new RelayCommand<Beatmap>(bm => Process.Start($"https://osu.ppy.sh/b/{bm.ID}"));
+            DownloadBeatmapCommand = new RelayCommand<Beatmap>(bm => Process.Start($"https://osu.ppy.sh/d/{bm.MapSetID}"));
+            BloodcatDownloadBeatmapCommand = new RelayCommand<Beatmap>(bm => Process.Start($"http://bloodcat.com/osu/s/{bm.MapSetID}"));
         }
 
         private async void Update()

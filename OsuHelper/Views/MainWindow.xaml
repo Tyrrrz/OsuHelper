@@ -165,10 +165,11 @@
                Width="400"
                Height="400"
                AllowsTransparency="True"
-               DataContext="{Binding RecommenderViewModel.SelectedRecommendation,
+               DataContext="{Binding RecommenderViewModel,
                                      Source={StaticResource Locator}}"
+               MouseLeave="BeatmapInfoPopup_MouseLeave"
                Placement="MousePoint"
-               StaysOpen="True" MouseLeave="BeatmapInfoPopup_MouseLeave">
+               StaysOpen="True">
             <materialDesign:Card HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Grid.RowDefinitions>
@@ -183,7 +184,7 @@
                                    HorizontalAlignment="Center"
                                    FontSize="15"
                                    FontWeight="SemiBold"
-                                   Text="{Binding Beatmap.FullName}"
+                                   Text="{Binding SelectedRecommendation.Beatmap.FullName}"
                                    TextTrimming="CharacterEllipsis"
                                    TextWrapping="NoWrap" />
                     </Border>
@@ -191,7 +192,7 @@
                     <Image Grid.Row="1"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                           Source="{Binding Beatmap.ThumbnailURL}" />
+                           Source="{Binding SelectedRecommendation.Beatmap.ThumbnailURL}" />
 
                     <Grid Grid.Row="2" Margin="5">
                         <Grid.RowDefinitions>
@@ -231,37 +232,46 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    FontWeight="SemiBold"
-                                   Text="{Binding Beatmap.Stars,
+                                   Text="{Binding SelectedRecommendation.Beatmap.Stars,
                                                   StringFormat=\{0:N2\}}" />
                         <TextBlock Grid.Row="1"
                                    Grid.Column="1"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    FontWeight="SemiBold"
-                                   Text="{Binding Beatmap.ApproachRate,
+                                   Text="{Binding SelectedRecommendation.Beatmap.ApproachRate,
                                                   StringFormat=\{0:N1\}}" />
                         <TextBlock Grid.Row="1"
                                    Grid.Column="2"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    FontWeight="SemiBold"
-                                   Text="{Binding Beatmap.OverallDificulty,
+                                   Text="{Binding SelectedRecommendation.Beatmap.OverallDificulty,
                                                   StringFormat=\{0:N1\}}" />
                         <TextBlock Grid.Row="1"
                                    Grid.Column="3"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    FontWeight="SemiBold"
-                                   Text="{Binding Beatmap.BeatsPerMinute,
+                                   Text="{Binding SelectedRecommendation.Beatmap.BeatsPerMinute,
                                                   StringFormat=\{0:N0\}}" />
                     </Grid>
 
                     <UniformGrid Grid.Row="3"
                                  Margin="5"
                                  Columns="3">
-                        <Button Margin="2" Content="Profile" />
-                        <Button Margin="2" Content="Download" />
-                        <Button Margin="2" Content="Bloodcat" />
+                        <Button Margin="2"
+                                Command="{Binding OpenBeatmapPageCommand}"
+                                CommandParameter="{Binding SelectedRecommendation.Beatmap}"
+                                Content="Profile" />
+                        <Button Margin="2"
+                                Command="{Binding DownloadBeatmapCommand}"
+                                CommandParameter="{Binding SelectedRecommendation.Beatmap}"
+                                Content="Download" />
+                        <Button Margin="2"
+                                Command="{Binding BloodcatDownloadBeatmapCommand}"
+                                CommandParameter="{Binding SelectedRecommendation.Beatmap}"
+                                Content="Bloodcat" />
                     </UniformGrid>
                 </Grid>
             </materialDesign:Card>

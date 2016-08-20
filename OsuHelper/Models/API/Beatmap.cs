@@ -18,11 +18,13 @@ namespace OsuHelper.Models.API
     {
         [JsonProperty("beatmap_id")]
         public string ID { get; private set; }
+        [JsonProperty("beatmapset_id")]
+        public string MapSetID { get; private set; }
 
         [JsonProperty("approved")]
         public BeatmapRankingStatus Status { get; private set; }
 
-        public string ThumbnailURL => $"https://b.ppy.sh/thumb/{ID}l.jpg";
+        public string ThumbnailURL => $"https://b.ppy.sh/thumb/{MapSetID}l.jpg";
 
         [JsonProperty("creator")]
         public string Creator { get; private set; }

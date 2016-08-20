@@ -12,13 +12,13 @@ namespace OsuHelper
 {
     public sealed class Settings : SettingsManager
     {
+        public static Settings Default { get; } = new Settings();
+
         private string _userID;
         private string _apiKey;
         private int _ownPlayCountToScan = 20;
         private int _othersPlayCountToScan = 5;
         private int _similarPlayCount = 5;
-
-        public static Settings Default { get; } = new Settings();
 
         public string UserID
         {
@@ -51,8 +51,8 @@ namespace OsuHelper
         }
 
         public Settings()
+            : base(new SettingsManagerConfiguration("OsuHelper"))
         {
-            // Load settings on initialization
             TryLoad();
         }
     }

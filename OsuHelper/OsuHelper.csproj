@@ -103,6 +103,7 @@
     <Compile Include="Models\API\PlayRank.cs" />
     <Compile Include="Models\Converters\SecondsToTimespanConverter.cs" />
     <Compile Include="Models\Internal\BeatmapRecommendation.cs" />
+    <Compile Include="Persistence.cs" />
     <Compile Include="Services\APIService.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ViewModels\RecommenderViewModel.cs" />

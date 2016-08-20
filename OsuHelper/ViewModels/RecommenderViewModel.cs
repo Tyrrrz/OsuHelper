@@ -30,7 +30,11 @@ namespace OsuHelper.ViewModels
         public IEnumerable<BeatmapRecommendation> Recommendations
         {
             get { return _recommendations; }
-            private set { Set(ref _recommendations, value); }
+            private set
+            {
+                Set(ref _recommendations, value);
+                Persistence.Default.LastRecommendations = value.ToArray();
+            }
         }
 
         public bool CanUpdate
@@ -55,6 +59,9 @@ namespace OsuHelper.ViewModels
         public RecommenderViewModel(APIService apiService)
         {
             _apiService = apiService;
+
+            // Load last recommendations
+            Recommendations = Persistence.Default.LastRecommendations.ToArray();
 
             // Events
             Settings.Default.PropertyChanged += (sender, args) => UpdateCommand.RaiseCanExecuteChanged();

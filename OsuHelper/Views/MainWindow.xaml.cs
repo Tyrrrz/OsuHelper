@@ -8,6 +8,8 @@
 
 using System;
 using System.Windows;
+using System.Windows.Input;
+using NegativeLayer.Extensions;
 
 namespace OsuHelper.Views
 {
@@ -26,13 +28,10 @@ namespace OsuHelper.Views
                 Width = Persistence.Default.MainWindowRect.Width;
                 Height = Persistence.Default.MainWindowRect.Height;
             }
-        }
 
-        private void BeatmapListDataGrid_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            BeatmapInfoPopup.IsOpen = false; // setting it to false first resets its position
-            if (BeatmapListDataGrid.SelectedItem != null)
-                BeatmapInfoPopup.IsOpen = true;
+            // Open second tab if the user completed setup
+            if (Settings.Default.UserID.IsNotBlank() && Settings.Default.APIKey.IsNotBlank())
+                TabControl.SelectedIndex = 1;
         }
 
         private void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
@@ -45,9 +44,9 @@ namespace OsuHelper.Views
             Persistence.Default.MainWindowRect = new Rect(Left, Top, Width, Height);
         }
 
-        private void BeatmapInfoPopup_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        private void BeatmapListDataGrid_MouseLeftButtonUp(object sender, MouseEventArgs e)
         {
-            BeatmapInfoPopup.IsOpen = false;
+            BeatmapInfoPopup.IsOpen = true;
         }
     }
 }

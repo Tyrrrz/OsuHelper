@@ -24,8 +24,7 @@
         mc:Ignorable="d ignore">
 
     <Grid>
-        <TabControl>
-
+        <TabControl x:Name="TabControl">
             <TabItem DataContext="{Binding SetupViewModel, Source={StaticResource Locator}}" Header="Setup">
                 <ScrollViewer>
                     <Grid>
@@ -93,7 +92,10 @@
                 </ScrollViewer>
             </TabItem>
 
-            <TabItem DataContext="{Binding RecommenderViewModel, Source={StaticResource Locator}}" Header="Recommended Maps">
+            <TabItem DataContext="{Binding RecommenderViewModel,
+                                           Source={StaticResource Locator}}"
+                     FocusManager.FocusedElement="{Binding ElementName=BeatmapListDataGrid}"
+                     Header="Recommended Maps">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -106,13 +108,18 @@
                               CanUserAddRows="False"
                               CanUserDeleteRows="False"
                               CanUserResizeRows="False"
+                              ColumnWidth="*"
                               IsReadOnly="True"
                               ItemsSource="{Binding Recommendations}"
+                              MouseLeftButtonUp="BeatmapListDataGrid_MouseLeftButtonUp"
                               SelectedItem="{Binding SelectedRecommendation}"
-                              SelectionChanged="BeatmapListDataGrid_SelectionChanged">
+                              SelectionMode="Single"
+                              SelectionUnit="FullRow">
+
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="*"
                                                 Binding="{Binding Beatmap.FullName}"
+                                                FontStyle="Italic"
                                                 Header="Map Name" />
                             <DataGridTextColumn Width="Auto"
                                                 Binding="{Binding ModsString}"
@@ -167,9 +174,11 @@
                AllowsTransparency="True"
                DataContext="{Binding RecommenderViewModel,
                                      Source={StaticResource Locator}}"
-               MouseLeave="BeatmapInfoPopup_MouseLeave"
-               Placement="MousePoint"
-               StaysOpen="True">
+               Focusable="False"
+               Placement="Left"
+               PlacementTarget="{Binding ElementName=BeatmapListDataGrid}"
+               PopupAnimation="Fade"
+               StaysOpen="False">
             <materialDesign:Card HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Grid.RowDefinitions>
@@ -180,10 +189,11 @@
                     </Grid.RowDefinitions>
 
                     <Border Grid.Row="0" Background="{DynamicResource PrimaryHueMidBrush}">
-                        <TextBlock Margin="5"
+                        <TextBlock Margin="10"
                                    HorizontalAlignment="Center"
                                    FontSize="15"
                                    FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
                                    Text="{Binding SelectedRecommendation.Beatmap.FullName}"
                                    TextTrimming="CharacterEllipsis"
                                    TextWrapping="NoWrap" />

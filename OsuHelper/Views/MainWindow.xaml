@@ -12,6 +12,8 @@
         DataContext="{Binding SetupViewModel,
                               Source={StaticResource Locator}}"
         FontFamily="{DynamicResource MaterialDesignFont}"
+        LocationChanged="MainWindow_OnLocationChanged"
+        SizeChanged="MainWindow_OnSizeChanged"
         SnapsToDevicePixels="True"
         TextElement.FontSize="13"
         TextElement.FontWeight="Regular"

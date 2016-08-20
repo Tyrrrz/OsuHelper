@@ -20,11 +20,18 @@ namespace OsuHelper
         public static Persistence Default { get; } = new Persistence();
 
         private IEnumerable<BeatmapRecommendation> _lastRecommendations;
+        private Rect _mainWindowRect;
 
         public IEnumerable<BeatmapRecommendation> LastRecommendations
         {
             get { return _lastRecommendations; }
             set { Set(ref _lastRecommendations, value); }
+        }
+
+        public Rect MainWindowRect
+        {
+            get { return _mainWindowRect; }
+            set { Set(ref _mainWindowRect, value); }
         }
 
         public Persistence()

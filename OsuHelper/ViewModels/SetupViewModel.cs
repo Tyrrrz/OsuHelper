@@ -47,6 +47,9 @@ namespace OsuHelper.ViewModels
         private void ResetDefaults()
         {
             Settings.Reset();
+
+            SaveCommand.RaiseCanExecuteChanged();
+            LoadCommand.RaiseCanExecuteChanged();
         }
     }
 }

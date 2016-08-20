@@ -186,9 +186,10 @@
 
                     <UniformGrid Grid.Row="3"
                                  Margin="5"
-                                 Columns="2">
-                        <Button Margin="2" Content="Beatmap Page" />
+                                 Columns="3">
+                        <Button Margin="2" Content="Profile" />
                         <Button Margin="2" Content="Download" />
+                        <Button Margin="2" Content="Bloodcat" />
                     </UniformGrid>
                 </Grid>
             </materialDesign:Card>

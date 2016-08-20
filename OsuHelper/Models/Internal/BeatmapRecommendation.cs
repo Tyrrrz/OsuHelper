@@ -12,10 +12,17 @@ namespace OsuHelper.Models.Internal
 {
     public class BeatmapRecommendation
     {
-        public Beatmap Beatmap { get; set; }
+        public Beatmap Beatmap { get; }
 
-        public double ExpectedPerformancePoints { get; set; }
+        public double ExpectedPerformancePoints { get; }
 
-        public double RequiredAccuracy { get; set; }
+        public double RequiredAccuracy { get; }
+
+        public BeatmapRecommendation(Beatmap beatmap, double expectedPerformancePoints, double requiredAccuracy)
+        {
+            Beatmap = beatmap;
+            ExpectedPerformancePoints = expectedPerformancePoints;
+            RequiredAccuracy = requiredAccuracy;
+        }
     }
 }

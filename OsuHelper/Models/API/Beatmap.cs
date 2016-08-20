@@ -29,6 +29,9 @@ namespace OsuHelper.Models.API
         [JsonProperty("creator")]
         public string Creator { get; private set; }
 
+        [JsonProperty("last_update")]
+        public DateTime LastUpdateDate { get; private set; }
+
         [JsonProperty("artist")]
         public string Artist { get; private set; }
         [JsonProperty("title")]

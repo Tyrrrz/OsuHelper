@@ -12,15 +12,15 @@ namespace OsuHelper
 {
     public sealed class Settings : SettingsManager
     {
-        private string _userName;
+        private string _userID;
         private string _apiKey;
 
         public static Settings Default { get; } = new Settings();
 
-        public string UserName
+        public string UserID
         {
-            get { return _userName; }
-            set { Set(ref _userName, value); }
+            get { return _userID; }
+            set { Set(ref _userID, value); }
         }
 
         public string APIKey

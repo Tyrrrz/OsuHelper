@@ -37,7 +37,7 @@
                               Header="Core">
                         <StackPanel>
                             <TextBlock Margin="5" Text="osu! Username or UserID:" />
-                            <TextBox Margin="5" Text="{Binding Settings.UserName}" />
+                            <TextBox Margin="5" Text="{Binding Settings.UserID}" />
                             <TextBlock Margin="5" Text="API key:" />
                             <TextBox Margin="5" Text="{Binding Settings.APIKey}" />
                         </StackPanel>

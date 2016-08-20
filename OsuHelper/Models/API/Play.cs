@@ -20,6 +20,9 @@ namespace OsuHelper.Models.API
         [JsonProperty("beatmap_id")]
         public string BeatmapID { get; private set; }
 
+        [JsonProperty("user_id")]
+        public string UserID { get; private set; }
+
         [JsonConverter(typeof(StringEnumConverter))]
         public PlayRank Rank { get; private set; }
 

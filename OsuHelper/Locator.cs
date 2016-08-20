@@ -8,6 +8,7 @@
 
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
+using OsuHelper.Services;
 using OsuHelper.ViewModels;
 
 namespace OsuHelper
@@ -17,6 +18,8 @@ namespace OsuHelper
         static Locator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
+
+            SimpleIoc.Default.Register<APIService>();
 
             SimpleIoc.Default.Register<SetupViewModel>();
             SimpleIoc.Default.Register<RecommenderViewModel>();

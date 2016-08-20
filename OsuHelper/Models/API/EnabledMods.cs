@@ -13,6 +13,7 @@ namespace OsuHelper.Models.API
     [Flags]
     public enum EnabledMods
     {
+        Any = -1,
         None = 0,
         NoFail = 1,
         Easy = 2,

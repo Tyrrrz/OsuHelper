@@ -34,10 +34,10 @@ namespace OsuHelper.ViewModels
             get { return _recommendations; }
             private set
             {
-                var asArray = value as BeatmapRecommendation[] ?? value.ToArray();
-                Set(ref _recommendations, asArray);
-                RecommendationsCount = asArray.Length;
-                Persistence.Default.LastRecommendations = asArray.ToArray(); // make a copy
+                var array = value?.ToArray() ?? new BeatmapRecommendation[0];
+                Set(ref _recommendations, array);
+                RecommendationsCount = array.Length;
+                Persistence.Default.LastRecommendations = array.ToArray(); // make a copy
             }
         }
 
@@ -83,7 +83,7 @@ namespace OsuHelper.ViewModels
             _apiService = apiService;
 
             // Load last recommendations
-            Recommendations = Persistence.Default.LastRecommendations.ToArray(); // make a copy
+            Recommendations = Persistence.Default.LastRecommendations;
 
             // Events
             Settings.Default.PropertyChanged += (sender, args) => UpdateCommand.RaiseCanExecuteChanged();

@@ -121,7 +121,6 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="*"
                                                 Binding="{Binding Beatmap.FullName}"
-                                                FontStyle="Italic"
                                                 Header="Map Name" />
                             <DataGridTextColumn Width="Auto"
                                                 Binding="{Binding ModsString}"

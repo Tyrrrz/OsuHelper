@@ -143,7 +143,7 @@
                                                                   StringFormat=\{0:N1\}}"
                                                 Header="OD" />
                             <DataGridTextColumn Width="Auto"
-                                                Binding="{Binding Beatmap.HitLength}"
+                                                Binding="{Binding Beatmap.HitLengthString}"
                                                 Header="Length" />
                             <DataGridTextColumn Width="Auto"
                                                 Binding="{Binding ExpectedAccuracy,
@@ -312,7 +312,7 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    FontWeight="SemiBold"
-                                   Text="{Binding SelectedRecommendation.Beatmap.HitLength}" />
+                                   Text="{Binding SelectedRecommendation.Beatmap.HitLengthString}" />
                         <TextBlock Grid.Row="1"
                                    Grid.Column="5"
                                    HorizontalAlignment="Center"

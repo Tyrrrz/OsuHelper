@@ -8,8 +8,6 @@
 
 // ReSharper disable UnusedAutoPropertyAccessor.Local (serialization)
 
-using System.Collections.Generic;
-using NegativeLayer.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -36,6 +34,7 @@ namespace OsuHelper.Models.API
         [JsonProperty("countmiss")]
         public int CountMiss { get; private set; }
 
+        [JsonIgnore]
         public double Accuracy
             => (Count50*50 + Count100*100 + Count300*300)/(300.0*(Count50 + Count100 + Count300 + CountMiss));
 

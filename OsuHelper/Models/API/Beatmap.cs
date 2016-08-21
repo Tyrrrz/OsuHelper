@@ -24,6 +24,7 @@ namespace OsuHelper.Models.API
         [JsonProperty("approved")]
         public BeatmapRankingStatus Status { get; private set; }
 
+        [JsonIgnore]
         public string ThumbnailURL => $"https://b.ppy.sh/thumb/{MapSetID}l.jpg";
 
         [JsonProperty("creator")]
@@ -39,6 +40,7 @@ namespace OsuHelper.Models.API
         [JsonProperty("version")]
         public string DifficultyName { get; private set; }
 
+        [JsonIgnore]
         public string FullName => $"{Artist} - {Title} [{DifficultyName}]";
 
         [JsonConverter(typeof(SecondsToTimespanConverter))]
@@ -49,6 +51,11 @@ namespace OsuHelper.Models.API
         public TimeSpan HitLength { get; private set; }
         [JsonProperty("max_combo")]
         public int MaxCombo { get; private set; }
+
+        [JsonIgnore]
+        public string TotalLengthString => $"{Math.Truncate(TotalLength.TotalMinutes):00}:{TotalLength.Seconds:00}";
+        [JsonIgnore]
+        public string HitLengthString => $"{Math.Truncate(HitLength.TotalMinutes):00}:{HitLength.Seconds:00}";
 
         [JsonProperty("bpm")]
         public double BeatsPerMinute { get; private set; }

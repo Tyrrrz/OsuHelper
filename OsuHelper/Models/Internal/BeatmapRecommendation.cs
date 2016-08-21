@@ -8,6 +8,7 @@
 
 using System.Collections.Generic;
 using NegativeLayer.Extensions;
+using Newtonsoft.Json;
 using OsuHelper.Models.API;
 
 namespace OsuHelper.Models.Internal
@@ -22,6 +23,7 @@ namespace OsuHelper.Models.Internal
 
         public EnabledMods Mods { get; }
 
+        [JsonIgnore]
         public string ModsString
         {
             get

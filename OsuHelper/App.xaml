@@ -7,7 +7,6 @@
              xmlns:local="clr-namespace:OsuHelper"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:wpf="clr-namespace:OsuHelper.WPF"
              StartupUri="Views/MainWindow.xaml"
              mc:Ignorable="d ignore">
 
@@ -47,7 +46,6 @@
             <!--  Converters  -->
             <converters:InvertBoolConverter x:Key="InvertBoolConverter" />
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-            <wpf:MultiBoolOrConverter x:Key="MultiBoolOrConverter" />
         </ResourceDictionary>
     </Application.Resources>
 

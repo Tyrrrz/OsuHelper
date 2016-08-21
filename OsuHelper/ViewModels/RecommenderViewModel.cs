@@ -100,13 +100,16 @@ namespace OsuHelper.ViewModels
             // Get user's top plays
             var userTopPlays = (await _apiService.GetUserTopPlaysAsync(Settings.Default.UserID))
                 .OrderByDescending(p => p.PerformancePoints)
-                .Take(Settings.Default.OwnPlayCountToScan)
                 .ToArray();
-            double minPP = userTopPlays.Min(p => p.PerformancePoints);
             Debug.WriteLine("Obtained user's top plays", "Beatmap Recommender");
 
+            // Ignore beatmaps with plays on them
             var ignoredBeatmaps = userTopPlays.Select(p => p.BeatmapID);
             Debug.WriteLine("Composed a list of ignored beatmaps", "Beatmap Recommender");
+
+            // Leave only top XX plays
+            userTopPlays = userTopPlays.Take(Settings.Default.OwnPlayCountToScan).ToArray();
+            double minPP = userTopPlays.Min(p => p.PerformancePoints);
 
             // Loop through first XX top plays
             foreach (var userPlay in userTopPlays.AsParallel())

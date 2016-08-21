@@ -12,7 +12,7 @@
         DataContext="{Binding SetupViewModel,
                               Source={StaticResource Locator}}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Icon="/OsuHelper;component/favicon.ico"
+        Icon="/OsuRepleh;component/favicon.ico"
         LocationChanged="MainWindow_OnLocationChanged"
         SizeChanged="MainWindow_OnSizeChanged"
         SnapsToDevicePixels="True"
@@ -187,7 +187,7 @@
 
         <Popup x:Name="BeatmapInfoPopup"
                Width="350"
-               Height="350"
+               Height="400"
                AllowsTransparency="True"
                DataContext="{Binding RecommenderViewModel,
                                      Source={StaticResource Locator}}"
@@ -328,11 +328,15 @@
 
                     <UniformGrid Grid.Row="4"
                                  Margin="5"
-                                 Columns="3">
+                                 Columns="2">
                         <Button Margin="2"
                                 Command="{Binding OpenBeatmapPageCommand}"
                                 CommandParameter="{Binding SelectedRecommendation.Beatmap}"
                                 Content="Profile" />
+                        <Button Margin="2"
+                                Command="{Binding DirectDownloadBeatmapCommand}"
+                                CommandParameter="{Binding SelectedRecommendation.Beatmap}"
+                                Content="osu!direct" />
                         <Button Margin="2"
                                 Command="{Binding DownloadBeatmapCommand}"
                                 CommandParameter="{Binding SelectedRecommendation.Beatmap}"

@@ -150,7 +150,10 @@ namespace OsuHelper.ViewModels
 
             // Leave only top XX plays
             userTopPlays = userTopPlays.Take(ownPlayCountToScan).ToArray();
-            double minPP = Math.Truncate(userTopPlays.Min(p => p.PerformancePoints));
+
+            // Get boundaries
+            double minPP = Math.Floor(userTopPlays.Min(p => p.PerformancePoints)); // 100% of user's lowest top play
+            double maxPP = Math.Ceiling(userTopPlays.Max(p => p.PerformancePoints))*1.2; // 120% of user's highest top play
 
             // Loop through first XX top plays
             foreach (var userPlay in userTopPlays.AsParallel())
@@ -184,7 +187,7 @@ namespace OsuHelper.ViewModels
                     // Order by PP difference and take ZZ most similar plays
                     var potentialRecommendations = similarUserTopPlays
                         .OrderBy(p => Math.Abs(p.PerformancePoints - userPlay.PerformancePoints))
-                        .Where(p => p.PerformancePoints >= minPP)
+                        .Where(p => p.PerformancePoints >= minPP && p.PerformancePoints <= maxPP)
                         .Where(p => !ignoredBeatmaps.Contains(p.BeatmapID))
                         .Take(othersPlayCountToScan);
 

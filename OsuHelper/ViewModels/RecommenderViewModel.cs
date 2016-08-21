@@ -24,6 +24,7 @@ namespace OsuHelper.ViewModels
         private readonly APIService _apiService;
 
         private IEnumerable<BeatmapRecommendation> _recommendations;
+        private int _recommendationsCount;
         private bool _canUpdate = true;
         private BeatmapRecommendation _selectedRecommendation;
         private double _progress;
@@ -33,9 +34,17 @@ namespace OsuHelper.ViewModels
             get { return _recommendations; }
             private set
             {
-                Set(ref _recommendations, value);
-                Persistence.Default.LastRecommendations = value.ToArray();
+                var asArray = value as BeatmapRecommendation[] ?? value.ToArray();
+                Set(ref _recommendations, asArray);
+                RecommendationsCount = asArray.Length;
+                Persistence.Default.LastRecommendations = asArray.ToArray(); // make a copy
             }
+        }
+
+        public int RecommendationsCount
+        {
+            get { return _recommendationsCount; }
+            set { Set(ref _recommendationsCount, value); }
         }
 
         public bool CanUpdate
@@ -74,7 +83,7 @@ namespace OsuHelper.ViewModels
             _apiService = apiService;
 
             // Load last recommendations
-            Recommendations = Persistence.Default.LastRecommendations.ToArray();
+            Recommendations = Persistence.Default.LastRecommendations.ToArray(); // make a copy
 
             // Events
             Settings.Default.PropertyChanged += (sender, args) => UpdateCommand.RaiseCanExecuteChanged();

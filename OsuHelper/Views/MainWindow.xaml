@@ -162,8 +162,13 @@
                     <UniformGrid Grid.Row="1"
                                  Margin="5"
                                  HorizontalAlignment="Right"
-                                 Columns="1">
+                                 Columns="2">
+                        <TextBlock Margin="2"
+                                   VerticalAlignment="Center"
+                                   Text="{Binding RecommendationsCount,
+                                                  StringFormat=Total: \{0\}}" />
                         <Button Margin="2"
+                                VerticalAlignment="Center"
                                 Command="{Binding UpdateCommand}"
                                 Content="Update" />
                     </UniformGrid>

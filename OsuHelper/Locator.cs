@@ -20,6 +20,7 @@ namespace OsuHelper
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             SimpleIoc.Default.Register<APIService>();
+            SimpleIoc.Default.Register<WindowService>();
 
             SimpleIoc.Default.Register<SetupViewModel>();
             SimpleIoc.Default.Register<RecommenderViewModel>();

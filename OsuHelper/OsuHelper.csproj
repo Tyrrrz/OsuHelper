@@ -108,6 +108,7 @@
     <Compile Include="Models\Internal\BeatmapRecommendation.cs" />
     <Compile Include="Persistence.cs" />
     <Compile Include="Services\APIService.cs" />
+    <Compile Include="Services\WindowService.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ViewModels\RecommenderViewModel.cs" />
     <Compile Include="ViewModels\SetupViewModel.cs" />

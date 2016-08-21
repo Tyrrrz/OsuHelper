@@ -60,23 +60,12 @@
                                           Content="Prefer map downloads without video"
                                           IsChecked="{Binding Settings.PreferNoVideo}" />
                                 <CheckBox Margin="5"
-                                          Content="Don't suggest, based on plays that are not S ranks"
+                                          Content="Don't suggest, based on plays that are not at least S ranks"
                                           IsChecked="{Binding Settings.OnlyFullCombo}" />
-                                <TextBlock Margin="5" Text="How many of your top plays to scan?" />
-                                <TextBox Margin="5"
-                                         FontWeight="SemiBold"
-                                         Text="{Binding Settings.OwnPlayCountToScan,
-                                                        UpdateSourceTrigger=PropertyChanged}" />
-                                <TextBlock Margin="5" Text="How many of others' top plays to scan?" />
-                                <TextBox Margin="5"
-                                         FontWeight="SemiBold"
-                                         Text="{Binding Settings.OthersPlayCountToScan,
-                                                        UpdateSourceTrigger=PropertyChanged}" />
-                                <TextBlock Margin="5" Text="How many similar plays per one of your play?" />
-                                <TextBox Margin="5"
-                                         FontWeight="SemiBold"
-                                         Text="{Binding Settings.SimilarPlayCount,
-                                                        UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Margin="5" Text="Difficulty preference (left - easier maps, less PP; right - harder maps, more pp)" />
+                                <Slider Maximum="1"
+                                        Minimum="0"
+                                        Value="{Binding Settings.DifficultyPreference}" />
                                 <TextBlock Margin="5" Text="Maximum recommendation count" />
                                 <TextBox Margin="5"
                                          FontWeight="SemiBold"

@@ -7,6 +7,7 @@
 // ------------------------------------------------------------------ 
 
 using NegativeLayer.Settings;
+using Newtonsoft.Json;
 
 namespace OsuHelper
 {
@@ -69,6 +70,13 @@ namespace OsuHelper
         {
             get { return _recommendationCount; }
             set { Set(ref _recommendationCount, value); }
+        }
+
+        [JsonIgnore]
+        public double DifficultyPreference
+        {
+            get { return 1.0 - OwnPlayCountToScan/100.0; }
+            set { OwnPlayCountToScan = (int) (100.0*(1.0 - value)); }
         }
 
         public Settings()

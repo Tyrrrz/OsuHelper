@@ -94,10 +94,32 @@ namespace OsuHelper.ViewModels
             // Commands
             UpdateCommand = new RelayCommand(Update,
                 () => CanUpdate && Settings.Default.APIKey.IsNotBlank() && Settings.Default.UserID.IsNotBlank());
-            OpenBeatmapPageCommand = new RelayCommand<Beatmap>(bm => Process.Start($"https://osu.ppy.sh/b/{bm.ID}"));
-            DirectDownloadBeatmapCommand = new RelayCommand<Beatmap>(bm => Process.Start($"osu://dl/{bm.MapSetID}"));
-            DownloadBeatmapCommand = new RelayCommand<Beatmap>(bm => Process.Start($"https://osu.ppy.sh/d/{bm.MapSetID}"));
-            BloodcatDownloadBeatmapCommand = new RelayCommand<Beatmap>(bm => Process.Start($"http://bloodcat.com/osu/s/{bm.MapSetID}"));
+            OpenBeatmapPageCommand = new RelayCommand<Beatmap>(OpenBeatmapPage);
+            DirectDownloadBeatmapCommand = new RelayCommand<Beatmap>(DirectDownloadBeatmap);
+            DownloadBeatmapCommand = new RelayCommand<Beatmap>(DownloadBeatmap);
+            BloodcatDownloadBeatmapCommand = new RelayCommand<Beatmap>(BloodcatDownloadBeatmap);
+        }
+
+        private void OpenBeatmapPage(Beatmap bm)
+        {
+            Process.Start($"https://osu.ppy.sh/b/{bm.ID}");
+        }
+
+        private void DirectDownloadBeatmap(Beatmap bm)
+        {
+            Process.Start($"osu://dl/{bm.MapSetID}");
+        }
+
+        private void DownloadBeatmap(Beatmap bm)
+        {
+            Process.Start(Settings.Default.PreferNoVideo
+                ? $"https://osu.ppy.sh/d/{bm.MapSetID}n"
+                : $"https://osu.ppy.sh/d/{bm.MapSetID}");
+        }
+
+        private void BloodcatDownloadBeatmap(Beatmap bm)
+        {
+            Process.Start($"http://bloodcat.com/osu/s/{bm.MapSetID}");
         }
 
         private async void Update()

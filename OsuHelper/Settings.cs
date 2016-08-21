@@ -20,6 +20,7 @@ namespace OsuHelper
         private int _othersPlayCountToScan = 5;
         private int _similarPlayCount = 5;
         private int _recommendationCount = 200;
+        private bool _preferNoVideo;
 
         public string UserID
         {
@@ -55,6 +56,12 @@ namespace OsuHelper
         {
             get { return _recommendationCount; }
             set { Set(ref _recommendationCount, value); }
+        }
+
+        public bool PreferNoVideo
+        {
+            get { return _preferNoVideo; }
+            set { Set(ref _preferNoVideo, value); }
         }
 
         public Settings()

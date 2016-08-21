@@ -56,6 +56,9 @@
                                   Margin="5"
                                   Header="Preferences">
                             <StackPanel>
+                                <CheckBox Margin="5"
+                                          Content="Prefer map downloads without video"
+                                          IsChecked="{Binding Settings.PreferNoVideo}" />
                                 <TextBlock Margin="5" Text="How many of your top plays to scan?" />
                                 <TextBox Margin="5"
                                          FontWeight="SemiBold"

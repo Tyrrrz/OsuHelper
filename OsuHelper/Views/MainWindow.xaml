@@ -5,7 +5,7 @@
         xmlns:ignore="http://www.galasoft.ch/ignore"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        Title="osu!helper"
+        Title="osu!helper v1.1"
         Width="750"
         Height="600"
         Background="{DynamicResource MaterialDesignPaper}"
@@ -190,6 +190,25 @@
                                                       Converter={StaticResource BoolToVisibilityConverter}}"
                                  Value="{Binding Progress}" />
                 </Grid>
+            </TabItem>
+
+            <TabItem Header="About">
+                <StackPanel>
+                    <TextBlock Margin="5" FontSize="16">
+                        <Run FontWeight="SemiBold" Text="osu!helper" />
+                        <Run Text="is an open-source tool, developed by Tyrrrz" />
+                        <LineBreak />
+                        <Hyperlink NavigateUri="https://github.com/Tyrrrz/osu-helper" RequestNavigate="Hyperlink_OnRequestNavigate">osu!helper on GitHub</Hyperlink>
+                        <LineBreak />
+                        <Hyperlink NavigateUri="https://osu.ppy.sh/forum/t/492556" RequestNavigate="Hyperlink_OnRequestNavigate">osu!helper on osu! forum</Hyperlink>
+                        <LineBreak />
+                        <Hyperlink NavigateUri="https://osu.ppy.sh/u/7611297" RequestNavigate="Hyperlink_OnRequestNavigate">Tyrrrz on osu!</Hyperlink>
+                        <LineBreak />
+                        <Hyperlink NavigateUri="http://www.tyrrrz.me" RequestNavigate="Hyperlink_OnRequestNavigate">http://www.tyrrrz.me</Hyperlink>
+                        <LineBreak />
+                        <Run Text="If you have any suggestions or problems - feel free to message me" />
+                    </TextBlock>
+                </StackPanel>
             </TabItem>
         </TabControl>
 

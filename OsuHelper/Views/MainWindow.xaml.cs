@@ -7,8 +7,10 @@
 // ------------------------------------------------------------------ 
 
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Navigation;
 using NegativeLayer.Extensions;
 
 namespace OsuHelper.Views
@@ -47,6 +49,11 @@ namespace OsuHelper.Views
         private void BeatmapListDataGrid_MouseLeftButtonUp(object sender, MouseEventArgs e)
         {
             BeatmapInfoPopup.IsOpen = true;
+        }
+
+        private void Hyperlink_OnRequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            Process.Start(e.Uri.ToString());
         }
     }
 }

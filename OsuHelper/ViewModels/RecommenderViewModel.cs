@@ -109,7 +109,7 @@ namespace OsuHelper.ViewModels
 
             // Leave only top XX plays
             userTopPlays = userTopPlays.Take(Settings.Default.OwnPlayCountToScan).ToArray();
-            double minPP = userTopPlays.Min(p => p.PerformancePoints);
+            double minPP = Math.Truncate(userTopPlays.Min(p => p.PerformancePoints));
 
             // Loop through first XX top plays
             foreach (var userPlay in userTopPlays.AsParallel())
@@ -126,6 +126,7 @@ namespace OsuHelper.ViewModels
                 // Go through each play's user
                 foreach (string similarUserID in similarTopPlays
                     .Select(p => p.UserID)
+                    .Distinct()
                     .AsParallel())
                 {
                     // Get their top plays
@@ -153,16 +154,21 @@ namespace OsuHelper.ViewModels
             var recommendationGroups = recommendationsTemp.GroupBy(p => p.BeatmapID).ToArray();
             foreach (var recommendationGroup in recommendationGroups.AsParallel())
             {
-                Debug.WriteLine($"Analyzing recommendation group for beatmap (ID:{recommendationGroup.Key})",
-                    "Beatmap Recommender");
-
                 int count = recommendationGroup.Count();
 
-                // Get the median recommendation (based on PP gain). If it needs to decide between the two, it picks first.
+                Debug.WriteLine(
+                    $"Analyzing recommendation group for beatmap (ID:{recommendationGroup.Key}) with {count} items in it",
+                    "Beatmap Recommender");
+
+                // Get the median recommendation (based on PP gain). If it needs to decide between the two, it picks second.
                 Play median;
                 if (count == 1)
                 {
-                    median = recommendationGroup.First();
+                    median = recommendationGroup.ElementAt(0);
+                }
+                else if (count == 2)
+                {
+                    median = recommendationGroup.ElementAt(1);
                 }
                 else
                 {

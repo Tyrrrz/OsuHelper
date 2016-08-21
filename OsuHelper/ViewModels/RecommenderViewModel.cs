@@ -26,6 +26,7 @@ namespace OsuHelper.ViewModels
         private IEnumerable<BeatmapRecommendation> _recommendations;
         private bool _canUpdate = true;
         private BeatmapRecommendation _selectedRecommendation;
+        private double _progress;
 
         public IEnumerable<BeatmapRecommendation> Recommendations
         {
@@ -43,15 +44,24 @@ namespace OsuHelper.ViewModels
             set
             {
                 Set(ref _canUpdate, value);
+                RaisePropertyChanged(() => IsBusy);
                 UpdateCommand.RaiseCanExecuteChanged();
             }
         }
+
+        public bool IsBusy => !CanUpdate;
 
         public BeatmapRecommendation SelectedRecommendation
         {
             get { return _selectedRecommendation; }
             set { Set(ref _selectedRecommendation, value); }
         }
+
+        public double Progress
+        {
+            get { return _progress; }
+            set { Set(ref _progress, value); }
+        } 
 
         // Commands
         public RelayCommand UpdateCommand { get; }
@@ -80,6 +90,7 @@ namespace OsuHelper.ViewModels
         private async void Update()
         {
             CanUpdate = false;
+            Progress = 0;
             Debug.WriteLine("Update started", "Beatmap Recommender");
 
             // Prepare result
@@ -130,13 +141,14 @@ namespace OsuHelper.ViewModels
                     // Add to list
                     recommendationsTemp.AddRange(potentialRecommendations);
                 }
+
+                Progress += 0.5*(1.0/userTopPlays.Length);
             }
             Debug.WriteLine("Finished scanning for potential recommendations", "Beatmap Recommender");
 
             // Go through recommendations
-            foreach (var recommendationGroup in recommendationsTemp
-                .GroupBy(p => p.BeatmapID)
-                .AsParallel())
+            var recommendationGroups = recommendationsTemp.GroupBy(p => p.BeatmapID).ToArray();
+            foreach (var recommendationGroup in recommendationGroups.AsParallel())
             {
                 Debug.WriteLine($"Analyzing recommendation group for beatmap (ID:{recommendationGroup.Key})",
                     "Beatmap Recommender");
@@ -166,6 +178,8 @@ namespace OsuHelper.ViewModels
                     median.PerformancePoints,
                     median.Accuracy,
                     median.Mods));
+
+                Progress += 0.5*(1.0/recommendationGroups.Length);
             }
 
             // Sort the recommendations by PP and push it to the property value
@@ -173,6 +187,7 @@ namespace OsuHelper.ViewModels
             Recommendations = recommendations.OrderBy(r => r.ExpectedPerformancePoints);
 
             Debug.WriteLine("Done", "Beatmap Recommender");
+            Progress = 1;
             CanUpdate = true;
         }
     }

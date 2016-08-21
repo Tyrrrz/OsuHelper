@@ -100,6 +100,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
                     <DataGrid x:Name="BeatmapListDataGrid"
@@ -157,6 +158,8 @@
                         </DataGrid.Columns>
                     </DataGrid>
 
+
+
                     <UniformGrid Grid.Row="1"
                                  Margin="5"
                                  HorizontalAlignment="Right"
@@ -165,6 +168,14 @@
                                 Command="{Binding UpdateCommand}"
                                 Content="Update" />
                     </UniformGrid>
+
+                    <ProgressBar Grid.Row="2"
+                                 Foreground="{DynamicResource SecondaryAccentForegroundBrush}"
+                                 Maximum="1"
+                                 Minimum="0"
+                                 Visibility="{Binding IsBusy,
+                                                      Converter={StaticResource BoolToVisibilityConverter}}"
+                                 Value="{Binding Progress}" />
                 </Grid>
             </TabItem>
         </TabControl>
@@ -210,7 +221,7 @@
                                Margin="5"
                                HorizontalAlignment="Stretch">
                         <WrapPanel HorizontalAlignment="Left" DockPanel.Dock="Left">
-                            <TextBlock Text="Released: " />
+                            <TextBlock Text="Last Update: " />
                             <TextBlock FontWeight="SemiBold" Text="{Binding SelectedRecommendation.Beatmap.LastUpdateDate, StringFormat=\{0:MMMM d\, yyyy\}}" />
                         </WrapPanel>
                         <WrapPanel HorizontalAlignment="Right" DockPanel.Dock="Right">

@@ -71,6 +71,11 @@
                                          FontWeight="SemiBold"
                                          Text="{Binding Settings.SimilarPlayCount,
                                                         UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Margin="5" Text="Maximum recommendation count" />
+                                <TextBox Margin="5"
+                                         FontWeight="SemiBold"
+                                         Text="{Binding Settings.RecommendationCount,
+                                                        UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
                         </GroupBox>
 

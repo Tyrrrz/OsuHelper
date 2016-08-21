@@ -112,6 +112,7 @@ namespace OsuHelper.ViewModels
             int ownPlayCountToScan = Settings.Default.OwnPlayCountToScan;
             int othersPlayCountToScan = Settings.Default.OthersPlayCountToScan;
             int similarPlayCount = Settings.Default.SimilarPlayCount;
+            int recommendationCount = Settings.Default.RecommendationCount;
 
             // Check API key
             bool apiKeyValid = await _apiService.TestAPIKey(apiKey);
@@ -195,8 +196,14 @@ namespace OsuHelper.ViewModels
             }
             Debug.WriteLine("Finished scanning for potential recommendations", "Beatmap Recommender");
 
-            // Go through recommendations
+            // Group recommendations by beatmap
             var recommendationGroups = recommendationsTemp.GroupBy(p => p.BeatmapID).ToArray();
+
+            // Take only as many as we need
+            if (recommendationGroups.Any())
+                recommendationGroups = recommendationGroups.Take(recommendationCount).ToArray();
+
+            // Loop through recommendation groups
             foreach (var recommendationGroup in recommendationGroups.AsParallel())
             {
                 int count = recommendationGroup.Count();

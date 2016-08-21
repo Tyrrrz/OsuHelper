@@ -19,6 +19,7 @@ namespace OsuHelper
         private int _ownPlayCountToScan = 20;
         private int _othersPlayCountToScan = 5;
         private int _similarPlayCount = 5;
+        private int _recommendationCount = 200;
 
         public string UserID
         {
@@ -48,6 +49,12 @@ namespace OsuHelper
         {
             get { return _similarPlayCount; }
             set { Set(ref _similarPlayCount, value); }
+        }
+
+        public int RecommendationCount
+        {
+            get { return _recommendationCount; }
+            set { Set(ref _recommendationCount, value); }
         }
 
         public Settings()

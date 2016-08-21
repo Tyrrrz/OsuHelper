@@ -27,7 +27,7 @@
     <Grid>
         <TabControl x:Name="TabControl">
             <TabItem DataContext="{Binding SetupViewModel, Source={StaticResource Locator}}" Header="Setup">
-                <ScrollViewer>
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />

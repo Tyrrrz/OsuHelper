@@ -16,11 +16,12 @@ namespace OsuHelper
 
         private string _userID;
         private string _apiKey;
+        private bool _preferNoVideo;
+        private bool _onlyFullCombo = true;
         private int _ownPlayCountToScan = 20;
         private int _othersPlayCountToScan = 5;
         private int _similarPlayCount = 5;
         private int _recommendationCount = 200;
-        private bool _preferNoVideo;
 
         public string UserID
         {
@@ -32,6 +33,18 @@ namespace OsuHelper
         {
             get { return _apiKey; }
             set { Set(ref _apiKey, value); }
+        }
+
+        public bool PreferNoVideo
+        {
+            get { return _preferNoVideo; }
+            set { Set(ref _preferNoVideo, value); }
+        }
+
+        public bool OnlyFullCombo
+        {
+            get { return _onlyFullCombo; }
+            set { Set(ref _onlyFullCombo, value); }
         }
 
         public int OwnPlayCountToScan
@@ -56,12 +69,6 @@ namespace OsuHelper
         {
             get { return _recommendationCount; }
             set { Set(ref _recommendationCount, value); }
-        }
-
-        public bool PreferNoVideo
-        {
-            get { return _preferNoVideo; }
-            set { Set(ref _preferNoVideo, value); }
         }
 
         public Settings()

@@ -131,6 +131,7 @@ namespace OsuHelper.ViewModels
             // Copy settings
             string apiKey = Settings.Default.APIKey;
             string userID = Settings.Default.UserID;
+            bool onlyFullCombo = Settings.Default.OnlyFullCombo;
             int ownPlayCountToScan = Settings.Default.OwnPlayCountToScan;
             int othersPlayCountToScan = Settings.Default.OthersPlayCountToScan;
             int similarPlayCount = Settings.Default.SimilarPlayCount;
@@ -211,6 +212,7 @@ namespace OsuHelper.ViewModels
                         .OrderBy(p => Math.Abs(p.PerformancePoints - userPlay.PerformancePoints))
                         .Where(p => p.PerformancePoints >= minPP && p.PerformancePoints <= maxPP)
                         .Where(p => !ignoredBeatmaps.Contains(p.BeatmapID))
+                        .Where(p => !onlyFullCombo || p.Rank >= PlayRank.S)
                         .Take(othersPlayCountToScan);
 
                     // Add to list
@@ -255,7 +257,7 @@ namespace OsuHelper.ViewModels
                 }
 
                 // Get the beatmap data
-                var beatmap = await _apiService.GetBeatmapAsync(apiKey, median.BeatmapID);
+                var beatmap = await _apiService.GetBeatmapAsync(apiKey, recommendationGroup.Key);
                 Debug.WriteLine($"Obtained beatmap data (ID:{beatmap.ID})", "Beatmap Recommender");
 
                 // Add the recommendation

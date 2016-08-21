@@ -9,6 +9,7 @@
 // ReSharper disable UnusedAutoPropertyAccessor.Local (serialization)
 
 using System;
+using NegativeLayer.Extensions;
 using Newtonsoft.Json;
 using OsuHelper.Models.Converters;
 
@@ -69,6 +70,11 @@ namespace OsuHelper.Models.API
         public double ApproachRate { get; private set; }
         [JsonProperty("diff_drain")]
         public double Drain { get; private set; }
+
+        [JsonIgnore]
+        public double ApproachRateHardRock => (ApproachRate*1.4).ClampMax(10);
+        [JsonIgnore]
+        public double OverallDifficultyHardRock => (OverallDificulty*1.4).ClampMax(10);
 
         private Beatmap() { }
     }

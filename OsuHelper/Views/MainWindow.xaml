@@ -164,7 +164,7 @@
                                                                   StringFormat=\{0:N1\}}"
                                                 Header="AR" />
                             <DataGridTextColumn Width="Auto"
-                                                Binding="{Binding Beatmap.OverallDificulty,
+                                                Binding="{Binding Beatmap.OverallDifficulty,
                                                                   StringFormat=\{0:N1\}}"
                                                 Header="OD" />
                             <DataGridTextColumn Width="Auto"
@@ -374,7 +374,9 @@
 
                     <Grid Grid.Row="3"
                           Margin="5"
-                          HorizontalAlignment="Stretch">
+                          HorizontalAlignment="Stretch"
+                          Background="Transparent"
+                          ToolTip="{Binding SelectedRecommendation.Beatmap.ExtendedDifficultyInfoString}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
@@ -438,7 +440,7 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    FontWeight="SemiBold"
-                                   Text="{Binding SelectedRecommendation.Beatmap.OverallDificulty,
+                                   Text="{Binding SelectedRecommendation.Beatmap.OverallDifficulty,
                                                   StringFormat=\{0:N1\}}" />
                         <TextBlock Grid.Row="1"
                                    Grid.Column="3"

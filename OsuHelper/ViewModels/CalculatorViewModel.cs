@@ -170,7 +170,7 @@ namespace OsuHelper.ViewModels
             }
 
             // Run oppai on it once
-            ExpectedPerformancePoints = await _oppaiService.CalculatePerformancePointsAsync(_beatmapFilePath, ExpectedAccuracy, Mods);
+            Update();
 
             CanAnalyze = true;
         }
@@ -179,7 +179,7 @@ namespace OsuHelper.ViewModels
         {
             // Make sure the map file is still there
             if (_beatmapFilePath.IsBlank() || !File.Exists(_beatmapFilePath))
-                await DownloadMap();
+                return;
 
             ExpectedPerformancePoints = await _oppaiService.CalculatePerformancePointsAsync(_beatmapFilePath, ExpectedAccuracy, Mods);
         }

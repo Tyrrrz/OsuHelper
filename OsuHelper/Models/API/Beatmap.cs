@@ -67,7 +67,7 @@ namespace OsuHelper.Models.API
         [JsonProperty("diff_size")]
         public double CircleSize { get; private set; }
         [JsonProperty("diff_overall")]
-        public double OverallDificulty { get; private set; }
+        public double OverallDifficulty { get; private set; }
         [JsonProperty("diff_approach")]
         public double ApproachRate { get; private set; }
         [JsonProperty("diff_drain")]
@@ -76,7 +76,26 @@ namespace OsuHelper.Models.API
         [JsonIgnore]
         public double ApproachRateHardRock => (ApproachRate*1.4).ClampMax(10);
         [JsonIgnore]
-        public double OverallDifficultyHardRock => (OverallDificulty*1.4).ClampMax(10);
+        public double OverallDifficultyHardRock => (OverallDifficulty*1.4).ClampMax(10);
+
+        [JsonIgnore]
+        public double ApproachRateDoubleTime => Ext.CalculateDoubleTimeApproachRate(ApproachRate);
+        [JsonIgnore]
+        public double OverallDifficultyDoubleTime => Ext.CalculateDoubleTimeOverallDifficulty(OverallDifficulty);
+
+        [JsonIgnore]
+        public double ApproachRateHardRockDoubleTime => Ext.CalculateDoubleTimeApproachRate(ApproachRateHardRock);
+        [JsonIgnore]
+        public double OverallDifficultyHardRockDoubleTime => Ext.CalculateDoubleTimeOverallDifficulty(OverallDifficultyHardRock);
+
+        [JsonIgnore]
+        public string ExtendedDifficultyInfoString =>
+            $"<Hard Rock>{Environment.NewLine}" +
+            $"AR: {Math.Round(ApproachRateHardRock, 2)} | OD: {Math.Round(OverallDifficultyHardRock, 2)} | BPM: {Math.Round(BeatsPerMinute, 2)}{Environment.NewLine}" +
+            $"<Double Time>{Environment.NewLine}" +
+            $"AR: {Math.Round(ApproachRateDoubleTime, 2)} | OD: {Math.Round(OverallDifficultyDoubleTime, 2)} | BPM: {Math.Round(BeatsPerMinute*1.5, 2)}{Environment.NewLine}" +
+            $"<Hard Rock + Double Time>{Environment.NewLine}" +
+            $"AR: {Math.Round(ApproachRateHardRockDoubleTime, 2)} | OD: {Math.Round(OverallDifficultyHardRockDoubleTime, 2)} | BPM: {Math.Round(BeatsPerMinute*1.5, 2)}";
 
         private Beatmap() { }
     }

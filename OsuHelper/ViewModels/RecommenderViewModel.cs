@@ -46,7 +46,7 @@ namespace OsuHelper.ViewModels
                 Set(ref _selectedRecommendation, value);
                 
                 // Hack (mvvm breaking, view models not decoupled)
-                if (value?.Beatmap != null && value.Beatmap.Mode == GameMode.Standard)
+                if (value?.Beatmap?.ID != null && value.Beatmap.Mode == GameMode.Standard)
                 {
                     Locator.Resolve<CalculatorViewModel>().BeatmapID = value.Beatmap.ID;
                     Locator.Resolve<CalculatorViewModel>().ExpectedAccuracy = value.ExpectedAccuracy;

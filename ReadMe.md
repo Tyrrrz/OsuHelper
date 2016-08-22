@@ -18,10 +18,12 @@ Stand-alone application that recommends osu! beatmaps, based on user's top plays
 **User settings:**
 
 - *(Required)* Username or UserID - self explanatory
-- *(Required)* APIKey - get it [here](https://osu.ppy.sh/p/api)
-- How many of your top plays to scan? - (Min 1, Max 100, Default 20) - Set this to larger values to receive suggestions that give less PP, but are easier or set this to smaller values to get hard maps that give a lot of PP. Larger values also increase the scan time.
-- How many of other's top plays to scan? - (Min 1, Max 100, Default 5) - Higher value means more suggestions, but it takes longer to parse them all.
-- How many similar plays to one of your play? - (Min 1, Max 100, Default 5) - Same as above.
+- *(Required)* API Provider - the server you're playing on (currently either osu.ppy.sh or ripple.moe)
+- *(Required if osu)* APIKey - get it [here](https://osu.ppy.sh/p/api)
+- Prefer map download without video - if checked, osu!helper will only download beatmaps without video
+- Don't suggest based on plays that are not at least S ranks - ignores lower ranked plays from suggestions (sorry, no way to determine FC atm)
+- Difficulty preference - from easy to hard, what difficulty you prefer to see in recommended beatmaps
+- Maximum recommendation count - up to how many results to return (less = faster)
 
 **Screenshots:**
 

@@ -28,3 +28,5 @@ Stand-alone application that recommends osu! beatmaps, based on user's top plays
 **Screenshots:**
 
 ![](http://www.tyrrrz.me/projects/images/osuhelper_1.jpg)
+![](http://www.tyrrrz.me/projects/images/osuhelper_2.jpg)
+![](http://www.tyrrrz.me/projects/images/osuhelper_3.jpg)

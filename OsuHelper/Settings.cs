@@ -6,6 +6,7 @@
 //  Date: 20/08/2016
 // ------------------------------------------------------------------ 
 
+using NegativeLayer.Extensions;
 using NegativeLayer.Settings;
 using Newtonsoft.Json;
 

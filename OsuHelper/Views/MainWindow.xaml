@@ -63,7 +63,7 @@
                                           Content="Don't suggest, based on plays that are not at least S ranks"
                                           IsChecked="{Binding Settings.OnlyFullCombo}" />
                                 <TextBlock Margin="5" Text="Difficulty preference (left - easier maps, less PP; right - harder maps, more pp)" />
-                                <Slider Maximum="1"
+                                <Slider Maximum="0.99"
                                         Minimum="0"
                                         Value="{Binding Settings.DifficultyPreference}" />
                                 <TextBlock Margin="5" Text="Maximum recommendation count" />

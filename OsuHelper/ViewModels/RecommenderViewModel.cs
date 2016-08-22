@@ -293,11 +293,7 @@ namespace OsuHelper.ViewModels
                 Play median;
                 if (count == 1)
                 {
-                    median = recommendationGroup.ElementAt(0);
-                }
-                else if (count == 2)
-                {
-                    median = recommendationGroup.ElementAt(1);
+                    median = recommendationGroup.First();
                 }
                 else
                 {

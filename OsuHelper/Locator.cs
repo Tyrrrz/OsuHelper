@@ -28,8 +28,10 @@ namespace OsuHelper
             SimpleIoc.Default.Register<CalculatorViewModel>();
         }
 
-        public SetupViewModel SetupViewModel => ServiceLocator.Current.GetInstance<SetupViewModel>();
-        public RecommenderViewModel RecommenderViewModel => ServiceLocator.Current.GetInstance<RecommenderViewModel>();
-        public CalculatorViewModel CalculatorViewModel => ServiceLocator.Current.GetInstance<CalculatorViewModel>();
+        public static T Resolve<T>() => ServiceLocator.Current.GetInstance<T>();
+
+        public SetupViewModel SetupViewModel => Resolve<SetupViewModel>();
+        public RecommenderViewModel RecommenderViewModel => Resolve<RecommenderViewModel>();
+        public CalculatorViewModel CalculatorViewModel => Resolve<CalculatorViewModel>();
     }
 }

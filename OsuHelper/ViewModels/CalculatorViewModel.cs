@@ -31,9 +31,6 @@ namespace OsuHelper.ViewModels
         private string _beatmapID;
         private bool _canAnalyze = true;
         private EnabledMods _mods = EnabledMods.None;
-        private bool _hrEnabled;
-        private bool _dtEnabled;
-        private bool _hdEnabled;
         private double _expectedAccuracy = 0.95;
         private double _expectedPerformancePoints;
 
@@ -56,36 +53,48 @@ namespace OsuHelper.ViewModels
         public EnabledMods Mods
         {
             get { return _mods; }
-            set { Set(ref _mods, value); }
+            set
+            {
+                Set(ref _mods, value);
+                RaisePropertyChanged(() => HrEnabled);
+                RaisePropertyChanged(() => DtEnabled);
+                RaisePropertyChanged(() => HdEnabled);
+            }
         }
 
         public bool HrEnabled
         {
-            get { return _hrEnabled; }
+            get { return Mods.HasFlag(EnabledMods.HardRock); }
             set
             {
-                Set(ref _hrEnabled, value);
-                UpdateEnabledMods();
+                if (value)
+                    Mods |= EnabledMods.HardRock;
+                else
+                    Mods &= ~EnabledMods.HardRock;
             }
         }
 
         public bool DtEnabled
         {
-            get { return _dtEnabled; }
+            get { return Mods.HasFlag(EnabledMods.DoubleTime); }
             set
             {
-                Set(ref _dtEnabled, value);
-                UpdateEnabledMods();
+                if (value)
+                    Mods |= EnabledMods.DoubleTime;
+                else
+                    Mods &= ~EnabledMods.DoubleTime;
             }
         }
 
         public bool HdEnabled
         {
-            get { return _hdEnabled; }
+            get { return Mods.HasFlag(EnabledMods.Hidden); }
             set
             {
-                Set(ref _hdEnabled, value);
-                UpdateEnabledMods();
+                if (value)
+                    Mods |= EnabledMods.Hidden;
+                else
+                    Mods &= ~EnabledMods.Hidden;
             }
         }
 
@@ -123,17 +132,6 @@ namespace OsuHelper.ViewModels
 
             // Commands
             AnalyzeCommand = new RelayCommand(Analyze, () => CanAnalyze);
-        }
-
-        private void UpdateEnabledMods()
-        {
-            Mods = EnabledMods.None;
-            if (HrEnabled)
-                Mods |= EnabledMods.HardRock;
-            if (DtEnabled)
-                Mods |= EnabledMods.DoubleTime;
-            if (HdEnabled)
-                Mods |= EnabledMods.Hidden;
         }
 
         private async Task DownloadMap()

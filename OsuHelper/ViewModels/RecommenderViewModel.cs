@@ -41,7 +41,15 @@ namespace OsuHelper.ViewModels
         public BeatmapRecommendation SelectedRecommendation
         {
             get { return _selectedRecommendation; }
-            set { Set(ref _selectedRecommendation, value); }
+            set
+            {
+                Set(ref _selectedRecommendation, value);
+                
+                // Hack (mvvm breaking, view models not decoupled)
+                Locator.Resolve<CalculatorViewModel>().BeatmapID = value.Beatmap.ID;
+                Locator.Resolve<CalculatorViewModel>().ExpectedAccuracy = value.ExpectedAccuracy;
+                Locator.Resolve<CalculatorViewModel>().Mods = value.Mods;
+            }
         }
 
         public bool? HrFilter

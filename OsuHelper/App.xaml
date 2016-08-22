@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converters="clr-namespace:NegativeLayer.WPFExtensions.Converters;assembly=WPFExtensions"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
              xmlns:ignore="http://www.galasoft.ch/ignore"
              xmlns:local="clr-namespace:OsuHelper"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -15,6 +16,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/materialdesign.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="#555C5C" />
@@ -29,6 +31,8 @@
             <Style TargetType="materialDesign:Card">
                 <Setter Property="Margin" Value="5" />
             </Style>
+
+            <Style BasedOn="{StaticResource MaterialDesignTabablzControlStyle}" TargetType="dragablz:TabablzControl" />
 
             <Style TargetType="Image">
                 <Setter Property="StretchDirection" Value="DownOnly" />

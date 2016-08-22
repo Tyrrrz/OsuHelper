@@ -106,6 +106,10 @@ namespace OsuHelper.ViewModels
             _windowService = windowService;
             _collectionView = CollectionViewSource.GetDefaultView(Recommendations);
 
+            // Default sort
+            _collectionView.SortDescriptions.Add(new SortDescription(nameof(BeatmapRecommendation.Popularity),
+                ListSortDirection.Descending));
+
             // Load last recommendations
             SetRecommendations(Persistence.Default.LastRecommendations);
 
@@ -310,7 +314,7 @@ namespace OsuHelper.ViewModels
 
             // Sort the recommendations by PP and push it to the property value
             Debug.WriteLine($"Obtained {recommendations.Count} recommendations", "Beatmap Recommender");
-            SetRecommendations(recommendations.OrderByDescending(r => r.Popularity));
+            SetRecommendations(recommendations);
 
             Debug.WriteLine("Done", "Beatmap Recommender");
 

@@ -51,7 +51,7 @@ namespace OsuHelper.Models.Internal
                 if (Mods.HasFlag(EnabledMods.SpunOut))
                     mods.Add("SO");
 
-                return mods.JoinToString();
+                return mods.JoinToString(",");
             }
         }
 

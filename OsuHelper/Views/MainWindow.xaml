@@ -5,7 +5,7 @@
         xmlns:ignore="http://www.galasoft.ch/ignore"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        Title="osu!helper v1.1"
+        Title="osu!helper v1.2"
         Width="750"
         Height="600"
         Background="{DynamicResource MaterialDesignPaper}"
@@ -118,11 +118,21 @@
                               SelectedItem="{Binding SelectedRecommendation}"
                               SelectionMode="Single"
                               SelectionUnit="FullRow">
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                <Setter Property="Padding" Value="3" />
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.CellStyle>
+                            <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="DataGridCell">
+                                <Setter Property="Padding" Value="3" />
+                            </Style>
+                        </DataGrid.CellStyle>
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="*"
                                                 Binding="{Binding Beatmap.FullName}"
-                                                Header="Map Name" />
+                                                Header="Name" />
                             <DataGridTextColumn Width="Auto"
                                                 Binding="{Binding ModsString}"
                                                 Header="Mods" />
@@ -157,7 +167,7 @@
                                                 Header="PP" />
                             <DataGridTextColumn Width="Auto"
                                                 Binding="{Binding Popularity}"
-                                                Header="Popularity" />
+                                                Header="Pop." />
                         </DataGrid.Columns>
                     </DataGrid>
 

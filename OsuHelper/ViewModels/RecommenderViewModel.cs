@@ -8,8 +8,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows.Data;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using NegativeLayer.Extensions;
@@ -26,9 +28,14 @@ namespace OsuHelper.ViewModels
 
         private IEnumerable<BeatmapRecommendation> _recommendations;
         private int _recommendationsCount;
-        private bool _canUpdate = true;
         private BeatmapRecommendation _selectedRecommendation;
+        private bool? _hrFilter;
+        private bool? _dtFilter;
+        private bool? _hdFilter;
+        private bool _canUpdate = true;
         private double _progress;
+
+        private ICollectionView CollectionView => CollectionViewSource.GetDefaultView(Recommendations);
 
         public IEnumerable<BeatmapRecommendation> Recommendations
         {
@@ -48,6 +55,42 @@ namespace OsuHelper.ViewModels
             set { Set(ref _recommendationsCount, value); }
         }
 
+        public BeatmapRecommendation SelectedRecommendation
+        {
+            get { return _selectedRecommendation; }
+            set { Set(ref _selectedRecommendation, value); }
+        }
+
+        public bool? HrFilter
+        {
+            get { return _hrFilter; }
+            set
+            {
+                Set(ref _hrFilter, value);
+                UpdateFilter();
+            }
+        }
+
+        public bool? DtFilter
+        {
+            get { return _dtFilter; }
+            set
+            {
+                Set(ref _dtFilter, value);
+                UpdateFilter();
+            }
+        }
+
+        public bool? HdFilter
+        {
+            get { return _hdFilter; }
+            set
+            {
+                Set(ref _hdFilter, value);
+                UpdateFilter();
+            }
+        }
+
         public bool CanUpdate
         {
             get { return _canUpdate; }
@@ -60,12 +103,6 @@ namespace OsuHelper.ViewModels
         }
 
         public bool IsBusy => !CanUpdate;
-
-        public BeatmapRecommendation SelectedRecommendation
-        {
-            get { return _selectedRecommendation; }
-            set { Set(ref _selectedRecommendation, value); }
-        }
 
         public double Progress
         {
@@ -120,6 +157,18 @@ namespace OsuHelper.ViewModels
         private void BloodcatDownloadBeatmap(Beatmap bm)
         {
             Process.Start($"http://bloodcat.com/osu/s/{bm.MapSetID}");
+        }
+
+        private void UpdateFilter()
+        {
+            CollectionView.Filter = o =>
+            {
+                var rec = (BeatmapRecommendation) o;
+                bool hrCheck = !HrFilter.HasValue || HrFilter.Value == rec.Mods.HasFlag(EnabledMods.HardRock);
+                bool dtCheck = !DtFilter.HasValue || DtFilter.Value == rec.Mods.HasFlag(EnabledMods.DoubleTime);
+                bool hdCheck = !HdFilter.HasValue || HdFilter.Value == rec.Mods.HasFlag(EnabledMods.Hidden);
+                return hrCheck && dtCheck && hdCheck;
+            };
         }
 
         private async void Update()

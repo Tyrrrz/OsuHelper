@@ -176,6 +176,8 @@ namespace OsuHelper.ViewModels
 
         private async void Update()
         {
+            // TODO: refactor this shit
+
             CanUpdate = false;
             Progress = 0;
             Debug.WriteLine("Update started", "Beatmap Recommender");

@@ -29,7 +29,7 @@ namespace OsuHelper.Services
             if (apiProvider == APIProvider.Osu)
                 return "https://osu.ppy.sh/api/";
             if (apiProvider == APIProvider.Ripple)
-                return "https://ripple.moe/api/v1/";
+                return "https://ripple.moe/api/";
             return null;
         }
 
@@ -67,7 +67,7 @@ namespace OsuHelper.Services
         public async Task<IEnumerable<Play>> GetUserTopPlaysAsync(APIServiceConfiguration config, GameMode mode, string userID)
         {
             string home = GetAPIHome(config.APIProvider);
-            string url = home + $"get_user_best?k={config.APIKey}&m={(int)mode}&u={URLEncode(userID)}&limit=100";
+            string url = home + $"get_user_best?k={config.APIKey}&m={(int) mode}&u={URLEncode(userID)}&limit=100";
             string response = await _webClient.DownloadStringTaskAsync(url);
             return JsonConvert.DeserializeObject<Play[]>(response);
         }

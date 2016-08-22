@@ -17,6 +17,10 @@ namespace OsuHelper.Models.Internal
         {
             APIProvider = apiProvider;
             APIKey = apiKey;
+
+            // Clear API key when it's not required (security reasons)
+            if (apiProvider != APIProvider.Osu)
+                APIKey = string.Empty;
         }
     }
 }

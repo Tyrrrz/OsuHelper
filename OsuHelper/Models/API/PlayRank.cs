@@ -17,8 +17,10 @@ namespace OsuHelper.Models.API
         B = 2,
         A = 3,
         S = 4,
-        X = 5, // SS
-        SH = 6, // S with HD
-        XH = 7 // SS with HD
+        SS = 5,
+        X = 5, // SS alternative
+        SH = 6,
+        SSH = 7, 
+        XH = 7 // SS with HD alternative
     }
 }

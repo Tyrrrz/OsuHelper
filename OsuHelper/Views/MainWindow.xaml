@@ -6,8 +6,8 @@
         xmlns:ignore="http://www.galasoft.ch/ignore"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        Title="osu!helper v1.2"
-        Width="750"
+        Title="osu!helper v1.2.1"
+        Width="780"
         Height="650"
         Background="{DynamicResource MaterialDesignPaper}"
         DataContext="{Binding SetupViewModel,

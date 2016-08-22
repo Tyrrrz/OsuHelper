@@ -20,13 +20,16 @@ namespace OsuHelper
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             SimpleIoc.Default.Register<APIService>();
+            SimpleIoc.Default.Register<OppaiService>();
             SimpleIoc.Default.Register<WindowService>();
 
             SimpleIoc.Default.Register<SetupViewModel>();
             SimpleIoc.Default.Register<RecommenderViewModel>();
+            SimpleIoc.Default.Register<CalculatorViewModel>();
         }
 
         public SetupViewModel SetupViewModel => ServiceLocator.Current.GetInstance<SetupViewModel>();
         public RecommenderViewModel RecommenderViewModel => ServiceLocator.Current.GetInstance<RecommenderViewModel>();
+        public CalculatorViewModel CalculatorViewModel => ServiceLocator.Current.GetInstance<CalculatorViewModel>();
     }
 }

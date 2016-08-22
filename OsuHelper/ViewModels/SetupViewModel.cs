@@ -10,11 +10,11 @@ using System;
 using System.Linq;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
-using OsuHelper.Models.API;
+using OsuHelper.Models.Internal;
 
 namespace OsuHelper.ViewModels
 {
-    public class SetupViewModel : ViewModelBase
+    public sealed class SetupViewModel : ViewModelBase
     {
         private bool _isAPIKeyRequired;
 

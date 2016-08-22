@@ -10,6 +10,7 @@ using NegativeLayer.Extensions;
 using NegativeLayer.Settings;
 using Newtonsoft.Json;
 using OsuHelper.Models.API;
+using OsuHelper.Models.Internal;
 
 namespace OsuHelper
 {

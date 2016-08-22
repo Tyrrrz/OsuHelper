@@ -99,19 +99,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Ext.cs" />
     <Compile Include="Locator.cs" />
-    <Compile Include="Models\API\APIProvider.cs" />
     <Compile Include="Models\API\Beatmap.cs" />
     <Compile Include="Models\API\BeatmapRankingStatus.cs" />
     <Compile Include="Models\API\EnabledMods.cs" />
     <Compile Include="Models\API\Play.cs" />
     <Compile Include="Models\API\PlayRank.cs" />
     <Compile Include="Models\Converters\SecondsToTimespanConverter.cs" />
+    <Compile Include="Models\Internal\APIProvider.cs" />
+    <Compile Include="Models\Internal\APIServiceConfiguration.cs" />
     <Compile Include="Models\Internal\BeatmapRecommendation.cs" />
     <Compile Include="Persistence.cs" />
     <Compile Include="Services\APIService.cs" />
+    <Compile Include="Services\OppaiService.cs" />
     <Compile Include="Services\WindowService.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="ViewModels\CalculatorViewModel.cs" />
     <Compile Include="ViewModels\RecommenderViewModel.cs" />
     <Compile Include="ViewModels\SetupViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
@@ -147,6 +151,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="favicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="oppai.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

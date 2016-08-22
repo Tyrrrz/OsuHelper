@@ -6,7 +6,7 @@
 //  Date: 22/08/2016
 // ------------------------------------------------------------------ 
 
-namespace OsuHelper.Models.API
+namespace OsuHelper.Models.Internal
 {
     public enum APIProvider
     {

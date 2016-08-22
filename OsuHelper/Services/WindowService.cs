@@ -12,7 +12,7 @@ using NegativeLayer.WPFExtensions;
 
 namespace OsuHelper.Services
 {
-    public class WindowService
+    public sealed class WindowService
     {
         private static Dispatcher Dispatcher => Dispatcher.CurrentDispatcher;
 

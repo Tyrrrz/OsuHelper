@@ -61,6 +61,10 @@
                                          Visibility="{Binding IsAPIKeyRequired,
                                                               Converter={StaticResource BoolToVisibilityConverter},
                                                               ConverterParameter=Collapsed}" />
+                                <TextBlock Margin="5" Text="Game mode:" />
+                                <ComboBox Margin="5"
+                                          ItemsSource="{Binding AvailableGameModes}"
+                                          SelectedItem="{Binding Settings.GameMode}" />
                             </StackPanel>
                         </GroupBox>
 

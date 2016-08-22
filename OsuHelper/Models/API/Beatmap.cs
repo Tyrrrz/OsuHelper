@@ -21,6 +21,8 @@ namespace OsuHelper.Models.API
         public string ID { get; private set; }
         [JsonProperty("beatmapset_id")]
         public string MapSetID { get; private set; }
+        [JsonProperty("mode")]
+        public GameMode Mode { get; private set; }
 
         [JsonProperty("approved")]
         public BeatmapRankingStatus Status { get; private set; }
@@ -50,7 +52,7 @@ namespace OsuHelper.Models.API
         [JsonConverter(typeof(SecondsToTimespanConverter))]
         [JsonProperty("hit_length")]
         public TimeSpan HitLength { get; private set; }
-        [JsonProperty("max_combo")]
+        [JsonProperty("max_combo", NullValueHandling = NullValueHandling.Ignore)] // this is set to null on some game modes
         public int MaxCombo { get; private set; }
 
         [JsonIgnore]

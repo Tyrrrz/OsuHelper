@@ -6,7 +6,6 @@
 //  Date: 20/08/2016
 // ------------------------------------------------------------------ 
 
-using NegativeLayer.Extensions;
 using NegativeLayer.Settings;
 using Newtonsoft.Json;
 using OsuHelper.Models.API;
@@ -21,6 +20,7 @@ namespace OsuHelper
         private string _userID;
         private APIProvider _apiProvider;
         private string _apiKey;
+        private GameMode _gameMode = GameMode.Standard;
 
         private bool _preferNoVideo;
         private bool _onlyFullCombo = true;
@@ -45,6 +45,12 @@ namespace OsuHelper
         {
             get { return _apiKey; }
             set { Set(ref _apiKey, value); }
+        }
+
+        public GameMode GameMode
+        {
+            get { return _gameMode; }
+            set { Set(ref _gameMode, value); }
         }
 
         public bool PreferNoVideo

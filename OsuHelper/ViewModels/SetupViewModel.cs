@@ -10,6 +10,7 @@ using System;
 using System.Linq;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using OsuHelper.Models.API;
 using OsuHelper.Models.Internal;
 
 namespace OsuHelper.ViewModels
@@ -20,6 +21,7 @@ namespace OsuHelper.ViewModels
 
         public Settings Settings => Settings.Default;
         public APIProvider[] AvailableAPIProviders => Enum.GetValues(typeof (APIProvider)).Cast<APIProvider>().ToArray();
+        public GameMode[] AvailableGameModes => Enum.GetValues(typeof (GameMode)).Cast<GameMode>().ToArray();
 
         public bool IsAPIKeyRequired
         {

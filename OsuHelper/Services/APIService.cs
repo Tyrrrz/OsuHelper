@@ -56,26 +56,27 @@ namespace OsuHelper.Services
             return true;
         }
 
-        public async Task<Beatmap> GetBeatmapAsync(APIServiceConfiguration config, string id)
+        public async Task<Beatmap> GetBeatmapAsync(APIServiceConfiguration config, GameMode mode, string id)
         {
             string home = GetAPIHome(config.APIProvider);
-            string url = home + $"get_beatmaps?k={config.APIKey}&b={id}&limit=1";
+            string url = home + $"get_beatmaps?k={config.APIKey}&m={(int) mode}&b={id}&limit=1&a=1";
             string response = await _webClient.DownloadStringTaskAsync(url);
             return JsonConvert.DeserializeObject<Beatmap[]>(response).FirstOrDefault();
         }
 
-        public async Task<IEnumerable<Play>> GetUserTopPlaysAsync(APIServiceConfiguration config, string userID)
+        public async Task<IEnumerable<Play>> GetUserTopPlaysAsync(APIServiceConfiguration config, GameMode mode, string userID)
         {
             string home = GetAPIHome(config.APIProvider);
-            string url = home + $"get_user_best?k={config.APIKey}&u={URLEncode(userID)}&limit=100";
+            string url = home + $"get_user_best?k={config.APIKey}&m={(int)mode}&u={URLEncode(userID)}&limit=100";
             string response = await _webClient.DownloadStringTaskAsync(url);
             return JsonConvert.DeserializeObject<Play[]>(response);
         }
 
-        public async Task<IEnumerable<Play>> GetBeatmapTopPlaysAsync(APIServiceConfiguration config, string mapID, EnabledMods mods = EnabledMods.Any)
+        public async Task<IEnumerable<Play>> GetBeatmapTopPlaysAsync(APIServiceConfiguration config, GameMode mode,
+            string mapID, EnabledMods mods = EnabledMods.Any)
         {
             string home = GetAPIHome(config.APIProvider);
-            string url = home + $"get_scores?k={config.APIKey}&b={mapID}&limit=100";
+            string url = home + $"get_scores?k={config.APIKey}&m={(int) mode}&b={mapID}&limit=100";
             if (mods != EnabledMods.Any)
                 url += $"&mods={(int) mods}";
             string response = await _webClient.DownloadStringTaskAsync(url);

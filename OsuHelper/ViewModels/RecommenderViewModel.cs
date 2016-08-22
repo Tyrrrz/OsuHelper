@@ -46,9 +46,12 @@ namespace OsuHelper.ViewModels
                 Set(ref _selectedRecommendation, value);
                 
                 // Hack (mvvm breaking, view models not decoupled)
-                Locator.Resolve<CalculatorViewModel>().BeatmapID = value.Beatmap.ID;
-                Locator.Resolve<CalculatorViewModel>().ExpectedAccuracy = value.ExpectedAccuracy;
-                Locator.Resolve<CalculatorViewModel>().Mods = value.Mods;
+                if (value?.Beatmap != null && value.Beatmap.Mode == GameMode.Standard)
+                {
+                    Locator.Resolve<CalculatorViewModel>().BeatmapID = value.Beatmap.ID;
+                    Locator.Resolve<CalculatorViewModel>().ExpectedAccuracy = value.ExpectedAccuracy;
+                    Locator.Resolve<CalculatorViewModel>().Mods = value.Mods;
+                }
             }
         }
 
@@ -181,6 +184,7 @@ namespace OsuHelper.ViewModels
             var apiProvider = Settings.Default.APIProvider;
             string apiKey = Settings.Default.APIKey;
             string userID = Settings.Default.UserID;
+            var gameMode = Settings.Default.GameMode;
             bool onlyFullCombo = Settings.Default.OnlyFullCombo;
             int ownPlayCountToScan = Settings.Default.OwnPlayCountToScan;
             int othersPlayCountToScan = Settings.Default.OthersPlayCountToScan;
@@ -212,7 +216,7 @@ namespace OsuHelper.ViewModels
             var recommendationsTemp = new List<Play>();
 
             // Get user's top plays
-            var userTopPlays = (await _apiService.GetUserTopPlaysAsync(config, userID))
+            var userTopPlays = (await _apiService.GetUserTopPlaysAsync(config, gameMode, userID))
                 .OrderByDescending(p => p.PerformancePoints)
                 .ToArray();
 
@@ -243,7 +247,7 @@ namespace OsuHelper.ViewModels
             foreach (var userPlay in userTopPlays.AsParallel())
             {
                 // Get the map's top plays
-                var mapTopPlays = (await _apiService.GetBeatmapTopPlaysAsync(config, userPlay.BeatmapID, userPlay.Mods)).ToArray();
+                var mapTopPlays = (await _apiService.GetBeatmapTopPlaysAsync(config, gameMode, userPlay.BeatmapID, userPlay.Mods)).ToArray();
                 if (!mapTopPlays.Any())
                     continue;
                 Debug.WriteLine($"Obtained top plays for map (ID:{userPlay.BeatmapID}, Count:{mapTopPlays.Length})", "Beatmap Recommender");
@@ -261,7 +265,18 @@ namespace OsuHelper.ViewModels
                     .AsParallel())
                 {
                     // Get their top plays
-                    var similarUserTopPlays = (await _apiService.GetUserTopPlaysAsync(config, similarUserID)).ToArray();
+                    Play[] similarUserTopPlays;
+                    try
+                    {
+                        similarUserTopPlays = (await _apiService.GetUserTopPlaysAsync(config, gameMode, similarUserID)).ToArray();
+                    }
+                    catch
+                    {
+                        Debug.WriteLine(
+                        $"Failed to obtain top plays for similar user (ID:{similarUserID}) based on map (ID:{userPlay.BeatmapID})",
+                        "Beatmap Recommender");
+                        continue;
+                    }
                     if (!similarUserTopPlays.Any())
                         continue;
                     Debug.WriteLine(
@@ -314,8 +329,17 @@ namespace OsuHelper.ViewModels
                 }
 
                 // Get the beatmap data
-                var beatmap = await _apiService.GetBeatmapAsync(config, recommendationGroup.Key);
-                Debug.WriteLine($"Obtained beatmap data (ID:{beatmap.ID})", "Beatmap Recommender");
+                Beatmap beatmap;
+                try
+                {
+                    beatmap = await _apiService.GetBeatmapAsync(config, gameMode, recommendationGroup.Key);
+                }
+                catch
+                {
+                    Debug.WriteLine($"Failed to obtain beatmap data (ID:{recommendationGroup.Key})", "Beatmap Recommender");
+                    continue;
+                }
+                Debug.WriteLine($"Obtained beatmap data (ID:{recommendationGroup.Key})", "Beatmap Recommender");
 
                 // Add the recommendation
                 recommendations.Add(new BeatmapRecommendation(

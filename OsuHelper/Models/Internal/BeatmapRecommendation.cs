@@ -23,6 +23,8 @@ namespace OsuHelper.Models.Internal
 
         public EnabledMods Mods { get; }
 
+        public int Popularity { get; }
+
         [JsonIgnore]
         public string ModsString
         {
@@ -53,13 +55,18 @@ namespace OsuHelper.Models.Internal
             }
         }
 
-        public BeatmapRecommendation(Beatmap beatmap, double expectedPerformancePoints, double expectedAccuracy,
-            EnabledMods mods)
+        public BeatmapRecommendation(
+            Beatmap beatmap,
+            double expectedPerformancePoints,
+            double expectedAccuracy,
+            EnabledMods mods,
+            int popularity)
         {
             Beatmap = beatmap;
             ExpectedPerformancePoints = expectedPerformancePoints;
             ExpectedAccuracy = expectedAccuracy;
             Mods = mods;
+            Popularity = popularity;
         }
     }
 }

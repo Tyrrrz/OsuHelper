@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -25,9 +26,8 @@ namespace OsuHelper.ViewModels
     {
         private readonly APIService _apiService;
         private readonly WindowService _windowService;
+        private readonly ICollectionView _collectionView;
 
-        private IEnumerable<BeatmapRecommendation> _recommendations;
-        private int _recommendationsCount;
         private BeatmapRecommendation _selectedRecommendation;
         private bool? _hrFilter;
         private bool? _dtFilter;
@@ -35,26 +35,8 @@ namespace OsuHelper.ViewModels
         private bool _canUpdate = true;
         private double _progress;
 
-        private ICollectionView CollectionView => CollectionViewSource.GetDefaultView(Recommendations);
-
-        public IEnumerable<BeatmapRecommendation> Recommendations
-        {
-            get { return _recommendations; }
-            private set
-            {
-                var array = value?.ToArray() ?? new BeatmapRecommendation[0];
-                Set(ref _recommendations, array);
-                RecommendationsCount = array.Length;
-                CollectionView.Refresh();
-                Persistence.Default.LastRecommendations = array.ToArray(); // make a copy
-            }
-        }
-
-        public int RecommendationsCount
-        {
-            get { return _recommendationsCount; }
-            set { Set(ref _recommendationsCount, value); }
-        }
+        public ObservableCollection<BeatmapRecommendation> Recommendations { get; } =
+            new ObservableCollection<BeatmapRecommendation>();
 
         public BeatmapRecommendation SelectedRecommendation
         {
@@ -122,9 +104,10 @@ namespace OsuHelper.ViewModels
         {
             _apiService = apiService;
             _windowService = windowService;
+            _collectionView = CollectionViewSource.GetDefaultView(Recommendations);
 
             // Load last recommendations
-            Recommendations = Persistence.Default.LastRecommendations;
+            SetRecommendations(Persistence.Default.LastRecommendations);
 
             // Events
             Settings.Default.PropertyChanged += (sender, args) => UpdateCommand.RaiseCanExecuteChanged();
@@ -160,9 +143,17 @@ namespace OsuHelper.ViewModels
             Process.Start($"http://bloodcat.com/osu/s/{bm.MapSetID}");
         }
 
+        private void SetRecommendations(IEnumerable<BeatmapRecommendation> recommendations)
+        {
+            var array = recommendations.ToArray();
+            Recommendations.Clear();
+            array.ForEach(Recommendations.Add);
+            Persistence.Default.LastRecommendations = array;
+        }
+
         private void UpdateFilter()
         {
-            CollectionView.Filter = o =>
+            _collectionView.Filter = o =>
             {
                 var rec = (BeatmapRecommendation) o;
                 bool hrCheck = !HrFilter.HasValue || HrFilter.Value == rec.Mods.HasFlag(EnabledMods.HardRock);
@@ -311,14 +302,15 @@ namespace OsuHelper.ViewModels
                     beatmap,
                     median.PerformancePoints,
                     median.Accuracy,
-                    median.Mods));
+                    median.Mods,
+                    count));
 
                 Progress += 0.75*(1.0/recommendationGroups.Length);
             }
 
             // Sort the recommendations by PP and push it to the property value
             Debug.WriteLine($"Obtained {recommendations.Count} recommendations", "Beatmap Recommender");
-            Recommendations = recommendations.OrderBy(r => r.ExpectedPerformancePoints);
+            SetRecommendations(recommendations.OrderByDescending(r => r.Popularity));
 
             Debug.WriteLine("Done", "Beatmap Recommender");
 

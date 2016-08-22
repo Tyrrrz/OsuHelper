@@ -152,9 +152,12 @@
                                                 Header="Accuracy" />
                             <DataGridTextColumn Width="Auto"
                                                 Binding="{Binding ExpectedPerformancePoints,
-                                                                  StringFormat=\{0:N2\}}"
+                                                                  StringFormat=\{0:N0\}}"
                                                 FontWeight="SemiBold"
                                                 Header="PP" />
+                            <DataGridTextColumn Width="Auto"
+                                                Binding="{Binding Popularity}"
+                                                Header="Popularity" />
                         </DataGrid.Columns>
                     </DataGrid>
 
@@ -186,7 +189,7 @@
                         <TextBlock Grid.Column="1"
                                    Margin="5"
                                    VerticalAlignment="Center"
-                                   Text="{Binding RecommendationsCount,
+                                   Text="{Binding Recommendations.Count,
                                                   StringFormat=Total: \{0\}}" />
                         <Button Grid.Column="2"
                                 Margin="2"

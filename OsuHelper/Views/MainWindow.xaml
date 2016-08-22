@@ -240,7 +240,7 @@
                     </TextBlock>
                     <TextBlock x:Name="CalculatorBeatmapID"
                                Margin="5"
-                               Text="Beatmap ID or profile URL:" />
+                               Text="Beatmap ID or URL:" />
                     <TextBox Margin="5"
                              FontWeight="SemiBold"
                              Text="{Binding BeatmapID}" />
@@ -463,7 +463,7 @@
                         <Button Margin="2"
                                 Command="{Binding OpenBeatmapPageCommand}"
                                 CommandParameter="{Binding SelectedRecommendation.Beatmap}"
-                                Content="Profile" />
+                                Content="Page" />
                         <Button Margin="2"
                                 Command="{Binding DirectDownloadBeatmapCommand}"
                                 CommandParameter="{Binding SelectedRecommendation.Beatmap}"

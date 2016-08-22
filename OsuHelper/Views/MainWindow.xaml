@@ -166,6 +166,7 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
+
                         <WrapPanel Grid.Column="0"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center">
@@ -183,7 +184,7 @@
                                       IsThreeState="True" />
                         </WrapPanel>
                         <TextBlock Grid.Column="1"
-                                   Margin="2"
+                                   Margin="5"
                                    VerticalAlignment="Center"
                                    Text="{Binding RecommendationsCount,
                                                   StringFormat=Total: \{0\}}" />

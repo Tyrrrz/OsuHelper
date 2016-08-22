@@ -186,6 +186,9 @@ namespace OsuHelper.ViewModels
                 return;
             }
 
+            // Set key
+            _apiService.SetAPIKey(apiKey);
+
             // Check API key
             bool apiKeyValid = await _apiService.TestAPIKey();
             if (!apiKeyValid)

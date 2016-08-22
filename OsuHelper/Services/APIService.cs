@@ -30,14 +30,18 @@ namespace OsuHelper.Services
                 return null;
             }
         }
-        private static string Key => Settings.Default.APIKey;
-
         private static string URLEncode(string arg)
         {
             return Uri.EscapeUriString(arg);
         }
 
         private readonly WebClient _client = new WebClient();
+        private string _apiKey;
+
+        public void SetAPIKey(string key)
+        {
+            _apiKey = key;
+        }
 
         public async Task<bool> TestAPIKey()
         {
@@ -46,7 +50,7 @@ namespace OsuHelper.Services
                 return true;
 
             // Query a random API endpoint with the given key and see what happens
-            string url = APIHome + $"get_beatmaps?k={Key}&b=1&limit=1";
+            string url = APIHome + $"get_beatmaps?k={_apiKey}&b=1&limit=1";
             try
             {
                 await _client.DownloadStringTaskAsync(url);
@@ -61,21 +65,21 @@ namespace OsuHelper.Services
 
         public async Task<Beatmap> GetBeatmapAsync(string id)
         {
-            string url = APIHome + $"get_beatmaps?k={Key}&b={id}&limit=1";
+            string url = APIHome + $"get_beatmaps?k={_apiKey}&b={id}&limit=1";
             string response = await _client.DownloadStringTaskAsync(url);
             return JsonConvert.DeserializeObject<Beatmap[]>(response).FirstOrDefault();
         }
 
         public async Task<IEnumerable<Play>> GetUserTopPlaysAsync(string userID)
         {
-            string url = APIHome + $"get_user_best?k={Key}&u={URLEncode(userID)}&limit=100";
+            string url = APIHome + $"get_user_best?k={_apiKey}&u={URLEncode(userID)}&limit=100";
             string response = await _client.DownloadStringTaskAsync(url);
             return JsonConvert.DeserializeObject<Play[]>(response);
         }
 
         public async Task<IEnumerable<Play>> GetBeatmapTopPlaysAsync(string mapID, EnabledMods mods = EnabledMods.Any)
         {
-            string url = APIHome + $"get_scores?k={Key}&b={mapID}&limit=100";
+            string url = APIHome + $"get_scores?k={_apiKey}&b={mapID}&limit=100";
             if (mods != EnabledMods.Any)
                 url += $"&mods={(int) mods}";
             string response = await _client.DownloadStringTaskAsync(url);

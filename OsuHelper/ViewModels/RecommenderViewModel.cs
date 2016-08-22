@@ -170,6 +170,7 @@ namespace OsuHelper.ViewModels
             Debug.WriteLine("Update started", "Beatmap Recommender");
 
             // Copy settings
+            var apiProvider = Settings.Default.APIProvider;
             string apiKey = Settings.Default.APIKey;
             string userID = Settings.Default.UserID;
             bool onlyFullCombo = Settings.Default.OnlyFullCombo;
@@ -187,7 +188,7 @@ namespace OsuHelper.ViewModels
             }
 
             // Set key
-            _apiService.SetAPIKey(apiKey);
+            _apiService.SetupAPI(apiProvider, apiKey);
 
             // Check API key
             bool apiKeyValid = await _apiService.TestAPIKey();

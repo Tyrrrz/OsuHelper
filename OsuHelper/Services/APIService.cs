@@ -18,35 +18,37 @@ namespace OsuHelper.Services
 {
     public sealed class APIService : IDisposable
     {
-        private static APIProvider APIProvider => Settings.Default.APIProvider;
-        private static string APIHome
-        {
-            get
-            {
-                if (APIProvider == APIProvider.Osu)
-                    return "https://osu.ppy.sh/api/";
-                if (APIProvider == APIProvider.Ripple)
-                    return "https://ripple.moe/api/v1/";
-                return null;
-            }
-        }
         private static string URLEncode(string arg)
         {
             return Uri.EscapeUriString(arg);
         }
 
         private readonly WebClient _client = new WebClient();
+        private APIProvider _apiProvider;
         private string _apiKey;
 
-        public void SetAPIKey(string key)
+        private string APIHome
         {
+            get
+            {
+                if (_apiProvider == APIProvider.Osu)
+                    return "https://osu.ppy.sh/api/";
+                if (_apiProvider == APIProvider.Ripple)
+                    return "https://ripple.moe/api/v1/";
+                return null;
+            }
+        }
+
+        public void SetupAPI(APIProvider apiProvider, string key)
+        {
+            _apiProvider = apiProvider;
             _apiKey = key;
         }
 
         public async Task<bool> TestAPIKey()
         {
             // Ripple doesn't have API keys
-            if (APIProvider == APIProvider.Ripple)
+            if (_apiProvider == APIProvider.Ripple)
                 return true;
 
             // Query a random API endpoint with the given key and see what happens

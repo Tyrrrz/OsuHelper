@@ -40,6 +40,10 @@
     <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dragablz, Version=0.0.3.169, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dragablz.0.0.3.169\lib\net45\Dragablz.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Extensions, Version=1.0.6074.34876, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NLExtensions.1.0.14\lib\net45\Extensions.dll</HintPath>
       <Private>True</Private>

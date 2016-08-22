@@ -156,6 +156,7 @@ namespace OsuHelper.ViewModels
 
         private void SetRecommendations(IEnumerable<BeatmapRecommendation> recommendations)
         {
+            if (recommendations == null) return;
             var array = recommendations.ToArray();
             Recommendations.Clear();
             array.ForEach(Recommendations.Add);

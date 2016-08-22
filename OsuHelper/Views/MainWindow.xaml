@@ -44,11 +44,22 @@
                                          FontWeight="SemiBold"
                                          Text="{Binding Settings.UserID,
                                                         UpdateSourceTrigger=PropertyChanged}" />
-                                <TextBlock Margin="5" Text="API key:" />
+                                <TextBlock Margin="5" Text="API provider:" />
+                                <ComboBox Margin="5"
+                                          ItemsSource="{Binding AvailableAPIProviders}"
+                                          SelectedItem="{Binding Settings.APIProvider}" />
+                                <TextBlock Margin="5"
+                                           Text="API key:"
+                                           Visibility="{Binding IsAPIKeyRequired,
+                                                                Converter={StaticResource BoolToVisibilityConverter},
+                                                                ConverterParameter=Collapsed}" />
                                 <TextBox Margin="5"
                                          FontWeight="SemiBold"
                                          Text="{Binding Settings.APIKey,
-                                                        UpdateSourceTrigger=PropertyChanged}" />
+                                                        UpdateSourceTrigger=PropertyChanged}"
+                                         Visibility="{Binding IsAPIKeyRequired,
+                                                              Converter={StaticResource BoolToVisibilityConverter},
+                                                              ConverterParameter=Collapsed}" />
                             </StackPanel>
                         </GroupBox>
 

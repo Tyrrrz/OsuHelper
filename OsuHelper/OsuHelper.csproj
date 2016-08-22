@@ -100,6 +100,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Locator.cs" />
+    <Compile Include="Models\API\APIProvider.cs" />
     <Compile Include="Models\API\Beatmap.cs" />
     <Compile Include="Models\API\BeatmapRankingStatus.cs" />
     <Compile Include="Models\API\EnabledMods.cs" />

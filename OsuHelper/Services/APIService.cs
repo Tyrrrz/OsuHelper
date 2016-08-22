@@ -18,13 +18,35 @@ namespace OsuHelper.Services
 {
     public sealed class APIService : IDisposable
     {
-        private const string APIHome = "https://osu.ppy.sh/api/";
+        private static APIProvider APIProvider => Settings.Default.APIProvider;
+        private static string APIHome
+        {
+            get
+            {
+                if (APIProvider == APIProvider.Osu)
+                    return "https://osu.ppy.sh/api/";
+                if (APIProvider == APIProvider.Ripple)
+                    return "https://ripple.moe/api/v1/";
+                return null;
+            }
+        }
+        private static string Key => Settings.Default.APIKey;
+
+        private static string URLEncode(string arg)
+        {
+            return Uri.EscapeUriString(arg);
+        }
 
         private readonly WebClient _client = new WebClient();
 
-        public async Task<bool> TestAPIKey(string key)
+        public async Task<bool> TestAPIKey()
         {
-            string url = APIHome + $"get_beatmaps?k={key}&b=1&limit=1";
+            // Ripple doesn't have API keys
+            if (APIProvider == APIProvider.Ripple)
+                return true;
+
+            // Query a random API endpoint with the given key and see what happens
+            string url = APIHome + $"get_beatmaps?k={Key}&b=1&limit=1";
             try
             {
                 await _client.DownloadStringTaskAsync(url);
@@ -37,23 +59,23 @@ namespace OsuHelper.Services
             return true;
         }
 
-        public async Task<Beatmap> GetBeatmapAsync(string key, string id)
+        public async Task<Beatmap> GetBeatmapAsync(string id)
         {
-            string url = APIHome + $"get_beatmaps?k={key}&b={id}&limit=1";
+            string url = APIHome + $"get_beatmaps?k={Key}&b={id}&limit=1";
             string response = await _client.DownloadStringTaskAsync(url);
             return JsonConvert.DeserializeObject<Beatmap[]>(response).FirstOrDefault();
         }
 
-        public async Task<IEnumerable<Play>> GetUserTopPlaysAsync(string key, string userID)
+        public async Task<IEnumerable<Play>> GetUserTopPlaysAsync(string userID)
         {
-            string url = APIHome + $"get_user_best?k={key}&u={userID}&limit=100";
+            string url = APIHome + $"get_user_best?k={Key}&u={URLEncode(userID)}&limit=100";
             string response = await _client.DownloadStringTaskAsync(url);
             return JsonConvert.DeserializeObject<Play[]>(response);
         }
 
-        public async Task<IEnumerable<Play>> GetBeatmapTopPlaysAsync(string key, string mapID, EnabledMods mods = EnabledMods.Any)
+        public async Task<IEnumerable<Play>> GetBeatmapTopPlaysAsync(string mapID, EnabledMods mods = EnabledMods.Any)
         {
-            string url = APIHome + $"get_scores?k={key}&b={mapID}&limit=100";
+            string url = APIHome + $"get_scores?k={Key}&b={mapID}&limit=100";
             if (mods != EnabledMods.Any)
                 url += $"&mods={(int) mods}";
             string response = await _client.DownloadStringTaskAsync(url);

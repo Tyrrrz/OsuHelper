@@ -9,6 +9,7 @@
 using NegativeLayer.Extensions;
 using NegativeLayer.Settings;
 using Newtonsoft.Json;
+using OsuHelper.Models.API;
 
 namespace OsuHelper
 {
@@ -17,7 +18,9 @@ namespace OsuHelper
         public static Settings Default { get; } = new Settings();
 
         private string _userID;
+        private APIProvider _apiProvider;
         private string _apiKey;
+
         private bool _preferNoVideo;
         private bool _onlyFullCombo = true;
         private int _ownPlayCountToScan = 20;
@@ -29,6 +32,12 @@ namespace OsuHelper
         {
             get { return _userID; }
             set { Set(ref _userID, value); }
+        }
+
+        public APIProvider APIProvider
+        {
+            get { return _apiProvider; }
+            set { Set(ref _apiProvider, value); }
         }
 
         public string APIKey

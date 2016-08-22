@@ -113,12 +113,8 @@ namespace OsuHelper.ViewModels
             // Load last recommendations
             SetRecommendations(Persistence.Default.LastRecommendations);
 
-            // Events
-            Settings.Default.PropertyChanged += (sender, args) => UpdateCommand.RaiseCanExecuteChanged();
-
             // Commands
-            UpdateCommand = new RelayCommand(Update,
-                () => CanUpdate && Settings.Default.APIKey.IsNotBlank() && Settings.Default.UserID.IsNotBlank());
+            UpdateCommand = new RelayCommand(Update, () => CanUpdate);
             OpenBeatmapPageCommand = new RelayCommand<Beatmap>(OpenBeatmapPage);
             DirectDownloadBeatmapCommand = new RelayCommand<Beatmap>(DirectDownloadBeatmap);
             DownloadBeatmapCommand = new RelayCommand<Beatmap>(DownloadBeatmap);
@@ -182,8 +178,16 @@ namespace OsuHelper.ViewModels
             int similarPlayCount = Settings.Default.SimilarPlayCount;
             int recommendationCount = Settings.Default.RecommendationCount;
 
+            // Check user id
+            if (userID.IsBlank())
+            {
+                _windowService.ShowError("UserID is not valid!");
+                CanUpdate = true;
+                return;
+            }
+
             // Check API key
-            bool apiKeyValid = await _apiService.TestAPIKey(apiKey);
+            bool apiKeyValid = await _apiService.TestAPIKey();
             if (!apiKeyValid)
             {
                 _windowService.ShowError("API key is not valid!");
@@ -196,7 +200,7 @@ namespace OsuHelper.ViewModels
             var recommendationsTemp = new List<Play>();
 
             // Get user's top plays
-            var userTopPlays = (await _apiService.GetUserTopPlaysAsync(apiKey, userID))
+            var userTopPlays = (await _apiService.GetUserTopPlaysAsync(userID))
                 .OrderByDescending(p => p.PerformancePoints)
                 .ToArray();
 
@@ -227,7 +231,7 @@ namespace OsuHelper.ViewModels
             foreach (var userPlay in userTopPlays.AsParallel())
             {
                 // Get the map's top plays
-                var mapTopPlays = (await _apiService.GetBeatmapTopPlaysAsync(apiKey, userPlay.BeatmapID, userPlay.Mods)).ToArray();
+                var mapTopPlays = (await _apiService.GetBeatmapTopPlaysAsync(userPlay.BeatmapID, userPlay.Mods)).ToArray();
                 if (!mapTopPlays.Any())
                     continue;
                 Debug.WriteLine($"Obtained top plays for map (ID:{userPlay.BeatmapID}, Count:{mapTopPlays.Length})", "Beatmap Recommender");
@@ -245,7 +249,7 @@ namespace OsuHelper.ViewModels
                     .AsParallel())
                 {
                     // Get their top plays
-                    var similarUserTopPlays = (await _apiService.GetUserTopPlaysAsync(apiKey, similarUserID)).ToArray();
+                    var similarUserTopPlays = (await _apiService.GetUserTopPlaysAsync(similarUserID)).ToArray();
                     if (!similarUserTopPlays.Any())
                         continue;
                     Debug.WriteLine(
@@ -298,7 +302,7 @@ namespace OsuHelper.ViewModels
                 }
 
                 // Get the beatmap data
-                var beatmap = await _apiService.GetBeatmapAsync(apiKey, recommendationGroup.Key);
+                var beatmap = await _apiService.GetBeatmapAsync(recommendationGroup.Key);
                 Debug.WriteLine($"Obtained beatmap data (ID:{beatmap.ID})", "Beatmap Recommender");
 
                 // Add the recommendation

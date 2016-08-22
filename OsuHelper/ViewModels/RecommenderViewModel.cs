@@ -45,6 +45,7 @@ namespace OsuHelper.ViewModels
                 var array = value?.ToArray() ?? new BeatmapRecommendation[0];
                 Set(ref _recommendations, array);
                 RecommendationsCount = array.Length;
+                CollectionView.Refresh();
                 Persistence.Default.LastRecommendations = array.ToArray(); // make a copy
             }
         }
@@ -324,6 +325,7 @@ namespace OsuHelper.ViewModels
             Recommendations = recommendations.OrderBy(r => r.ExpectedPerformancePoints);
 
             Debug.WriteLine("Done", "Beatmap Recommender");
+
             Progress = 1;
             CanUpdate = true;
         }

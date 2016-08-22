@@ -206,7 +206,8 @@ namespace OsuHelper.ViewModels
             bool apiKeyValid = await _apiService.TestConfigurationAsync(config);
             if (!apiKeyValid)
             {
-                _windowService.ShowError("API key is not valid!");
+                _windowService.ShowError("API key is not valid! Pressing OK will open a page where you can get one.");
+                Process.Start("https://osu.ppy.sh/p/api");
                 CanUpdate = true;
                 return;
             }

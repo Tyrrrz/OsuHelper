@@ -34,7 +34,7 @@ namespace OsuHelper.Views
             }
 
             // Open second tab if the user completed setup
-            if (Settings.Default.UserID.IsNotBlank() && Settings.Default.APIKey.IsNotBlank())
+            if (Settings.Stager.Current.UserID.IsNotBlank() && Settings.Stager.Current.APIKey.IsNotBlank())
                 TabControl.SelectedIndex = 1;
         }
 

@@ -15,7 +15,12 @@ namespace OsuHelper
 {
     public sealed class Settings : SettingsManager
     {
-        public static SettingsManagerStager<Settings> Default { get; } = new SettingsManagerStager<Settings>();
+        public static SettingsManagerStager<Settings> Stager { get; } = new SettingsManagerStager<Settings>();
+
+        static Settings()
+        {
+            Stager.TryLoad();
+        }
 
         private string _userID;
         private APIProvider _apiProvider;
@@ -99,7 +104,6 @@ namespace OsuHelper
         public Settings()
             : base(new SettingsManagerConfiguration("OsuHelper"))
         {
-            TryLoad();
         }
     }
 }

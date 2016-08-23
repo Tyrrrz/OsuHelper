@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using NegativeLayer.Settings;
 using OsuHelper.Models.API;
 using OsuHelper.Models.Internal;
 
@@ -20,7 +21,8 @@ namespace OsuHelper.ViewModels
     {
         private bool _isAPIKeyRequired;
 
-        public Settings Settings => Settings.Default.Staging;
+        public SettingsManagerStager<Settings> Stager => Settings.Stager;
+        public Settings StagingSettings => Stager.Staging;
         public APIProvider[] AvailableAPIProviders => Enum.GetValues(typeof (APIProvider)).Cast<APIProvider>().ToArray();
         public GameMode[] AvailableGameModes => Enum.GetValues(typeof (GameMode)).Cast<GameMode>().ToArray();
 
@@ -37,29 +39,29 @@ namespace OsuHelper.ViewModels
 
         public SetupViewModel()
         {
-            IsAPIKeyRequired = Settings.APIProvider == APIProvider.Osu;
+            IsAPIKeyRequired = StagingSettings.APIProvider == APIProvider.Osu;
 
             // Commands
-            SaveCommand = new RelayCommand(Save, () => !Settings.IsSaved);
-            LoadCommand = new RelayCommand(Load, () => !Settings.IsSaved);
+            SaveCommand = new RelayCommand(Save, () => !StagingSettings.IsSaved);
+            LoadCommand = new RelayCommand(Load, () => !StagingSettings.IsSaved);
             ResetDefaultsCommand = new RelayCommand(ResetDefaults);
 
             // Events
-            Settings.PropertyChanged += (sender, args) =>
+            StagingSettings.PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName == nameof(Settings.APIProvider))
-                    IsAPIKeyRequired = Settings.APIProvider == APIProvider.Osu;
+                if (args.PropertyName == nameof(StagingSettings.APIProvider))
+                    IsAPIKeyRequired = StagingSettings.APIProvider == APIProvider.Osu;
             };
         }
 
         private void Save()
         {
             // Convert user profile links to user IDs if necessary
-            var match = Regex.Match(Settings.UserID, @".*?osu.ppy.sh/\w/([\w\d]+)");
+            var match = Regex.Match(StagingSettings.UserID, @".*?osu.ppy.sh/\w/([\w\d]+)");
             if (match.Success)
-                Settings.UserID = match.Groups[1].Value;
+                StagingSettings.UserID = match.Groups[1].Value;
 
-            Settings.Save();
+            Stager.Save();
 
             SaveCommand.RaiseCanExecuteChanged();
             LoadCommand.RaiseCanExecuteChanged();
@@ -67,7 +69,7 @@ namespace OsuHelper.ViewModels
 
         private void Load()
         {
-            Settings.Load();
+            Stager.Load();
 
             SaveCommand.RaiseCanExecuteChanged();
             LoadCommand.RaiseCanExecuteChanged();
@@ -75,7 +77,7 @@ namespace OsuHelper.ViewModels
 
         private void ResetDefaults()
         {
-            Settings.Reset();
+            StagingSettings.Reset();
 
             SaveCommand.RaiseCanExecuteChanged();
             LoadCommand.RaiseCanExecuteChanged();

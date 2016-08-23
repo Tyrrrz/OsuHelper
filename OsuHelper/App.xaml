@@ -49,6 +49,7 @@
 
             <!--  Converters  -->
             <converters:InvertBoolConverter x:Key="InvertBoolConverter" />
+            <converters:InvertBoolToVisibilityConverter x:Key="InvertBoolToVisibilityConverter" />
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         </ResourceDictionary>
     </Application.Resources>

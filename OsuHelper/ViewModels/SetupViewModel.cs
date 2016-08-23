@@ -6,11 +6,11 @@
 //  Date: 20/08/2016
 // ------------------------------------------------------------------ 
 
-using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using NegativeLayer.Extensions;
 using NegativeLayer.Settings;
 using OsuHelper.Models.API;
 using OsuHelper.Models.Internal;
@@ -23,8 +23,8 @@ namespace OsuHelper.ViewModels
 
         public SettingsManagerStager<Settings> Stager => Settings.Stager;
         public Settings StagingSettings => Stager.Staging;
-        public APIProvider[] AvailableAPIProviders => Enum.GetValues(typeof (APIProvider)).Cast<APIProvider>().ToArray();
-        public GameMode[] AvailableGameModes => Enum.GetValues(typeof (GameMode)).Cast<GameMode>().ToArray();
+        public IEnumerable<APIProvider> AvailableAPIProviders => typeof (APIProvider).GetAllEnumValues<APIProvider>();
+        public IEnumerable<GameMode> AvailableGameModes => typeof (GameMode).GetAllEnumValues<GameMode>();
 
         public bool IsAPIKeyRequired
         {

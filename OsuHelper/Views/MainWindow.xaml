@@ -227,8 +227,8 @@
                                  Foreground="{DynamicResource SecondaryAccentForegroundBrush}"
                                  Maximum="1"
                                  Minimum="0"
-                                 Visibility="{Binding IsBusy,
-                                                      Converter={StaticResource BoolToVisibilityConverter}}"
+                                 Visibility="{Binding CanUpdate,
+                                                      Converter={StaticResource InvertBoolToVisibilityConverter}}"
                                  Value="{Binding Progress}" />
                 </Grid>
             </TabItem>

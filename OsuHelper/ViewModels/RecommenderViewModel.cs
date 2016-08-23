@@ -91,12 +91,9 @@ namespace OsuHelper.ViewModels
             set
             {
                 Set(ref _canUpdate, value);
-                RaisePropertyChanged(() => IsBusy);
                 UpdateCommand.RaiseCanExecuteChanged();
             }
         }
-
-        public bool IsBusy => !CanUpdate;
 
         public double Progress
         {

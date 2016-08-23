@@ -29,6 +29,7 @@ namespace OsuHelper.Models.API
 
         [JsonIgnore]
         public string ThumbnailURL => $"https://b.ppy.sh/thumb/{MapSetID}l.jpg";
+        // public string ThumbnailURL => $"https://assets.ppy.sh/beatmaps/{MapSetID}/covers/cover.jpg"; // higher res but too wide
 
         [JsonProperty("creator")]
         public string Creator { get; private set; }

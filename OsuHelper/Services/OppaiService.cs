@@ -56,7 +56,7 @@ namespace OsuHelper.Services
             var args = new List<string>
             {
                 beatmapFilePath,
-                (100.0*accuracy).ToString("n0") + "%",
+                100.0*accuracy + "%",
                 "-ojson"
             };
 

@@ -19,6 +19,8 @@ namespace OsuHelper.Views
 {
     public partial class MainWindow
     {
+        private object _lastSelectedPopupRecommendation;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -50,7 +52,17 @@ namespace OsuHelper.Views
 
         private void BeatmapListDataGrid_MouseLeftButtonUp(object sender, MouseEventArgs e)
         {
-            BeatmapInfoPopup.IsOpen = true;
+            if (BeatmapListDataGrid.SelectedItem == null ||
+                BeatmapListDataGrid.SelectedItem == _lastSelectedPopupRecommendation)
+            {
+                BeatmapInfoPopup.IsOpen = false;
+                _lastSelectedPopupRecommendation = null;
+            }
+            else
+            {
+                BeatmapInfoPopup.IsOpen = true;
+                _lastSelectedPopupRecommendation = BeatmapListDataGrid.SelectedItem;
+            }
         }
 
         private void Hyperlink_OnRequestNavigate(object sender, RequestNavigateEventArgs e)

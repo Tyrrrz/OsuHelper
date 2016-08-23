@@ -29,9 +29,10 @@ namespace OsuHelper
 
         private bool _preferNoVideo;
         private bool _onlyFullCombo = true;
-        private int _ownPlayCountToScan = 20;
-        private int _othersPlayCountToScan = 5;
-        private int _similarPlayCount = 5;
+        private double _difficultyPreference = 0.5;
+        private int _ownPlayCountToScan;
+        private int _othersPlayCountToScan;
+        private int _similarPlayCount;
         private int _recommendationCount = 200;
 
         public string UserID
@@ -70,22 +71,35 @@ namespace OsuHelper
             set { Set(ref _onlyFullCombo, value); }
         }
 
+        public double DifficultyPreference
+        {
+            get { return _difficultyPreference; }
+            set
+            {
+                Set(ref _difficultyPreference, value);
+                UpdateDifficultyPreference();
+            }
+        }
+
+        [JsonIgnore]
         public int OwnPlayCountToScan
         {
             get { return _ownPlayCountToScan; }
-            set { Set(ref _ownPlayCountToScan, value); }
+            private set { Set(ref _ownPlayCountToScan, value); }
         }
 
+        [JsonIgnore]
         public int OthersPlayCountToScan
         {
             get { return _othersPlayCountToScan; }
-            set { Set(ref _othersPlayCountToScan, value); }
+            private set { Set(ref _othersPlayCountToScan, value); }
         }
 
+        [JsonIgnore]
         public int SimilarPlayCount
         {
             get { return _similarPlayCount; }
-            set { Set(ref _similarPlayCount, value); }
+            private set { Set(ref _similarPlayCount, value); }
         }
 
         public int RecommendationCount
@@ -94,11 +108,14 @@ namespace OsuHelper
             set { Set(ref _recommendationCount, value); }
         }
 
-        [JsonIgnore]
-        public double DifficultyPreference
+        private void UpdateDifficultyPreference()
         {
-            get { return 1.0 - OwnPlayCountToScan/100.0; }
-            set { OwnPlayCountToScan = (int) (100.0*(1.0 - value)); }
+            // 0 -> easy maps, 1 -> hard maps
+            // 0 -> own play count = 35, others play count = 5, similar play count = 5
+            // 1 -> own play count = 5, others play count = 20, similar play count = 20
+            OwnPlayCountToScan = (int) (5 + ((1 - DifficultyPreference)*30));
+            OthersPlayCountToScan = (int) (20 - ((1 - DifficultyPreference)*15));
+            SimilarPlayCount = (int) (20 - ((1 - DifficultyPreference)*15));
         }
 
         public Settings()

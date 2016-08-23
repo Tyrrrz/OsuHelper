@@ -80,7 +80,7 @@
                                           IsChecked="{Binding StagingSettings.OnlyFullCombo}" />
                                 <TextBlock Margin="5" Text="Difficulty preference (left - easier maps, less PP; right - harder maps, more pp):" />
                                 <Slider LargeChange="0.25"
-                                        Maximum="0.99"
+                                        Maximum="1"
                                         Minimum="0"
                                         SmallChange="0.1"
                                         Value="{Binding StagingSettings.DifficultyPreference}" />

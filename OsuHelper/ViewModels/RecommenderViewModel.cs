@@ -88,7 +88,7 @@ namespace OsuHelper.ViewModels
         public bool CanUpdate
         {
             get { return _canUpdate; }
-            set
+            private set
             {
                 Set(ref _canUpdate, value);
                 UpdateCommand.RaiseCanExecuteChanged();
@@ -98,7 +98,7 @@ namespace OsuHelper.ViewModels
         public double Progress
         {
             get { return _progress; }
-            set { Set(ref _progress, value); }
+            private set { Set(ref _progress, value); }
         } 
 
         // Commands

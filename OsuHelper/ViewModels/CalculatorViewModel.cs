@@ -8,7 +8,6 @@
 
 using System;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -27,9 +26,12 @@ namespace OsuHelper.ViewModels
         private readonly WebClient _webClient;
 
         private string _beatmapFilePath;
+        private bool _updateQueued;
 
         private string _beatmapID;
+        private bool _isAnalyzed;
         private bool _canAnalyze = true;
+        private bool _canUpdate;
         private EnabledMods _mods = EnabledMods.None;
         private double _expectedAccuracy = 0.95;
         private double _expectedPerformancePoints;
@@ -37,16 +39,45 @@ namespace OsuHelper.ViewModels
         public string BeatmapID
         {
             get { return _beatmapID; }
-            set { Set(ref _beatmapID, value); }
+            set
+            {
+                if (Set(ref _beatmapID, value))
+                {
+                    _beatmapFilePath = null;
+                    IsAnalyzed = false;
+                    CanUpdate = false;
+                }
+            }
+        }
+
+        public bool IsAnalyzed
+        {
+            get { return _isAnalyzed; }
+            private set { Set(ref _isAnalyzed, value); }
         }
 
         public bool CanAnalyze
         {
             get { return _canAnalyze; }
-            set
+            private set
             {
                 Set(ref _canAnalyze, value);
                 AnalyzeCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public bool CanUpdate
+        {
+            get { return _canUpdate; }
+            private set
+            {
+                if (value && _updateQueued)
+                {
+                    _updateQueued = false;
+                    Update();
+                    return;
+                }
+                Set(ref _canUpdate, value);
             }
         }
 
@@ -105,7 +136,10 @@ namespace OsuHelper.ViewModels
             {
                 Set(ref _expectedAccuracy, value);
                 RaisePropertyChanged(() => ExpectedAccuracyString);
-                Update();
+                if (CanUpdate)
+                    Update();
+                else
+                    _updateQueued = true;
             }
         }
 
@@ -173,16 +207,22 @@ namespace OsuHelper.ViewModels
             // Run oppai on it once
             Update();
 
+            IsAnalyzed = true;
+            CanUpdate = true;
             CanAnalyze = true;
         }
 
         private async void Update()
         {
+            CanUpdate = false;
+
             // Make sure the map file is still there
             if (_beatmapFilePath.IsBlank() || !File.Exists(_beatmapFilePath))
                 return;
 
             ExpectedPerformancePoints = await _oppaiService.CalculatePerformancePointsAsync(_beatmapFilePath, ExpectedAccuracy, Mods);
+
+            CanUpdate = true;
         }
 
         public void Dispose()

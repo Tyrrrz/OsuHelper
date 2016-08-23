@@ -64,11 +64,6 @@ namespace OsuHelper.Views
             Process.Start(e.Uri.ToString());
         }
 
-        private void CalculatorExpectedAccuracySlider_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            ((Slider) sender).GetBindingExpression(RangeBase.ValueProperty)?.UpdateSource();
-        }
-
         private void BeatmapInfoPopup_Closed(object sender, EventArgs e)
         {
             _lastSelectedPopupRecommendation = null;

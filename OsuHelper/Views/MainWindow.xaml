@@ -264,7 +264,7 @@
                     <Button Margin="5"
                             Command="{Binding AnalyzeCommand}"
                             Content="Analyze Beatmap" />
-                    <UniformGrid Columns="2">
+                    <UniformGrid Columns="2" IsEnabled="{Binding IsAnalyzed}">
                         <WrapPanel VerticalAlignment="Center">
                             <TextBlock Margin="5"
                                        VerticalAlignment="Center"
@@ -284,10 +284,8 @@
                                 LargeChange="0.01"
                                 Maximum="1"
                                 Minimum="0.6"
-                                PreviewMouseLeftButtonUp="CalculatorExpectedAccuracySlider_OnPreviewMouseLeftButtonUp"
                                 SmallChange="0.001"
-                                Value="{Binding ExpectedAccuracy,
-                                                UpdateSourceTrigger=Explicit}" />
+                                Value="{Binding ExpectedAccuracy}" />
                         <TextBlock Margin="5"
                                    VerticalAlignment="Center"
                                    Text="Expected PP:" />

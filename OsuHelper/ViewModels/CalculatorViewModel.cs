@@ -137,8 +137,9 @@ namespace OsuHelper.ViewModels
         private async Task DownloadMap()
         {
             // Parse out the ID if needed
-            if (!BeatmapID.All(char.IsDigit))
-                BeatmapID = Regex.Match(BeatmapID, @".*?osu.ppy.sh/\w/(\d+)").Groups[1].Value;
+            var match = Regex.Match(BeatmapID, @".*?osu.ppy.sh/\w/(\d+)");
+            if (match.Success)
+                BeatmapID = match.Groups[1].Value;
 
             string downloadUrl = $"https://osu.ppy.sh/osu/{BeatmapID}";
             _beatmapFilePath = Path.GetTempFileName();

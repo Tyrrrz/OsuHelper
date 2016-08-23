@@ -8,6 +8,7 @@
 
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using OsuHelper.Models.API;
@@ -46,12 +47,18 @@ namespace OsuHelper.ViewModels
             // Events
             Settings.PropertyChanged += (sender, args) =>
             {
-                IsAPIKeyRequired = Settings.APIProvider == APIProvider.Osu;
+                if (args.PropertyName == nameof(Settings.APIProvider))
+                    IsAPIKeyRequired = Settings.APIProvider == APIProvider.Osu;
             };
         }
 
         private void Save()
         {
+            // Convert user profile links to user IDs if necessary
+            var match = Regex.Match(Settings.UserID, @".*?osu.ppy.sh/\w/([\w\d]+)");
+            if (match.Success)
+                Settings.UserID = match.Groups[1].Value;
+
             Settings.Save();
 
             SaveCommand.RaiseCanExecuteChanged();

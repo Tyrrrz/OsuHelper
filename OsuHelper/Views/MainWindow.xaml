@@ -182,7 +182,8 @@
                                                 Header="PP" />
                             <DataGridTextColumn Width="Auto"
                                                 Binding="{Binding Popularity}"
-                                                Header="Pop." />
+                                                Header="Pop."
+                                                SortDirection="Descending" />
                         </DataGrid.Columns>
                     </DataGrid>
 

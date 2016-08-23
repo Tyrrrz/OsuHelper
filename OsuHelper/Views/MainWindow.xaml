@@ -331,7 +331,7 @@
                Placement="Left"
                PlacementTarget="{Binding ElementName=BeatmapListDataGrid}"
                PopupAnimation="Fade"
-               StaysOpen="False">
+               StaysOpen="False" Closed="BeatmapInfoPopup_Closed" Opened="BeatmapInfoPopup_Opened">
             <materialDesign:Card HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Grid.RowDefinitions>

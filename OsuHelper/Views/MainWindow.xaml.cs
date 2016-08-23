@@ -52,16 +52,10 @@ namespace OsuHelper.Views
 
         private void BeatmapListDataGrid_MouseLeftButtonUp(object sender, MouseEventArgs e)
         {
-            if (BeatmapListDataGrid.SelectedItem == null ||
-                BeatmapListDataGrid.SelectedItem == _lastSelectedPopupRecommendation)
-            {
-                BeatmapInfoPopup.IsOpen = false;
-                _lastSelectedPopupRecommendation = null;
-            }
-            else
+            if (BeatmapListDataGrid.SelectedItem != null &&
+                _lastSelectedPopupRecommendation != BeatmapListDataGrid.SelectedItem)
             {
                 BeatmapInfoPopup.IsOpen = true;
-                _lastSelectedPopupRecommendation = BeatmapListDataGrid.SelectedItem;
             }
         }
 
@@ -73,6 +67,16 @@ namespace OsuHelper.Views
         private void CalculatorExpectedAccuracySlider_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             ((Slider) sender).GetBindingExpression(RangeBase.ValueProperty)?.UpdateSource();
+        }
+
+        private void BeatmapInfoPopup_Closed(object sender, EventArgs e)
+        {
+            _lastSelectedPopupRecommendation = null;
+        }
+
+        private void BeatmapInfoPopup_Opened(object sender, EventArgs e)
+        {
+            _lastSelectedPopupRecommendation = BeatmapListDataGrid.SelectedItem;
         }
     }
 }

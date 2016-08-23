@@ -20,7 +20,7 @@ namespace OsuHelper.ViewModels
     {
         private bool _isAPIKeyRequired;
 
-        public Settings Settings => Settings.Default;
+        public Settings Settings => Settings.Default.Staging;
         public APIProvider[] AvailableAPIProviders => Enum.GetValues(typeof (APIProvider)).Cast<APIProvider>().ToArray();
         public GameMode[] AvailableGameModes => Enum.GetValues(typeof (GameMode)).Cast<GameMode>().ToArray();
 

@@ -144,7 +144,7 @@ namespace OsuHelper.ViewModels
 
         private void DownloadBeatmap(Beatmap bm)
         {
-            Process.Start(Settings.Default.PreferNoVideo
+            Process.Start(Settings.Default.Current.PreferNoVideo
                 ? $"https://osu.ppy.sh/d/{bm.MapSetID}n"
                 : $"https://osu.ppy.sh/d/{bm.MapSetID}");
         }
@@ -184,15 +184,15 @@ namespace OsuHelper.ViewModels
             Debug.WriteLine("Update started", "Beatmap Recommender");
 
             // Copy settings
-            var apiProvider = Settings.Default.APIProvider;
-            string apiKey = Settings.Default.APIKey;
-            string userID = Settings.Default.UserID;
-            var gameMode = Settings.Default.GameMode;
-            bool onlyFullCombo = Settings.Default.OnlyFullCombo;
-            int ownPlayCountToScan = Settings.Default.OwnPlayCountToScan;
-            int othersPlayCountToScan = Settings.Default.OthersPlayCountToScan;
-            int similarPlayCount = Settings.Default.SimilarPlayCount;
-            int recommendationCount = Settings.Default.RecommendationCount;
+            var apiProvider = Settings.Default.Current.APIProvider;
+            string apiKey = Settings.Default.Current.APIKey;
+            string userID = Settings.Default.Current.UserID;
+            var gameMode = Settings.Default.Current.GameMode;
+            bool onlyFullCombo = Settings.Default.Current.OnlyFullCombo;
+            int ownPlayCountToScan = Settings.Default.Current.OwnPlayCountToScan;
+            int othersPlayCountToScan = Settings.Default.Current.OthersPlayCountToScan;
+            int similarPlayCount = Settings.Default.Current.SimilarPlayCount;
+            int recommendationCount = Settings.Default.Current.RecommendationCount;
 
             // Check user id
             if (userID.IsBlank())

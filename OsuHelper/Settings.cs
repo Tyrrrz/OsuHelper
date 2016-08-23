@@ -15,7 +15,7 @@ namespace OsuHelper
 {
     public sealed class Settings : SettingsManager
     {
-        public static Settings Default { get; } = new Settings();
+        public static SettingsManagerStager<Settings> Default { get; } = new SettingsManagerStager<Settings>();
 
         private string _userID;
         private APIProvider _apiProvider;

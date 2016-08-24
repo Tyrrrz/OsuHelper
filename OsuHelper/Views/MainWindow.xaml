@@ -7,7 +7,7 @@
         xmlns:ignore="http://www.galasoft.ch/ignore"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        Title="osu!helper v1.2.1"
+        Title="osu!helper v1.2.2"
         Width="780"
         Height="650"
         Background="{DynamicResource MaterialDesignPaper}"
@@ -79,6 +79,12 @@
                                 <CheckBox Margin="5"
                                           Content="Don't suggest, based on plays that are not at least S ranks"
                                           IsChecked="{Binding StagingSettings.OnlyFullCombo}" />
+                                <TextBlock Margin="5" Text="Beatmap preview sound volume:" />
+                                <Slider LargeChange="0.25"
+                                        Maximum="1"
+                                        Minimum="0"
+                                        SmallChange="0.1"
+                                        Value="{Binding StagingSettings.PreviewSoundVolume}" />
                                 <TextBlock Margin="5" Text="Difficulty preference (left - easier maps, less PP; right - harder maps, more pp):" />
                                 <Slider LargeChange="0.25"
                                         Maximum="1"

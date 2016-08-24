@@ -29,6 +29,7 @@ namespace OsuHelper
 
         private bool _preferNoVideo;
         private bool _onlyFullCombo = true;
+        private double _previewSoundVolume = 0.8;
         private double _difficultyPreference = 0.5;
         private int _ownPlayCountToScan;
         private int _othersPlayCountToScan;
@@ -69,6 +70,12 @@ namespace OsuHelper
         {
             get { return _onlyFullCombo; }
             set { Set(ref _onlyFullCombo, value); }
+        }
+
+        public double PreviewSoundVolume
+        {
+            get { return _previewSoundVolume; }
+            set { Set(ref _previewSoundVolume, value); }
         }
 
         public double DifficultyPreference

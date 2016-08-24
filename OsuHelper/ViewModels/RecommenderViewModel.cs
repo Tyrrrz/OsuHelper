@@ -13,11 +13,14 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Threading;
 using NegativeLayer.Extensions;
+using NegativeLayer.WPFExtensions;
 using OsuHelper.Models.API;
 using OsuHelper.Models.Internal;
 using OsuHelper.Services;
@@ -31,6 +34,8 @@ namespace OsuHelper.ViewModels
         private readonly ICollectionView _collectionView;
         private readonly WebClient _webClient;
         private readonly MediaPlayer _mediaPlayer;
+
+        private string _lastPreviewBeatmapSetID;
 
         private BeatmapRecommendation _selectedRecommendation;
         private bool? _hrFilter;
@@ -121,13 +126,6 @@ namespace OsuHelper.ViewModels
             _webClient = new WebClient();
             _mediaPlayer = new MediaPlayer();
 
-            // Default sort
-            _collectionView.SortDescriptions.Add(new SortDescription(nameof(BeatmapRecommendation.Popularity),
-                ListSortDirection.Descending));
-
-            // Load last recommendations
-            SetRecommendations(Persistence.Default.LastRecommendations);
-
             // Commands
             UpdateCommand = new RelayCommand(Update, () => CanUpdate);
             OpenBeatmapPageCommand = new RelayCommand<Beatmap>(OpenBeatmapPage);
@@ -135,6 +133,24 @@ namespace OsuHelper.ViewModels
             DownloadBeatmapCommand = new RelayCommand<Beatmap>(DownloadBeatmap);
             BloodcatDownloadBeatmapCommand = new RelayCommand<Beatmap>(BloodcatDownloadBeatmap);
             SoundPreviewBeatmapCommand = new RelayCommand<Beatmap>(SoundPreviewBeatmap);
+
+            // Events
+            DispatcherHelper.UIDispatcher.InvokeSafe(() =>
+            {
+                Application.Current.Exit += (sender, args) =>
+                {
+                    // Stop media player on application exit, so it doesn't hang
+                    _mediaPlayer.Stop();
+                    _mediaPlayer.Close();
+                };
+            });
+
+            // Default sort
+            _collectionView.SortDescriptions.Add(new SortDescription(nameof(BeatmapRecommendation.Popularity),
+                ListSortDirection.Descending));
+
+            // Load last recommendations
+            SetRecommendations(Persistence.Default.LastRecommendations);
         }
 
         private void OpenBeatmapPage(Beatmap bm)
@@ -161,9 +177,23 @@ namespace OsuHelper.ViewModels
 
         private async void SoundPreviewBeatmap(Beatmap bm)
         {
+            // If playing and the beatmap is the same - just stop and return
+            if (_lastPreviewBeatmapSetID == bm.MapSetID &&
+                _mediaPlayer.Position > TimeSpan.Zero &&
+                _mediaPlayer.Position < _mediaPlayer.NaturalDuration.TimeSpan)
+            {
+                _mediaPlayer.Stop();
+                _mediaPlayer.Position = TimeSpan.Zero;
+                return;
+            }
+
+            // Record last beatmap's set id
+            _lastPreviewBeatmapSetID = bm.MapSetID;
+
             // Stop
             _mediaPlayer.Stop();
             _mediaPlayer.Position = TimeSpan.Zero;
+            _mediaPlayer.Volume = Settings.Stager.Current.PreviewSoundVolume;
 
             // Download the song
             string tempFile = FileSystem.GetTempFile("osu_helper_preview", "mp3");

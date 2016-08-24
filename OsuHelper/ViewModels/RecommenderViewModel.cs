@@ -11,8 +11,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Windows.Data;
+using System.Windows.Media;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using NegativeLayer.Extensions;
@@ -27,6 +30,8 @@ namespace OsuHelper.ViewModels
         private readonly APIService _apiService;
         private readonly WindowService _windowService;
         private readonly ICollectionView _collectionView;
+        private readonly WebClient _webClient;
+        private readonly MediaPlayer _mediaPlayer;
 
         private BeatmapRecommendation _selectedRecommendation;
         private bool? _hrFilter;
@@ -107,12 +112,15 @@ namespace OsuHelper.ViewModels
         public RelayCommand<Beatmap> DirectDownloadBeatmapCommand { get; }
         public RelayCommand<Beatmap> DownloadBeatmapCommand { get; }
         public RelayCommand<Beatmap> BloodcatDownloadBeatmapCommand { get; }
+        public RelayCommand<Beatmap> SoundPreviewBeatmapCommand { get; }
 
         public RecommenderViewModel(APIService apiService, WindowService windowService)
         {
             _apiService = apiService;
             _windowService = windowService;
             _collectionView = CollectionViewSource.GetDefaultView(Recommendations);
+            _webClient = new WebClient();
+            _mediaPlayer = new MediaPlayer();
 
             // Default sort
             _collectionView.SortDescriptions.Add(new SortDescription(nameof(BeatmapRecommendation.Popularity),
@@ -127,6 +135,7 @@ namespace OsuHelper.ViewModels
             DirectDownloadBeatmapCommand = new RelayCommand<Beatmap>(DirectDownloadBeatmap);
             DownloadBeatmapCommand = new RelayCommand<Beatmap>(DownloadBeatmap);
             BloodcatDownloadBeatmapCommand = new RelayCommand<Beatmap>(BloodcatDownloadBeatmap);
+            SoundPreviewBeatmapCommand = new RelayCommand<Beatmap>(SoundPreviewBeatmap);
         }
 
         private void OpenBeatmapPage(Beatmap bm)
@@ -149,6 +158,22 @@ namespace OsuHelper.ViewModels
         private void BloodcatDownloadBeatmap(Beatmap bm)
         {
             Process.Start($"http://bloodcat.com/osu/s/{bm.MapSetID}");
+        }
+
+        private async void SoundPreviewBeatmap(Beatmap bm)
+        {
+            // Stop
+            _mediaPlayer.Stop();
+            _mediaPlayer.Position = TimeSpan.Zero;
+
+            // Download the song
+            string tempFile = Path.Combine(Path.GetTempPath(),
+                "osuhelper_preview_" + DateTime.UtcNow.ToFileTime() + ".mp3");
+            await _webClient.DownloadFileTaskAsync(bm.SoundPreviewURL, tempFile);
+
+            // Play
+            _mediaPlayer.Open(tempFile.ToUri());
+            _mediaPlayer.Play();
         }
 
         private void SetRecommendations(IEnumerable<BeatmapRecommendation> recommendations)

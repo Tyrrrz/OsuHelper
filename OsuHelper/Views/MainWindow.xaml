@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:ignore="http://www.galasoft.ch/ignore"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -356,9 +357,16 @@
                     <Image Grid.Row="1"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
+                           Cursor="Hand"
                            Source="{Binding SelectedRecommendation.Beatmap.ThumbnailURL}"
                            Stretch="UniformToFill"
-                           StretchDirection="Both" />
+                           StretchDirection="Both">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseLeftButtonUp">
+                                <i:InvokeCommandAction Command="{Binding SoundPreviewBeatmapCommand}" CommandParameter="{Binding SelectedRecommendation.Beatmap}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Image>
 
                     <DockPanel Grid.Row="2"
                                Margin="5"

@@ -176,7 +176,7 @@ namespace OsuHelper.ViewModels
                 BeatmapID = match.Groups[1].Value;
 
             string downloadUrl = $"https://osu.ppy.sh/osu/{BeatmapID}";
-            _beatmapFilePath = Path.GetTempFileName();
+            _beatmapFilePath = FileSystem.GetTempFile("osu_helper_map", "osu");
             await _webClient.DownloadFileTaskAsync(downloadUrl, _beatmapFilePath);
         }
 

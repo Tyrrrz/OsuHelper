@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Windows.Data;
@@ -25,7 +24,7 @@ using OsuHelper.Services;
 
 namespace OsuHelper.ViewModels
 {
-    public sealed class RecommenderViewModel : ViewModelBase
+    public sealed class RecommenderViewModel : ViewModelBase, IDisposable
     {
         private readonly APIService _apiService;
         private readonly WindowService _windowService;
@@ -167,8 +166,7 @@ namespace OsuHelper.ViewModels
             _mediaPlayer.Position = TimeSpan.Zero;
 
             // Download the song
-            string tempFile = Path.Combine(Path.GetTempPath(),
-                "osuhelper_preview_" + DateTime.UtcNow.ToFileTime() + ".mp3");
+            string tempFile = FileSystem.GetTempFile("osu_helper_preview", "mp3");
             await _webClient.DownloadFileTaskAsync(bm.SoundPreviewURL, tempFile);
 
             // Play
@@ -386,6 +384,12 @@ namespace OsuHelper.ViewModels
 
             Progress = 1;
             CanUpdate = true;
+        }
+
+        public void Dispose()
+        {
+            _apiService.Dispose();
+            _webClient.Dispose();
         }
     }
 }

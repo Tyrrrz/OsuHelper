@@ -119,6 +119,8 @@
     <Compile Include="Persistence.cs" />
     <Compile Include="Services\APIService.cs" />
     <Compile Include="Services\OppaiService.cs" />
+    <Compile Include="Services\OsuGameService.cs" />
+    <Compile Include="Services\OsuSearchService.cs" />
     <Compile Include="Services\WindowService.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ViewModels\CalculatorViewModel.cs" />

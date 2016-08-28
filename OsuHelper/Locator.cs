@@ -21,6 +21,8 @@ namespace OsuHelper
 
             SimpleIoc.Default.Register<APIService>();
             SimpleIoc.Default.Register<OppaiService>();
+            SimpleIoc.Default.Register<OsuGameService>();
+            SimpleIoc.Default.Register<OsuSearchService>();
             SimpleIoc.Default.Register<WindowService>();
 
             SimpleIoc.Default.Register<SetupViewModel>();

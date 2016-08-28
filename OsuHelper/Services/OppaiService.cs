@@ -50,7 +50,11 @@ namespace OsuHelper.Services
             return outputBuffer;
         }
 
-        public async Task<double> CalculatePerformancePointsAsync(string beatmapFilePath, double accuracy, EnabledMods mods)
+        /// <summary>
+        /// Calculates performance points for the given beatmap by its .osu file, with given accuracy and mods
+        /// </summary>
+        public async Task<double> CalculatePerformancePointsAsync(string beatmapFilePath, double accuracy = 1,
+            EnabledMods mods = EnabledMods.None)
         {
             // Compose command line arguments
             var args = new List<string>

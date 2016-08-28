@@ -253,9 +253,11 @@
                     <TextBlock x:Name="CalculatorBeatmapID"
                                Margin="5"
                                Text="Beatmap ID or URL:" />
-                    <TextBox Margin="5"
-                             FontWeight="SemiBold"
-                             Text="{Binding BeatmapID}" />
+                    <Grid>
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"></ColumnDefinition><ColumnDefinition Width="Auto"></ColumnDefinition></Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Margin="5" FontWeight="SemiBold" Text="{Binding BeatmapID}" />
+                        <Button Grid.Column="1" Margin="5" Content="Get Currently Playing Beatmap" Command="{Binding SetCurrentlyPlayingBeatmapIDCommand}" />
+                    </Grid>
                     <TextBlock Margin="5" Text="Mods:" />
                     <WrapPanel>
                         <CheckBox Margin="5"

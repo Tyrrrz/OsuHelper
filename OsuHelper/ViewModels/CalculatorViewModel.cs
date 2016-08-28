@@ -8,6 +8,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -23,6 +24,8 @@ namespace OsuHelper.ViewModels
     {
         private readonly OppaiService _oppaiService;
         private readonly WindowService _windowService;
+        private readonly OsuGameService _osuGameService;
+        private readonly OsuSearchService _osuSearchService;
         private readonly WebClient _webClient;
 
         private string _beatmapFilePath;
@@ -156,16 +159,53 @@ namespace OsuHelper.ViewModels
         }
 
         // Commands
+        public RelayCommand SetCurrentlyPlayingBeatmapIDCommand { get; }
         public RelayCommand AnalyzeCommand { get; }
 
-        public CalculatorViewModel(OppaiService oppaiService, WindowService windowService)
+        public CalculatorViewModel(OppaiService oppaiService, WindowService windowService, OsuGameService osuGameService,
+            OsuSearchService osuSearchService)
         {
             _oppaiService = oppaiService;
             _windowService = windowService;
+            _osuGameService = osuGameService;
+            _osuSearchService = osuSearchService;
             _webClient = new WebClient();
 
             // Commands
             AnalyzeCommand = new RelayCommand(Analyze, () => CanAnalyze);
+            SetCurrentlyPlayingBeatmapIDCommand = new RelayCommand(SetCurrentlyPlayingBeatmapID);
+        }
+
+        private async void SetCurrentlyPlayingBeatmapID()
+        {
+            string fullTitle = _osuGameService.GetNowPlayingTitle();
+            if (fullTitle.IsBlank())
+            {
+                _windowService.ShowError("Currently not playing any beatmap");
+                return;
+            }
+            var match = Regex.Match(fullTitle, @"(.*?)\s-\s(.*?)\[(.*?)\]");
+            if (!match.Success)
+            {
+                _windowService.ShowError($"Unable to parse beatmap title ({fullTitle})");
+                return;
+            }
+
+            // Get results
+            string artist = match.Groups[1].Value;
+            string title = match.Groups[2].Value;
+            string difficulty = match.Groups[3].Value;
+
+            // Search (only on standard)
+            var beatmapIDs = (await _osuSearchService.SearchAsync(GameMode.Standard, artist, title, difficulty)).ToArray();
+            if (!beatmapIDs.Any())
+            {
+                _windowService.ShowError($"Could not resolve a ranked beatmap by title ({fullTitle})");
+                return;
+            }
+
+            // Get first ID and copy it over
+            BeatmapID = beatmapIDs.First();
         }
 
         private async Task DownloadMap()

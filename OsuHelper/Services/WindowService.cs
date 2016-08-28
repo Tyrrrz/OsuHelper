@@ -16,6 +16,9 @@ namespace OsuHelper.Services
     {
         private static Dispatcher Dispatcher => Dispatcher.CurrentDispatcher;
 
+        /// <summary>
+        /// Show an error dialog
+        /// </summary>
         public void ShowError(string message)
         {
             Dispatcher.InvokeSafe(

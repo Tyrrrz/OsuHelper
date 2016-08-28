@@ -35,6 +35,10 @@ namespace OsuHelper.Services
 
         private readonly WebClient _webClient = new WebClient();
 
+        /// <summary>
+        /// Tests the given api configuration
+        /// </summary>
+        /// <returns>True if everything is working, false otherwise</returns>
         public async Task<bool> TestConfigurationAsync(APIServiceConfiguration config)
         {
             // Ripple doesn't have API keys
@@ -56,6 +60,9 @@ namespace OsuHelper.Services
             return true;
         }
 
+        /// <summary>
+        /// Get beatmap by its beatmap ID for the given game mode
+        /// </summary>
         public async Task<Beatmap> GetBeatmapAsync(APIServiceConfiguration config, GameMode mode, string id)
         {
             string home = GetAPIHome(config.APIProvider);
@@ -64,6 +71,9 @@ namespace OsuHelper.Services
             return JsonConvert.DeserializeObject<Beatmap[]>(response).FirstOrDefault();
         }
 
+        /// <summary>
+        /// Get top plays of a user by their user ID or user name
+        /// </summary>
         public async Task<IEnumerable<Play>> GetUserTopPlaysAsync(APIServiceConfiguration config, GameMode mode, string userID)
         {
             string home = GetAPIHome(config.APIProvider);
@@ -72,6 +82,9 @@ namespace OsuHelper.Services
             return JsonConvert.DeserializeObject<Play[]>(response);
         }
 
+        /// <summary>
+        /// Get top plays of a beatmap by its beatmap ID, for the given game mode, using given mods
+        /// </summary>
         public async Task<IEnumerable<Play>> GetBeatmapTopPlaysAsync(APIServiceConfiguration config, GameMode mode,
             string mapID, EnabledMods mods = EnabledMods.Any)
         {

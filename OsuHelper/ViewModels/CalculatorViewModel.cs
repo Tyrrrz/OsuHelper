@@ -93,6 +93,7 @@ namespace OsuHelper.ViewModels
                 RaisePropertyChanged(() => HrEnabled);
                 RaisePropertyChanged(() => DtEnabled);
                 RaisePropertyChanged(() => HdEnabled);
+                TryUpdate();
             }
         }
 
@@ -139,10 +140,7 @@ namespace OsuHelper.ViewModels
             {
                 Set(ref _expectedAccuracy, value);
                 RaisePropertyChanged(() => ExpectedAccuracyString);
-                if (CanUpdate)
-                    Update();
-                else
-                    _updateQueued = true;
+                TryUpdate();
             }
         }
 
@@ -263,6 +261,14 @@ namespace OsuHelper.ViewModels
             ExpectedPerformancePoints = await _oppaiService.CalculatePerformancePointsAsync(_beatmapFilePath, ExpectedAccuracy, Mods);
 
             CanUpdate = true;
+        }
+
+        private void TryUpdate()
+        {
+            if (CanUpdate)
+                Update();
+            else
+                _updateQueued = true;
         }
 
         public void Dispose()

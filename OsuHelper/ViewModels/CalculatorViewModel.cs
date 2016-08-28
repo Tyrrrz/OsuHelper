@@ -204,6 +204,7 @@ namespace OsuHelper.ViewModels
 
             // Get first ID and copy it over
             BeatmapID = beatmapIDs.First();
+            AnalyzeCommand.Execute(null);
         }
 
         private async Task DownloadMap()

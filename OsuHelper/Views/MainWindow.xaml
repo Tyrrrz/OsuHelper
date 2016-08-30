@@ -7,7 +7,7 @@
         xmlns:ignore="http://www.galasoft.ch/ignore"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        Title="osu!helper v1.2.2"
+        Title="osu!helper v{0}"
         Width="780"
         Height="650"
         Background="{DynamicResource MaterialDesignPaper}"
@@ -254,9 +254,18 @@
                                Margin="5"
                                Text="Beatmap ID or URL:" />
                     <Grid>
-                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"></ColumnDefinition><ColumnDefinition Width="Auto"></ColumnDefinition></Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0" Margin="5" FontWeight="SemiBold" Text="{Binding BeatmapID}" />
-                        <Button Grid.Column="1" Margin="5" Content="Get Currently Playing Beatmap" Command="{Binding SetCurrentlyPlayingBeatmapIDCommand}" />
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0"
+                                 Margin="5"
+                                 FontWeight="SemiBold"
+                                 Text="{Binding BeatmapID}" />
+                        <Button Grid.Column="1"
+                                Margin="5"
+                                Command="{Binding SetCurrentlyPlayingBeatmapIDCommand}"
+                                Content="Get Currently Playing Beatmap" />
                     </Grid>
                     <TextBlock Margin="5" Text="Mods:" />
                     <WrapPanel>

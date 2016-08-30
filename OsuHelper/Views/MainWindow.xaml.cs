@@ -8,9 +8,8 @@
 
 using System;
 using System.Diagnostics;
+using System.Reflection;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using NegativeLayer.Extensions;
@@ -38,6 +37,9 @@ namespace OsuHelper.Views
             // Open second tab if the user completed setup
             if (Settings.Stager.Current.UserID.IsNotBlank() && Settings.Stager.Current.APIKey.IsNotBlank())
                 TabControl.SelectedIndex = 1;
+
+            // Version in title
+            Title = Title.Format(Assembly.GetExecutingAssembly().GetName().Version);
         }
 
         private void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)

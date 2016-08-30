@@ -88,10 +88,12 @@ namespace OsuHelper
             else
             {
                 // If exact match not found - linearly approximate
-                var closestLower = ApproachRateTable.Last(t => t.Item1 <= normalApproachRate);
-                double closestLowerAr = closestLower.Item1;
-                double closestLowerTime = closestLower.Item2;
-                time = closestLowerTime*closestLowerAr/normalApproachRate;
+                var lowerAr = ApproachRateTable.Last(t => t.Item1 <= normalApproachRate);
+                var higherAr = ApproachRateTable.First(t => t.Item1 >= normalApproachRate);
+
+                time = lowerAr.Item2 -
+                       (lowerAr.Item2 - higherAr.Item2)
+                       *(normalApproachRate - Math.Truncate(normalApproachRate));
             }
 
             // Multiply ms
@@ -102,11 +104,11 @@ namespace OsuHelper
                 return ApproachRateTable.First(t => t.Item2.Equals(time)).Item1;
 
             // Try to find closest values
-            var lower = ApproachRateTable.Last(t => t.Item2 >= time);
-            var higher = ApproachRateTable.First(t => t.Item2 <= time);
-            double fullDelta = lower.Item2 - higher.Item2;
-            double delta = lower.Item2 - time;
-            return lower.Item1 + delta/fullDelta;
+            var lowerTime = ApproachRateTable.Last(t => t.Item2 >= time);
+            var higherTime = ApproachRateTable.First(t => t.Item2 <= time);
+            double fullDelta = lowerTime.Item2 - higherTime.Item2;
+            double delta = lowerTime.Item2 - time;
+            return lowerTime.Item1 + delta/fullDelta;
         }
 
         public static double CalculateDoubleTimeOverallDifficulty(double normalOverallDifficulty)
@@ -122,10 +124,12 @@ namespace OsuHelper
             else
             {
                 // If exact match not found - linearly approximate
-                var closestLower = OverallDifficultyTable.Last(t => t.Item1 <= normalOverallDifficulty);
-                double closestLowerAr = closestLower.Item1;
-                double closestLowerTime = closestLower.Item2;
-                time = closestLowerTime*closestLowerAr/normalOverallDifficulty;
+                var lowerOd = OverallDifficultyTable.Last(t => t.Item1 <= normalOverallDifficulty);
+                var higherOd = OverallDifficultyTable.First(t => t.Item1 >= normalOverallDifficulty);
+
+                time = lowerOd.Item2 -
+                       (lowerOd.Item2 - higherOd.Item2)*
+                       (normalOverallDifficulty - Math.Truncate(normalOverallDifficulty));
             }
 
             // Multiply ms
@@ -136,11 +140,11 @@ namespace OsuHelper
                 return OverallDifficultyTable.First(t => t.Item2.Equals(time)).Item1;
 
             // Try to find closest values
-            var lower = OverallDifficultyTable.Last(t => t.Item2 >= time);
-            var higher = OverallDifficultyTable.First(t => t.Item2 <= time);
-            double fullDelta = lower.Item2 - higher.Item2;
-            double delta = lower.Item2 - time;
-            return lower.Item1 + delta/fullDelta;
+            var lowerTime = OverallDifficultyTable.Last(t => t.Item2 >= time);
+            var higherTime = OverallDifficultyTable.First(t => t.Item2 <= time);
+            double fullDelta = lowerTime.Item2 - higherTime.Item2;
+            double delta = lowerTime.Item2 - time;
+            return lowerTime.Item1 + delta/fullDelta;
         }
     }
 }

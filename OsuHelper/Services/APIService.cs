@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using NegativeLayer.Extensions;
 using Newtonsoft.Json;
 using OsuHelper.Models.API;
 using OsuHelper.Models.Internal;
@@ -19,11 +20,6 @@ namespace OsuHelper.Services
 {
     public sealed class APIService : IDisposable
     {
-        private static string URLEncode(string arg)
-        {
-            return Uri.EscapeUriString(arg);
-        }
-
         private static string GetAPIHome(APIProvider apiProvider)
         {
             if (apiProvider == APIProvider.Osu)
@@ -77,7 +73,7 @@ namespace OsuHelper.Services
         public async Task<IEnumerable<Play>> GetUserTopPlaysAsync(APIServiceConfiguration config, GameMode mode, string userID)
         {
             string home = GetAPIHome(config.APIProvider);
-            string url = home + $"get_user_best?k={config.APIKey}&m={(int) mode}&u={URLEncode(userID)}&limit=100";
+            string url = home + $"get_user_best?k={config.APIKey}&m={(int) mode}&u={userID.URLEncode()}&limit=100";
             string response = await _webClient.DownloadStringTaskAsync(url);
             return JsonConvert.DeserializeObject<Play[]>(response);
         }

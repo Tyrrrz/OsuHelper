@@ -91,9 +91,7 @@ namespace OsuHelper
                 var lowerAr = ApproachRateTable.Last(t => t.Item1 <= normalApproachRate);
                 var higherAr = ApproachRateTable.First(t => t.Item1 >= normalApproachRate);
 
-                time = lowerAr.Item2 -
-                       (lowerAr.Item2 - higherAr.Item2)
-                       *(normalApproachRate - Math.Truncate(normalApproachRate));
+                time = lowerAr.Item2 - (lowerAr.Item2 - higherAr.Item2)*normalApproachRate.Fraction();
             }
 
             // Multiply ms
@@ -127,9 +125,7 @@ namespace OsuHelper
                 var lowerOd = OverallDifficultyTable.Last(t => t.Item1 <= normalOverallDifficulty);
                 var higherOd = OverallDifficultyTable.First(t => t.Item1 >= normalOverallDifficulty);
 
-                time = lowerOd.Item2 -
-                       (lowerOd.Item2 - higherOd.Item2)*
-                       (normalOverallDifficulty - Math.Truncate(normalOverallDifficulty));
+                time = lowerOd.Item2 - (lowerOd.Item2 - higherOd.Item2)*normalOverallDifficulty.Fraction();
             }
 
             // Multiply ms

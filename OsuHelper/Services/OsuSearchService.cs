@@ -22,11 +22,6 @@ namespace OsuHelper.Services
     {
         private const string Home = "http://osusearch.com/";
 
-        private static string URLEncode(string arg)
-        {
-            return Uri.EscapeUriString(arg);
-        }
-
         private readonly WebClient _webClient = new WebClient();
 
         /// <summary>
@@ -52,11 +47,11 @@ namespace OsuHelper.Services
 
             // Optional parameters
             if (artist.IsNotBlank())
-                args.Add($"artist={URLEncode(artist.Trim())}");
+                args.Add($"artist={artist.Trim().URLEncode()}");
             if (title.IsNotBlank())
-                args.Add($"title={URLEncode(title.Trim())}");
+                args.Add($"title={title.Trim().URLEncode()}");
             if (diffName.IsNotBlank())
-                args.Add($"diff_name={URLEncode(diffName.Trim())}");
+                args.Add($"diff_name={diffName.Trim().URLEncode()}");
             url += "?" + args.JoinToString("&");
             string response = await _webClient.DownloadStringTaskAsync(url);
 

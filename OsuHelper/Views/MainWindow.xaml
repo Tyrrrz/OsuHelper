@@ -48,6 +48,7 @@
                                                             UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBlock Margin="5" Text="API provider:" />
                                     <ComboBox Margin="5"
+                                              FontWeight="SemiBold"
                                               ItemsSource="{Binding AvailableAPIProviders}"
                                               SelectedItem="{Binding StagingSettings.APIProvider}" />
                                     <TextBlock Margin="5"
@@ -64,6 +65,7 @@
                                                                   ConverterParameter=Collapsed}" />
                                     <TextBlock Margin="5" Text="Game mode:" />
                                     <ComboBox Margin="5"
+                                              FontWeight="SemiBold"
                                               ItemsSource="{Binding AvailableGameModes}"
                                               SelectedItem="{Binding StagingSettings.GameMode}" />
                                 </StackPanel>
@@ -83,7 +85,7 @@
                                             Minimum="0"
                                             SmallChange="0.1"
                                             Value="{Binding StagingSettings.PreviewSoundVolume}" />
-                                    <TextBlock Margin="5" Text="Difficulty preference (left - easier maps, less PP; right - harder maps, more pp):" />
+                                    <TextBlock Margin="5" Text="Difficulty preference (left - easier maps, less PP; right - harder maps, more PP):" />
                                     <Slider LargeChange="0.25"
                                             Maximum="1"
                                             Minimum="0"

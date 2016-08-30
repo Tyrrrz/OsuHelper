@@ -2,9 +2,9 @@ osu!helper
 ===================
 
 
-Stand-alone application that recommends osu! beatmaps, based on user's top plays and calculates expected PP gain using Oppai.
+Stand-alone application that recommends osu! beatmaps, based on user's top plays and calculates expected PP gain using [Oppai](https://github.com/Francesco149/oppai).
 
-**Algorithm:**
+**Recommendation Algorithm:**
 
 1. Gets the user's top plays
 2. For each top play, looks at others' scores on the same map that have similar performance (based on PP gained)
@@ -30,3 +30,4 @@ Stand-alone application that recommends osu! beatmaps, based on user's top plays
 ![](http://www.tyrrrz.me/projects/images/osuhelper_1.jpg)
 ![](http://www.tyrrrz.me/projects/images/osuhelper_2.jpg)
 ![](http://www.tyrrrz.me/projects/images/osuhelper_3.jpg)
+![](http://www.tyrrrz.me/projects/images/osuhelper_4.jpg)

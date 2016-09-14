@@ -27,7 +27,7 @@
         mc:Ignorable="d ignore">
 
     <Grid>
-        <dragablz:TabablzControl x:Name="TabControl">
+        <dragablz:TabablzControl x:Name="TabControl" FixedHeaderCount="9999">
             <TabItem DataContext="{Binding SetupViewModel, Source={StaticResource Locator}}" Header="Setup">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -247,8 +247,7 @@
                 <StackPanel>
                     <TextBlock Margin="5" FontStyle="Italic">
                         <Run Text="This PP calculator is implementing" />
-                        <Hyperlink NavigateUri="https://github.com/Francesco149/oppai" RequestNavigate="Hyperlink_OnRequestNavigate">osu!oppai</Hyperlink>
-                        <Run Text="." />
+                        <Hyperlink NavigateUri="https://github.com/Francesco149/oppai" RequestNavigate="Hyperlink_OnRequestNavigate">osu!oppai</Hyperlink><Run Text="." />
                         <LineBreak />
                         <Run Text="If you find any inconsistencies - please report them to the developers." />
                     </TextBlock>

@@ -25,6 +25,17 @@ Stand-alone application that recommends osu! beatmaps, based on user's top plays
 - Difficulty preference - from easy to hard, what difficulty you prefer to see in recommended beatmaps
 - Maximum recommendation count - up to how many results to return (less = faster)
 
+**Dependencies:**
+
+ - [Oppai](https://github.com/Francesco149/oppai) - performance point calculation
+ - [GalaSoft.MVVMLight](http://www.mvvmlight.net/) - MVVM rapid development
+ - [Json.NET](http://www.newtonsoft.com/json) - for deserialization of API responses
+ - [MaterialDesignXAML](https://github.com/ButchersBoy/MaterialDesignInXamlToolkit) - MaterialDesign UI
+ - [Dragablz](https://github.com/ButchersBoy/Dragablz) - MaterialDesign tab control
+ - [NLExtensions](https://www.nuget.org/packages/NLExtensions/) - my set of various extensions for rapid development
+ - [NLWPFExtensions](https://www.nuget.org/packages/NLWPFExtensions) - my set of various WPF extensions for rapid development
+ - [NLSettings](https://www.nuget.org/packages/NLSettings) - my settings manager
+
 **Screenshots:**
 
 ![](http://www.tyrrrz.me/projects/images/osuhelper_1.jpg)

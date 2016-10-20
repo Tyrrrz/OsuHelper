@@ -147,7 +147,7 @@ namespace OsuHelper.ViewModels
         public string ExpectedAccuracyString
         {
             get { return (ExpectedAccuracy*100.0).ToString("n2"); }
-            set { ExpectedAccuracy = (value.Without("%").ParseDoubleOrDefault()/100).Clamp(0, 1); }
+            set { ExpectedAccuracy = (value.Except("%").ParseDoubleOrDefault()/100).Clamp(0, 1); }
         }
 
         public double ExpectedPerformancePoints

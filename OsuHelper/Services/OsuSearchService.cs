@@ -47,11 +47,11 @@ namespace OsuHelper.Services
 
             // Optional parameters
             if (artist.IsNotBlank())
-                args.Add($"artist={artist.Trim().URLEncode()}");
+                args.Add($"artist={artist.Trim().UrlEncode()}");
             if (title.IsNotBlank())
-                args.Add($"title={title.Trim().URLEncode()}");
+                args.Add($"title={title.Trim().UrlEncode()}");
             if (diffName.IsNotBlank())
-                args.Add($"diff_name={diffName.Trim().URLEncode()}");
+                args.Add($"diff_name={diffName.Trim().UrlEncode()}");
             url += "?" + args.JoinToString("&");
             string response = await _webClient.DownloadStringTaskAsync(url);
 

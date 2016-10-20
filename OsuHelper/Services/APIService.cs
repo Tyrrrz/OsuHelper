@@ -73,7 +73,7 @@ namespace OsuHelper.Services
         public async Task<IEnumerable<Play>> GetUserTopPlaysAsync(APIServiceConfiguration config, GameMode mode, string userID)
         {
             string home = GetAPIHome(config.APIProvider);
-            string url = home + $"get_user_best?k={config.APIKey}&m={(int) mode}&u={userID.URLEncode()}&limit=100";
+            string url = home + $"get_user_best?k={config.APIKey}&m={(int) mode}&u={userID.UrlEncode()}&limit=100";
             string response = await _webClient.DownloadStringTaskAsync(url);
             return JsonConvert.DeserializeObject<Play[]>(response);
         }

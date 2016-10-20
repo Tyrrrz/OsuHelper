@@ -20,7 +20,7 @@
         SnapsToDevicePixels="True"
         TextElement.FontSize="13"
         TextElement.FontWeight="Regular"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.Foreground="{DynamicResource SecondaryTextBrush}"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         WindowStartupLocation="CenterScreen"
@@ -28,27 +28,57 @@
 
     <Grid>
         <dragablz:TabablzControl x:Name="TabControl" FixedHeaderCount="9999">
-            <TabItem DataContext="{Binding SetupViewModel, Source={StaticResource Locator}}" Header="Setup">
+            <TabItem DataContext="{Binding SetupViewModel,
+                                           Source={StaticResource Locator}}"
+                     Header="Setup"
+                     TextElement.Foreground="{DynamicResource SecondaryTextBrush}">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <ScrollViewer Grid.Row="0"
+                    <Border Grid.Row="0"
+                            BorderBrush="{DynamicResource MiscBrush}"
+                            BorderThickness="0,0,0,1"
+                            Padding="5">
+                        <UniformGrid HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     Columns="3">
+                            <Button Margin="2"
+                                    Command="{Binding SaveCommand}"
+                                    ToolTip="Save">
+                                <materialDesign:PackIcon Width="24"
+                                                         Height="24"
+                                                         Kind="ContentSave" />
+                            </Button>
+                            <Button Margin="2"
+                                    Command="{Binding LoadCommand}"
+                                    ToolTip="Cancel">
+                                <materialDesign:PackIcon Width="24"
+                                                         Height="24"
+                                                         Kind="Close" />
+                            </Button>
+                            <Button Margin="2"
+                                    Command="{Binding ResetDefaultsCommand}"
+                                    ToolTip="Restore defaults">
+                                <materialDesign:PackIcon Width="24"
+                                                         Height="24"
+                                                         Kind="BackupRestore" />
+                            </Button>
+                        </UniformGrid>
+                    </Border>
+
+                    <ScrollViewer Grid.Row="1"
                                   HorizontalScrollBarVisibility="Disabled"
                                   VerticalScrollBarVisibility="Auto">
                         <StackPanel>
                             <GroupBox Margin="5" Header="Core">
                                 <StackPanel>
                                     <TextBlock Margin="5" Text="osu! Username or UserID:" />
-                                    <TextBox Margin="5"
-                                             FontWeight="SemiBold"
-                                             Text="{Binding StagingSettings.UserID,
-                                                            UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBox Margin="5" Text="{Binding StagingSettings.UserID, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBlock Margin="5" Text="API provider:" />
                                     <ComboBox Margin="5"
-                                              FontWeight="SemiBold"
                                               ItemsSource="{Binding AvailableAPIProviders}"
                                               SelectedItem="{Binding StagingSettings.APIProvider}" />
                                     <TextBlock Margin="5"
@@ -57,7 +87,6 @@
                                                                     Converter={StaticResource BoolToVisibilityConverter},
                                                                     ConverterParameter=Collapsed}" />
                                     <TextBox Margin="5"
-                                             FontWeight="SemiBold"
                                              Text="{Binding StagingSettings.APIKey,
                                                             UpdateSourceTrigger=PropertyChanged}"
                                              Visibility="{Binding IsAPIKeyRequired,
@@ -65,7 +94,6 @@
                                                                   ConverterParameter=Collapsed}" />
                                     <TextBlock Margin="5" Text="Game mode:" />
                                     <ComboBox Margin="5"
-                                              FontWeight="SemiBold"
                                               ItemsSource="{Binding AvailableGameModes}"
                                               SelectedItem="{Binding StagingSettings.GameMode}" />
                                 </StackPanel>
@@ -73,63 +101,109 @@
 
                             <GroupBox Margin="5" Header="Preferences">
                                 <StackPanel>
-                                    <CheckBox Margin="5"
-                                              Content="Prefer map downloads without video"
-                                              IsChecked="{Binding StagingSettings.PreferNoVideo}" />
-                                    <CheckBox Margin="5"
-                                              Content="Don't suggest, based on plays that are not at least S ranks"
-                                              IsChecked="{Binding StagingSettings.OnlyFullCombo}" />
+                                    <TextBlock Margin="5" Text="Prefer map downloads without video:" />
+                                    <ToggleButton Margin="5"
+                                                  HorizontalAlignment="Left"
+                                                  IsChecked="{Binding StagingSettings.PreferNoVideo}" />
+                                    <TextBlock Margin="5" Text="Don't suggest, based on plays that are not at least S ranks:" />
+                                    <ToggleButton Margin="5"
+                                                  HorizontalAlignment="Left"
+                                                  IsChecked="{Binding StagingSettings.OnlyFullCombo}" />
                                     <TextBlock Margin="5" Text="Beatmap preview sound volume:" />
-                                    <Slider LargeChange="0.25"
+                                    <Slider Margin="5"
+                                            LargeChange="0.25"
                                             Maximum="1"
                                             Minimum="0"
                                             SmallChange="0.1"
                                             Value="{Binding StagingSettings.PreviewSoundVolume}" />
                                     <TextBlock Margin="5" Text="Difficulty preference (left - easier maps, less PP; right - harder maps, more PP):" />
-                                    <Slider LargeChange="0.25"
+                                    <Slider Margin="5"
+                                            LargeChange="0.25"
                                             Maximum="1"
                                             Minimum="0"
                                             SmallChange="0.1"
                                             Value="{Binding StagingSettings.DifficultyPreference}" />
                                     <TextBlock Margin="5" Text="Maximum recommendation count:" />
-                                    <TextBox Margin="5"
-                                             FontWeight="SemiBold"
-                                             Text="{Binding StagingSettings.RecommendationCount,
-                                                            UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBox Margin="5" Text="{Binding StagingSettings.RecommendationCount, UpdateSourceTrigger=PropertyChanged}" />
                                 </StackPanel>
                             </GroupBox>
                         </StackPanel>
                     </ScrollViewer>
-
-                    <UniformGrid Grid.Row="1"
-                                 Margin="5"
-                                 HorizontalAlignment="Center"
-                                 VerticalAlignment="Bottom"
-                                 Columns="3">
-                        <Button Margin="2"
-                                Command="{Binding SaveCommand}"
-                                Content="Save" />
-                        <Button Margin="2"
-                                Command="{Binding LoadCommand}"
-                                Content="Cancel" />
-                        <Button Margin="2"
-                                Command="{Binding ResetDefaultsCommand}"
-                                Content="Defaults" />
-                    </UniformGrid>
                 </Grid>
 
             </TabItem>
 
-            <TabItem DataContext="{Binding RecommenderViewModel, Source={StaticResource Locator}}" Header="Recommended Maps">
+            <TabItem DataContext="{Binding RecommenderViewModel,
+                                           Source={StaticResource Locator}}"
+                     Header="Recommended Maps"
+                     TextElement.Foreground="{DynamicResource SecondaryTextBrush}">
                 <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
+                    <Border Grid.Row="0"
+                            BorderBrush="{DynamicResource MiscBrush}"
+                            BorderThickness="0,0,0,1"
+                            Padding="5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <WrapPanel Grid.Column="0"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center">
+                                <TextBlock Margin="2"
+                                           VerticalAlignment="Center"
+                                           Text="Filters:" />
+                                <CheckBox Margin="2"
+                                          VerticalAlignment="Center"
+                                          Content="HR"
+                                          IsChecked="{Binding HrFilter}"
+                                          IsThreeState="True" />
+                                <CheckBox Margin="2"
+                                          VerticalAlignment="Center"
+                                          Content="DT"
+                                          IsChecked="{Binding DtFilter}"
+                                          IsThreeState="True" />
+                                <CheckBox Margin="2"
+                                          VerticalAlignment="Center"
+                                          Content="HD"
+                                          IsChecked="{Binding HdFilter}"
+                                          IsThreeState="True" />
+                            </WrapPanel>
+                            <TextBlock Grid.Column="1"
+                                       Margin="5"
+                                       VerticalAlignment="Center"
+                                       Text="{Binding Recommendations.Count,
+                                                      StringFormat=Total: \{0\}}" />
+                            <Button Grid.Column="2"
+                                    Margin="2"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding UpdateCommand}"
+                                    ToolTip="Update">
+                                <materialDesign:PackIcon Width="24"
+                                                         Height="24"
+                                                         Kind="Refresh" />
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <ProgressBar Grid.Row="1"
+                                 Foreground="{DynamicResource SecondaryAccentBrush}"
+                                 Maximum="1"
+                                 Minimum="0"
+                                 Visibility="{Binding CanUpdate,
+                                                      Converter={StaticResource InvertBoolToVisibilityConverter}}"
+                                 Value="{Binding Progress}" />
+
                     <DataGrid x:Name="BeatmapListDataGrid"
-                              Grid.Row="0"
+                              Grid.Row="2"
                               AutoGenerateColumns="False"
                               CanUserAddRows="False"
                               CanUserDeleteRows="False"
@@ -195,130 +269,123 @@
                                                 SortDirection="Descending" />
                         </DataGrid.Columns>
                     </DataGrid>
-
-
-
-                    <Grid Grid.Row="1" Margin="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-
-                        <WrapPanel Grid.Column="0"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center">
-                            <CheckBox Margin="2"
-                                      Content="HR"
-                                      IsChecked="{Binding HrFilter}"
-                                      IsThreeState="True" />
-                            <CheckBox Margin="2"
-                                      Content="DT"
-                                      IsChecked="{Binding DtFilter}"
-                                      IsThreeState="True" />
-                            <CheckBox Margin="2"
-                                      Content="HD"
-                                      IsChecked="{Binding HdFilter}"
-                                      IsThreeState="True" />
-                        </WrapPanel>
-                        <TextBlock Grid.Column="1"
-                                   Margin="5"
-                                   VerticalAlignment="Center"
-                                   Text="{Binding Recommendations.Count,
-                                                  StringFormat=Total: \{0\}}" />
-                        <Button Grid.Column="2"
-                                Margin="2"
-                                VerticalAlignment="Center"
-                                Command="{Binding UpdateCommand}"
-                                Content="Update" />
-                    </Grid>
-
-                    <ProgressBar Grid.Row="2"
-                                 Foreground="{DynamicResource SecondaryAccentForegroundBrush}"
-                                 Maximum="1"
-                                 Minimum="0"
-                                 Visibility="{Binding CanUpdate,
-                                                      Converter={StaticResource InvertBoolToVisibilityConverter}}"
-                                 Value="{Binding Progress}" />
                 </Grid>
             </TabItem>
 
-            <TabItem DataContext="{Binding CalculatorViewModel, Source={StaticResource Locator}}" Header="PP Calculator">
+            <TabItem DataContext="{Binding CalculatorViewModel,
+                                           Source={StaticResource Locator}}"
+                     Header="PP Calculator"
+                     TextElement.Foreground="{DynamicResource SecondaryTextBrush}">
+
                 <StackPanel>
-                    <TextBlock Margin="5" FontStyle="Italic">
+                    <Border BorderBrush="{DynamicResource MiscBrush}" BorderThickness="0,0,0,1">
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock x:Name="CalculatorBeatmapID"
+                                           Grid.Column="0"
+                                           Margin="5"
+                                           VerticalAlignment="Center"
+                                           Text="Beatmap ID or URL:" />
+                                <TextBox Grid.Column="1"
+                                         Margin="5"
+                                         VerticalAlignment="Center"
+                                         Text="{Binding BeatmapID}" />
+                                <Button Grid.Column="2"
+                                        Margin="5"
+                                        VerticalAlignment="Center"
+                                        Command="{Binding SetCurrentlyPlayingBeatmapIDCommand}"
+                                        Content="« Now Playing" />
+                            </Grid>
+                            <WrapPanel>
+                                <TextBlock Margin="5"
+                                           VerticalAlignment="Center"
+                                           Text="Mods:" />
+                                <CheckBox Margin="5"
+                                          VerticalAlignment="Center"
+                                          Content="HR"
+                                          IsChecked="{Binding HrEnabled}" />
+                                <CheckBox Margin="5"
+                                          VerticalAlignment="Center"
+                                          Content="DT"
+                                          IsChecked="{Binding DtEnabled}" />
+                                <CheckBox Margin="5"
+                                          VerticalAlignment="Center"
+                                          Content="HD"
+                                          IsChecked="{Binding HdEnabled}" />
+                            </WrapPanel>
+                            <Button Margin="5"
+                                    HorizontalAlignment="Left"
+                                    Command="{Binding AnalyzeCommand}"
+                                    Content="Analyze Beatmap" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Visibility="{Binding IsAnalyzed, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <WrapPanel Grid.Column="0">
+                                    <TextBlock Margin="5"
+                                               VerticalAlignment="Center"
+                                               Text="Accuracy:" />
+                                    <TextBox Margin="5"
+                                             VerticalAlignment="Center"
+                                             Text="{Binding ExpectedAccuracyString,
+                                                            UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Margin="0,5,5,5"
+                                               VerticalAlignment="Center"
+                                               Text="%" />
+                                </WrapPanel>
+                                <Slider x:Name="CalculatorExpectedAccuracySlider"
+                                        Grid.Column="1"
+                                        Margin="5"
+                                        VerticalAlignment="Center"
+                                        LargeChange="0.01"
+                                        Maximum="1"
+                                        Minimum="0.6"
+                                        SmallChange="0.001"
+                                        Value="{Binding ExpectedAccuracy}" />
+                            </Grid>
+
+                            <WrapPanel>
+                                <TextBlock Margin="5"
+                                           VerticalAlignment="Center"
+                                           Text="Expected PP:" />
+                                <TextBlock Margin="5"
+                                           VerticalAlignment="Center"
+                                           FontSize="16"
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                           Text="{Binding ExpectedPerformancePoints,
+                                                          StringFormat=\{0:N2\}pp}" />
+                            </WrapPanel>
+
+                        </StackPanel>
+                    </Border>
+                    <TextBlock Margin="5,25,5,5"
+                               HorizontalAlignment="Right"
+                               TextAlignment="Right">
                         <Run Text="This PP calculator is implementing" />
-                        <Hyperlink NavigateUri="https://github.com/Francesco149/oppai" RequestNavigate="Hyperlink_OnRequestNavigate">osu!oppai</Hyperlink><Run Text="." />
+                        <Hyperlink NavigateUri="https://github.com/Francesco149/oppai" RequestNavigate="Hyperlink_OnRequestNavigate">
+                            osu!oppai
+                        </Hyperlink><Run Text="." />
                         <LineBreak />
                         <Run Text="If you find any inconsistencies - please report them to the developers." />
                     </TextBlock>
-                    <TextBlock x:Name="CalculatorBeatmapID"
-                               Margin="5"
-                               Text="Beatmap ID or URL:" />
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0"
-                                 Margin="5"
-                                 FontWeight="SemiBold"
-                                 Text="{Binding BeatmapID}" />
-                        <Button Grid.Column="1"
-                                Margin="5"
-                                Command="{Binding SetCurrentlyPlayingBeatmapIDCommand}"
-                                Content="Get Currently Playing Beatmap" />
-                    </Grid>
-                    <TextBlock Margin="5" Text="Mods:" />
-                    <WrapPanel>
-                        <CheckBox Margin="5"
-                                  Content="HR"
-                                  IsChecked="{Binding HrEnabled}" />
-                        <CheckBox Margin="5"
-                                  Content="DT"
-                                  IsChecked="{Binding DtEnabled}" />
-                        <CheckBox Margin="5"
-                                  Content="HD"
-                                  IsChecked="{Binding HdEnabled}" />
-                    </WrapPanel>
-                    <Button Margin="5"
-                            Command="{Binding AnalyzeCommand}"
-                            Content="Analyze Beatmap" />
-                    <UniformGrid Columns="2" IsEnabled="{Binding IsAnalyzed}">
-                        <WrapPanel VerticalAlignment="Center">
-                            <TextBlock Margin="5"
-                                       VerticalAlignment="Center"
-                                       Text="Accuracy:" />
-                            <TextBox Margin="5"
-                                     VerticalAlignment="Center"
-                                     FontWeight="SemiBold"
-                                     Text="{Binding ExpectedAccuracyString,
-                                                    UpdateSourceTrigger=PropertyChanged}" />
-                            <TextBlock Margin="0,5,5,5"
-                                       VerticalAlignment="Center"
-                                       Text="%" />
-                        </WrapPanel>
-                        <Slider x:Name="CalculatorExpectedAccuracySlider"
-                                Margin="5"
-                                VerticalAlignment="Center"
-                                LargeChange="0.01"
-                                Maximum="1"
-                                Minimum="0.6"
-                                SmallChange="0.001"
-                                Value="{Binding ExpectedAccuracy}" />
-                        <TextBlock Margin="5"
-                                   VerticalAlignment="Center"
-                                   Text="Expected PP:" />
-                        <TextBlock Margin="5"
-                                   VerticalAlignment="Center"
-                                   FontSize="16"
-                                   FontWeight="SemiBold"
-                                   Text="{Binding ExpectedPerformancePoints,
-                                                  StringFormat=\{0:N2\}pp}" />
-                    </UniformGrid>
                 </StackPanel>
             </TabItem>
 
-            <TabItem Header="About">
+            <TabItem Header="About" TextElement.Foreground="{DynamicResource SecondaryTextBrush}">
                 <StackPanel>
                     <TextBlock Margin="5" FontSize="16">
                         <Run FontWeight="SemiBold" Text="osu!helper" />
@@ -366,10 +433,11 @@
                                    HorizontalAlignment="Center"
                                    FontSize="15"
                                    FontWeight="SemiBold"
-                                   Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                                   Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                                    Text="{Binding SelectedRecommendation.Beatmap.FullName}"
                                    TextTrimming="CharacterEllipsis"
-                                   TextWrapping="NoWrap" />
+                                   TextWrapping="NoWrap"
+                                   ToolTip="{Binding SelectedRecommendation.Beatmap.FullName}" />
                     </Border>
 
                     <Image Grid.Row="1"
@@ -378,7 +446,8 @@
                            Cursor="Hand"
                            Source="{Binding SelectedRecommendation.Beatmap.ThumbnailURL}"
                            Stretch="UniformToFill"
-                           StretchDirection="Both">
+                           StretchDirection="Both"
+                           ToolTip="Click for sound preview">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseLeftButtonUp">
                                 <i:InvokeCommandAction Command="{Binding SoundPreviewBeatmapCommand}" CommandParameter="{Binding SelectedRecommendation.Beatmap}" />
@@ -391,11 +460,11 @@
                                HorizontalAlignment="Stretch">
                         <WrapPanel HorizontalAlignment="Left" DockPanel.Dock="Left">
                             <TextBlock Text="Last Update: " />
-                            <TextBlock FontWeight="SemiBold" Text="{Binding SelectedRecommendation.Beatmap.LastUpdateDate, StringFormat=\{0:MMMM d\, yyyy\}}" />
+                            <TextBlock Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SelectedRecommendation.Beatmap.LastUpdateDate, StringFormat=\{0:MMMM d\, yyyy\}}" />
                         </WrapPanel>
                         <WrapPanel HorizontalAlignment="Right" DockPanel.Dock="Right">
                             <TextBlock Text="Creator: " />
-                            <TextBlock FontWeight="SemiBold" Text="{Binding SelectedRecommendation.Beatmap.Creator}" />
+                            <TextBlock Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SelectedRecommendation.Beatmap.Creator}" />
                         </WrapPanel>
                     </DockPanel>
 
@@ -452,41 +521,41 @@
                                    Grid.Column="0"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"
                                    Text="{Binding SelectedRecommendation.Beatmap.Stars,
                                                   StringFormat=\{0:N2\}}" />
                         <TextBlock Grid.Row="1"
                                    Grid.Column="1"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"
                                    Text="{Binding SelectedRecommendation.Beatmap.ApproachRate,
                                                   StringFormat=\{0:N1\}}" />
                         <TextBlock Grid.Row="1"
                                    Grid.Column="2"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"
                                    Text="{Binding SelectedRecommendation.Beatmap.OverallDifficulty,
                                                   StringFormat=\{0:N1\}}" />
                         <TextBlock Grid.Row="1"
                                    Grid.Column="3"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"
                                    Text="{Binding SelectedRecommendation.Beatmap.BeatsPerMinute,
                                                   StringFormat=\{0:N0\}}" />
                         <TextBlock Grid.Row="1"
                                    Grid.Column="4"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"
                                    Text="{Binding SelectedRecommendation.Beatmap.HitLengthString}" />
                         <TextBlock Grid.Row="1"
                                    Grid.Column="5"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"
                                    Text="{Binding SelectedRecommendation.Beatmap.MaxCombo}" />
                     </Grid>
 
@@ -515,3 +584,4 @@
         </Popup>
     </Grid>
 </Window>
+

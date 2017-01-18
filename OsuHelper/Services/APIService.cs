@@ -6,7 +6,6 @@
 //  Date: 20/08/2016
 // ------------------------------------------------------------------ 
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -18,7 +17,7 @@ using OsuHelper.Models.Internal;
 
 namespace OsuHelper.Services
 {
-    public sealed class APIService : IDisposable
+    public sealed class APIService
     {
         private static string GetAPIHome(APIProvider apiProvider)
         {
@@ -29,7 +28,16 @@ namespace OsuHelper.Services
             return null;
         }
 
-        private readonly WebClient _webClient = new WebClient();
+        private static WebClient GetWebClient()
+        {
+            return new WebClient();
+        }
+
+        private static async Task<string> GetStringAsync(string url)
+        {
+            using (var client = GetWebClient())
+                return await client.DownloadStringTaskAsync(url);
+        }
 
         /// <summary>
         /// Tests the given api configuration
@@ -46,7 +54,7 @@ namespace OsuHelper.Services
             string url = home + $"get_beatmaps?k={config.APIKey}&b=1&limit=1";
             try
             {
-                await _webClient.DownloadStringTaskAsync(url);
+                await GetStringAsync(url);
             }
             catch (WebException ex)
             {
@@ -63,7 +71,7 @@ namespace OsuHelper.Services
         {
             string home = GetAPIHome(config.APIProvider);
             string url = home + $"get_beatmaps?k={config.APIKey}&m={(int) mode}&b={id}&limit=1&a=1";
-            string response = await _webClient.DownloadStringTaskAsync(url);
+            string response = await GetStringAsync(url);
             return JsonConvert.DeserializeObject<Beatmap[]>(response).FirstOrDefault();
         }
 
@@ -74,7 +82,7 @@ namespace OsuHelper.Services
         {
             string home = GetAPIHome(config.APIProvider);
             string url = home + $"get_user_best?k={config.APIKey}&m={(int) mode}&u={userID.UrlEncode()}&limit=100";
-            string response = await _webClient.DownloadStringTaskAsync(url);
+            string response = await GetStringAsync(url);
             return JsonConvert.DeserializeObject<Play[]>(response);
         }
 
@@ -88,13 +96,8 @@ namespace OsuHelper.Services
             string url = home + $"get_scores?k={config.APIKey}&m={(int) mode}&b={mapID}&limit=100";
             if (mods != EnabledMods.Any)
                 url += $"&mods={(int) mods}";
-            string response = await _webClient.DownloadStringTaskAsync(url);
+            string response = await GetStringAsync(url);
             return JsonConvert.DeserializeObject<Play[]>(response);
-        }
-
-        public void Dispose()
-        {
-            _webClient.Dispose();
         }
     }
 }

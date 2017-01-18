@@ -13,6 +13,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -53,7 +54,7 @@ namespace OsuHelper.ViewModels
             set
             {
                 Set(ref _selectedRecommendation, value);
-                
+
                 // Hack (mvvm breaking, view models not decoupled)
                 if (value?.Beatmap?.ID != null && value.Beatmap.Mode == GameMode.Standard)
                 {
@@ -108,7 +109,7 @@ namespace OsuHelper.ViewModels
         {
             get { return _progress; }
             private set { Set(ref _progress, value); }
-        } 
+        }
 
         // Commands
         public RelayCommand UpdateCommand { get; }
@@ -295,16 +296,20 @@ namespace OsuHelper.ViewModels
 
             // Get boundaries
             double minPP = Math.Floor(userTopPlays.Min(p => p.PerformancePoints)); // 100% of user's lowest top play
-            double maxPP = Math.Ceiling(userTopPlays.Max(p => p.PerformancePoints))*1.2; // 120% of user's highest top play
+            double maxPP = Math.Ceiling(userTopPlays.Max(p => p.PerformancePoints))*1.2;
+                // 120% of user's highest top play
 
             // Loop through first XX top plays
-            foreach (var userPlay in userTopPlays.AsParallel())
+            await Task.WhenAll(userTopPlays.Select(async userPlay => 
             {
                 // Get the map's top plays
-                var mapTopPlays = (await _apiService.GetBeatmapTopPlaysAsync(config, gameMode, userPlay.BeatmapID, userPlay.Mods)).ToArray();
+                var mapTopPlays =
+                    (await _apiService.GetBeatmapTopPlaysAsync(config, gameMode, userPlay.BeatmapID, userPlay.Mods))
+                        .ToArray();
                 if (!mapTopPlays.Any())
-                    continue;
-                Debug.WriteLine($"Obtained top plays for map (ID:{userPlay.BeatmapID}, Count:{mapTopPlays.Length})", "Beatmap Recommender");
+                    return;
+                Debug.WriteLine($"Obtained top plays for map (ID:{userPlay.BeatmapID}, Count:{mapTopPlays.Length})",
+                    "Beatmap Recommender");
 
                 // Order by PP difference and take YY most similar plays
                 var similarTopPlays = mapTopPlays
@@ -313,26 +318,24 @@ namespace OsuHelper.ViewModels
                     .ToArray();
 
                 // Go through each play's user
-                foreach (string similarUserID in similarTopPlays
-                    .Select(p => p.UserID)
-                    .Distinct()
-                    .AsParallel())
+                await Task.WhenAll(similarTopPlays.Select(p => p.UserID).Distinct().Select(async similarUserID =>
                 {
                     // Get their top plays
                     Play[] similarUserTopPlays;
                     try
                     {
-                        similarUserTopPlays = (await _apiService.GetUserTopPlaysAsync(config, gameMode, similarUserID)).ToArray();
+                        similarUserTopPlays =
+                            (await _apiService.GetUserTopPlaysAsync(config, gameMode, similarUserID)).ToArray();
                     }
                     catch
                     {
                         Debug.WriteLine(
-                        $"Failed to obtain top plays for similar user (ID:{similarUserID}) based on map (ID:{userPlay.BeatmapID})",
-                        "Beatmap Recommender");
-                        continue;
+                            $"Failed to obtain top plays for similar user (ID:{similarUserID}) based on map (ID:{userPlay.BeatmapID})",
+                            "Beatmap Recommender");
+                        return;
                     }
                     if (!similarUserTopPlays.Any())
-                        continue;
+                        return;
                     Debug.WriteLine(
                         $"Obtained top plays for similar user (ID:{similarUserID}) based on map (ID:{userPlay.BeatmapID})",
                         "Beatmap Recommender");
@@ -347,10 +350,10 @@ namespace OsuHelper.ViewModels
 
                     // Add to list
                     recommendationsTemp.AddRange(potentialRecommendations);
-                }
+                }));
 
                 Progress += 0.25*(1.0/userTopPlays.Length);
-            }
+            }));
             Debug.WriteLine("Finished scanning for potential recommendations", "Beatmap Recommender");
 
             // Group recommendations by beatmap
@@ -361,7 +364,7 @@ namespace OsuHelper.ViewModels
                 recommendationGroups = recommendationGroups.Take(recommendationCount).ToArray();
 
             // Loop through recommendation groups
-            foreach (var recommendationGroup in recommendationGroups.AsParallel())
+            await Task.WhenAll(recommendationGroups.Select(async recommendationGroup =>
             {
                 int count = recommendationGroup.Count();
 
@@ -390,8 +393,9 @@ namespace OsuHelper.ViewModels
                 }
                 catch
                 {
-                    Debug.WriteLine($"Failed to obtain beatmap data (ID:{recommendationGroup.Key})", "Beatmap Recommender");
-                    continue;
+                    Debug.WriteLine($"Failed to obtain beatmap data (ID:{recommendationGroup.Key})",
+                        "Beatmap Recommender");
+                    return;
                 }
                 Debug.WriteLine($"Obtained beatmap data (ID:{recommendationGroup.Key})", "Beatmap Recommender");
 
@@ -404,7 +408,7 @@ namespace OsuHelper.ViewModels
                     (double) count/recommendationsTemp.Count));
 
                 Progress += 0.75*(1.0/recommendationGroups.Length);
-            }
+            }));
 
             // Sort the recommendations by PP and push it to the property value
             Debug.WriteLine($"Obtained {recommendations.Count} recommendations", "Beatmap Recommender");
@@ -418,7 +422,6 @@ namespace OsuHelper.ViewModels
 
         public void Dispose()
         {
-            _apiService.Dispose();
             _webClient.Dispose();
         }
     }

@@ -7,7 +7,6 @@
 // On: 28.08.2016
 // -------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -18,11 +17,20 @@ using OsuHelper.Models.API;
 
 namespace OsuHelper.Services
 {
-    public sealed class OsuSearchService : IDisposable
+    public sealed class OsuSearchService
     {
         private const string Home = "http://osusearch.com/";
 
-        private readonly WebClient _webClient = new WebClient();
+        private static WebClient GetWebClient()
+        {
+            return new WebClient();
+        }
+
+        private static async Task<string> GetStringAsync(string url)
+        {
+            using (var client = GetWebClient())
+                return await client.DownloadStringTaskAsync(url);
+        }
 
         /// <summary>
         /// Searches for beatmaps using given properties and then returns their beatmap IDs
@@ -53,16 +61,11 @@ namespace OsuHelper.Services
             if (diffName.IsNotBlank())
                 args.Add($"diff_name={diffName.Trim().UrlEncode()}");
             url += "?" + args.JoinToString("&");
-            string response = await _webClient.DownloadStringTaskAsync(url);
+            string response = await GetStringAsync(url);
 
             // High-danger zone (no typechecks)
             dynamic result = JsonConvert.DeserializeObject(response);
             return ((IEnumerable<dynamic>) result.beatmaps).Select(b => b.beatmap_id.ToString()).Cast<string>();
-        }
-
-        public void Dispose()
-        {
-            _webClient.Dispose();
         }
     }
 }

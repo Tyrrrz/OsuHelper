@@ -130,22 +130,14 @@
                      TextElement.Foreground="{DynamicResource SecondaryTextBrush}">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <!--  Refresh progress  -->
-                    <ProgressBar Grid.Row="0"
-                                 Foreground="{DynamicResource SecondaryAccentBrush}"
-                                 Maximum="1"
-                                 Minimum="0"
-                                 Visibility="{Binding CanUpdate, Converter={StaticResource InvertBoolToVisibilityConverter}}"
-                                 Value="{Binding Progress}" />
-
                     <!--  Recommendations  -->
                     <DataGrid x:Name="BeatmapListDataGrid"
-                              Grid.Row="1"
+                              Grid.Row="0"
                               AutoGenerateColumns="False"
                               CanUserAddRows="False"
                               CanUserDeleteRows="False"
@@ -393,7 +385,7 @@
                     </DataGrid>
 
                     <!--  Tool strip  -->
-                    <Border Grid.Row="2"
+                    <Border Grid.Row="1"
                             Padding="5"
                             BorderBrush="{DynamicResource MiscBrush}"
                             BorderThickness="0,1,0,0">
@@ -446,6 +438,14 @@
                             </Button>
                         </Grid>
                     </Border>
+
+                    <!--  Refresh progress  -->
+                    <ProgressBar Grid.Row="2"
+                                 Foreground="{DynamicResource SecondaryAccentBrush}"
+                                 Maximum="1"
+                                 Minimum="0"
+                                 Visibility="{Binding CanUpdate, Converter={StaticResource InvertBoolToVisibilityConverter}}"
+                                 Value="{Binding Progress}" />
                 </Grid>
             </TabItem>
 

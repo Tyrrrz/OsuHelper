@@ -3,16 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:ignore="http://www.galasoft.ch/ignore"
+        xmlns:internal="clr-namespace:OsuHelper.Models.Internal"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Title="osu!helper v{0}"
-        Width="820"
-        Height="650"
+        Width="770"
+        Height="620"
         Background="{DynamicResource MaterialDesignPaper}"
-        DataContext="{Binding SetupViewModel,
-                              Source={StaticResource Locator}}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Icon="/OsuRepleh;component/favicon.ico"
         LocationChanged="MainWindow_OnLocationChanged"
@@ -28,9 +26,9 @@
 
     <Grid>
         <dragablz:TabablzControl x:Name="TabControl" FixedHeaderCount="9999">
-            <TabItem DataContext="{Binding SetupViewModel,
-                                           Source={StaticResource Locator}}"
-                     Header="Setup"
+            <!--  Settings  -->
+            <TabItem DataContext="{Binding SetupViewModel, Source={StaticResource Locator}}"
+                     Header="Configuration"
                      TextElement.Foreground="{DynamicResource SecondaryTextBrush}">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -38,10 +36,11 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
+                    <!--  Save, Cancel, Reset buttons  -->
                     <Border Grid.Row="0"
+                            Padding="5"
                             BorderBrush="{DynamicResource MiscBrush}"
-                            BorderThickness="0,0,0,1"
-                            Padding="5">
+                            BorderThickness="0,0,0,1">
                         <UniformGrid HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      Columns="3">
@@ -69,62 +68,54 @@
                         </UniformGrid>
                     </Border>
 
+                    <!--  Settings  -->
                     <ScrollViewer Grid.Row="1"
                                   HorizontalScrollBarVisibility="Disabled"
                                   VerticalScrollBarVisibility="Auto">
                         <StackPanel>
-                            <GroupBox Margin="5" Header="Core">
+                            <!--  Core  -->
+                            <GroupBox Margin="2" Header="Core">
                                 <StackPanel>
-                                    <TextBlock Margin="5" Text="osu! Username or UserID:" />
-                                    <TextBox Margin="5" Text="{Binding StagingSettings.UserID, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBlock Margin="5" Text="API provider:" />
-                                    <ComboBox Margin="5"
-                                              ItemsSource="{Binding AvailableAPIProviders}"
-                                              SelectedItem="{Binding StagingSettings.APIProvider}" />
-                                    <TextBlock Margin="5"
+                                    <TextBlock Text="osu! Username or UserID:" />
+                                    <TextBox Text="{Binding StagingSettings.UserID, UpdateSourceTrigger=PropertyChanged}" />
+
+                                    <TextBlock Margin="0,5,0,0" Text="API provider:" />
+                                    <ComboBox ItemsSource="{Binding AvailableAPIProviders}" SelectedItem="{Binding StagingSettings.APIProvider}" />
+
+                                    <TextBlock Margin="0,5,0,0"
                                                Text="API key:"
-                                               Visibility="{Binding IsAPIKeyRequired,
-                                                                    Converter={StaticResource BoolToVisibilityConverter},
-                                                                    ConverterParameter=Collapsed}" />
-                                    <TextBox Margin="5"
-                                             Text="{Binding StagingSettings.APIKey,
-                                                            UpdateSourceTrigger=PropertyChanged}"
-                                             Visibility="{Binding IsAPIKeyRequired,
-                                                                  Converter={StaticResource BoolToVisibilityConverter},
-                                                                  ConverterParameter=Collapsed}" />
-                                    <TextBlock Margin="5" Text="Game mode:" />
-                                    <ComboBox Margin="5"
-                                              ItemsSource="{Binding AvailableGameModes}"
-                                              SelectedItem="{Binding StagingSettings.GameMode}" />
+                                               Visibility="{Binding IsAPIKeyRequired, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}" />
+                                    <TextBox Text="{Binding StagingSettings.APIKey, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding IsAPIKeyRequired, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}" />
+                                    <TextBlock Margin="0,5,0,0" Text="Game mode:" />
+                                    <ComboBox ItemsSource="{Binding AvailableGameModes}" SelectedItem="{Binding StagingSettings.GameMode}" />
                                 </StackPanel>
                             </GroupBox>
 
-                            <GroupBox Margin="5" Header="Preferences">
+                            <!--  Preferences  -->
+                            <GroupBox Margin="2" Header="Preferences">
                                 <StackPanel>
-                                    <TextBlock Margin="5" Text="Prefer map downloads without video:" />
-                                    <ToggleButton Margin="5"
-                                                  HorizontalAlignment="Left"
-                                                  IsChecked="{Binding StagingSettings.PreferNoVideo}" />
-                                    <TextBlock Margin="5" Text="Don't suggest, based on plays that are not at least S ranks:" />
-                                    <ToggleButton Margin="5"
-                                                  HorizontalAlignment="Left"
-                                                  IsChecked="{Binding StagingSettings.OnlyFullCombo}" />
-                                    <TextBlock Margin="5" Text="Beatmap preview sound volume:" />
-                                    <Slider Margin="5"
-                                            LargeChange="0.25"
+                                    <TextBlock Text="Prefer map downloads without video:" />
+                                    <ToggleButton HorizontalAlignment="Left" IsChecked="{Binding StagingSettings.PreferNoVideo}" />
+
+                                    <TextBlock Margin="0,5,0,0" Text="Don't suggest, based on plays that are not at least S ranks:" />
+                                    <ToggleButton HorizontalAlignment="Left" IsChecked="{Binding StagingSettings.OnlyFullCombo}" />
+
+                                    <TextBlock Margin="0,5,0,0" Text="Beatmap preview sound volume:" />
+                                    <Slider LargeChange="0.25"
                                             Maximum="1"
                                             Minimum="0"
                                             SmallChange="0.1"
                                             Value="{Binding StagingSettings.PreviewSoundVolume}" />
-                                    <TextBlock Margin="5" Text="Difficulty preference (left - easier maps, less PP; right - harder maps, more PP):" />
-                                    <Slider Margin="5"
-                                            LargeChange="0.25"
+
+                                    <TextBlock Margin="0,5,0,0" Text="Difficulty preference (left - easier maps, less PP; right - harder maps, more PP):" />
+                                    <Slider LargeChange="0.25"
                                             Maximum="1"
                                             Minimum="0"
                                             SmallChange="0.1"
                                             Value="{Binding StagingSettings.DifficultyPreference}" />
-                                    <TextBlock Margin="5" Text="Maximum recommendation count:" />
-                                    <TextBox Margin="5" Text="{Binding StagingSettings.RecommendationCount, UpdateSourceTrigger=PropertyChanged}" />
+
+                                    <TextBlock Margin="0,5,0,0" Text="Maximum recommendation count:" />
+                                    <TextBox Text="{Binding StagingSettings.RecommendationCount, UpdateSourceTrigger=PropertyChanged}" />
                                 </StackPanel>
                             </GroupBox>
                         </StackPanel>
@@ -133,21 +124,279 @@
 
             </TabItem>
 
-            <TabItem DataContext="{Binding RecommenderViewModel,
-                                           Source={StaticResource Locator}}"
+            <!--  Recommendations  -->
+            <TabItem DataContext="{Binding RecommenderViewModel, Source={StaticResource Locator}}"
                      Header="Recommended Maps"
                      TextElement.Foreground="{DynamicResource SecondaryTextBrush}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <Border Grid.Row="0"
+                    <!--  Refresh progress  -->
+                    <ProgressBar Grid.Row="0"
+                                 Foreground="{DynamicResource SecondaryAccentBrush}"
+                                 Maximum="1"
+                                 Minimum="0"
+                                 Visibility="{Binding CanUpdate, Converter={StaticResource InvertBoolToVisibilityConverter}}"
+                                 Value="{Binding Progress}" />
+
+                    <!--  Recommendations  -->
+                    <DataGrid x:Name="BeatmapListDataGrid"
+                              Grid.Row="1"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
+                              CanUserResizeRows="False"
+                              ColumnWidth="SizeToHeader"
+                              HorizontalScrollBarVisibility="Disabled"
+                              IsReadOnly="True"
+                              ItemsSource="{Binding Recommendations}"
+                              RowDetailsVisibilityMode="VisibleWhenSelected"
+                              SelectedItem="{Binding SelectedRecommendation}"
+                              SelectionMode="Single"
+                              SelectionUnit="FullRow">
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="Padding" Value="3" />
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.CellStyle>
+                            <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="{x:Type DataGridCell}">
+                                <Setter Property="Padding" Value="3" />
+                                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                            </Style>
+                        </DataGrid.CellStyle>
+
+                        <!--  Selected recommendation details  -->
+                        <DataGrid.RowDetailsTemplate>
+                            <DataTemplate DataType="{x:Type internal:BeatmapRecommendation}">
+                                <Grid Height="140"
+                                      HorizontalAlignment="Stretch"
+                                      Background="{DynamicResource MaterialDesignPaper}"
+                                      TextElement.Foreground="{DynamicResource SecondaryTextBrush}">
+                                    <!--  Beatmap cover image  -->
+                                    <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                                        <Image HorizontalAlignment="Stretch"
+                                               VerticalAlignment="Stretch"
+                                               Source="{Binding Beatmap.CoverURL}">
+                                            <Image.OpacityMask>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                    <GradientStop Offset="0" Color="Transparent" />
+                                                    <GradientStop Offset="0.4" Color="Transparent" />
+                                                    <GradientStop Offset="1" Color="#B2000000" />
+                                                </LinearGradientBrush>
+                                            </Image.OpacityMask>
+                                        </Image>
+                                    </StackPanel>
+
+                                    <!--  Content  -->
+                                    <Grid Margin="5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <!--  Image and buttons  -->
+                                        <StackPanel Grid.Column="0"
+                                                    VerticalAlignment="Center"
+                                                    Orientation="Vertical">
+                                            <!--  Beatmap thumbnail image  -->
+                                            <Image Width="130"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Stretch"
+                                                   Source="{Binding Beatmap.ThumbnailURL}" />
+
+                                            <!--  Tool buttons  -->
+                                            <WrapPanel Margin="5"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center">
+                                                <Button Padding="4"
+                                                        Background="Transparent"
+                                                        BorderThickness="0"
+                                                        Command="{Binding RecommenderViewModel.SoundPreviewBeatmapCommand, Source={StaticResource Locator}}"
+                                                        CommandParameter="{Binding Beatmap}"
+                                                        Foreground="{DynamicResource PrimaryHueMidBrush}"
+                                                        ToolTip="Play preview">
+                                                    <materialDesign:PackIcon Kind="Play" />
+                                                </Button>
+                                                <Button Padding="4"
+                                                        Background="Transparent"
+                                                        BorderThickness="0"
+                                                        Command="{Binding RecommenderViewModel.OpenBeatmapPageCommand, Source={StaticResource Locator}}"
+                                                        CommandParameter="{Binding Beatmap}"
+                                                        Foreground="{DynamicResource PrimaryHueMidBrush}"
+                                                        ToolTip="Beatmap's page">
+                                                    <materialDesign:PackIcon Kind="Web" />
+                                                </Button>
+                                                <Button Padding="4"
+                                                        Background="Transparent"
+                                                        BorderThickness="0"
+                                                        Command="{Binding RecommenderViewModel.DownloadBeatmapCommand, Source={StaticResource Locator}}"
+                                                        CommandParameter="{Binding Beatmap}"
+                                                        Foreground="{DynamicResource PrimaryHueMidBrush}"
+                                                        ToolTip="Download">
+                                                    <materialDesign:PackIcon Kind="Download" />
+                                                </Button>
+                                                <Button Padding="4"
+                                                        Background="Transparent"
+                                                        BorderThickness="0"
+                                                        Command="{Binding RecommenderViewModel.BloodcatDownloadBeatmapCommand, Source={StaticResource Locator}}"
+                                                        CommandParameter="{Binding Beatmap}"
+                                                        Foreground="{DynamicResource PrimaryHueMidBrush}"
+                                                        ToolTip="Download from bloodcat">
+                                                    <materialDesign:PackIcon Kind="CloudDownload" />
+                                                </Button>
+                                                <Button Padding="4"
+                                                        Background="Transparent"
+                                                        BorderThickness="0"
+                                                        Command="{Binding RecommenderViewModel.DirectDownloadBeatmapCommand, Source={StaticResource Locator}}"
+                                                        CommandParameter="{Binding Beatmap}"
+                                                        Foreground="{DynamicResource PrimaryHueMidBrush}"
+                                                        ToolTip="Download with osu!direct">
+                                                    <materialDesign:PackIcon Kind="ClipboardArrowDown" />
+                                                </Button>
+                                            </WrapPanel>
+                                        </StackPanel>
+
+                                        <!--  Info  -->
+                                        <StackPanel Grid.Column="1"
+                                                    Margin="5,0,0,0"
+                                                    VerticalAlignment="Top"
+                                                    Orientation="Vertical">
+                                            <!--  Creator  -->
+                                            <TextBlock>
+                                                <Run Text="Creator:" />
+                                                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Beatmap.Creator, Mode=OneWay}" />
+                                            </TextBlock>
+
+                                            <!--  Last update  -->
+                                            <TextBlock>
+                                                <Run Text="Last update:" />
+                                                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Beatmap.LastUpdateDate, Mode=OneWay}" />
+                                            </TextBlock>
+
+                                            <!--  Diff  -->
+                                            <TextBlock>
+                                                <Run Text="Stars:" />
+                                                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Beatmap.Stars, StringFormat=\{0:0.##\}, Mode=OneWay}" />
+                                            </TextBlock>
+
+                                            <TextBlock>
+                                                <Run Text="BPM:" />
+                                                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Beatmap.BeatsPerMinute, StringFormat=\{0:N0\}, Mode=OneWay}">
+                                                    <Run.ToolTip>
+                                                        <TextBlock>
+                                                            <Run Text="+DT:" />
+                                                            <Run Text="{Binding Beatmap.BeatsPerMinuteDoubleTime, StringFormat=\{0:N0\}, Mode=OneWay}" />
+                                                        </TextBlock>
+                                                    </Run.ToolTip>
+                                                </Run>
+                                                <Run Text="Length:" />
+                                                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Beatmap.HitLengthString, Mode=OneWay}">
+                                                    <Run.ToolTip>
+                                                        <TextBlock>
+                                                            <Run Text="+DT:" />
+                                                            <Run Text="{Binding Beatmap.HitLengthDoubleTimeString, Mode=OneWay}" />
+                                                        </TextBlock>
+                                                    </Run.ToolTip>
+                                                </Run>
+                                                <Run Text="Max Combo:" />
+                                                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Beatmap.MaxCombo, Mode=OneWay}" />
+                                            </TextBlock>
+
+                                            <TextBlock>
+                                                <Run Text="AR:" />
+                                                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Beatmap.ApproachRate, StringFormat=\{0:0.##\}, Mode=OneWay}">
+                                                    <Run.ToolTip>
+                                                        <TextBlock>
+                                                            <Run Text="+HR:" />
+                                                            <Run Text="{Binding Beatmap.ApproachRateHardRock, StringFormat=\{0:0.##\}, Mode=OneWay}" />
+                                                            <LineBreak />
+                                                            <Run Text="+DT:" />
+                                                            <Run Text="{Binding Beatmap.ApproachRateDoubleTime, StringFormat=\{0:0.##\}, Mode=OneWay}" />
+                                                            <LineBreak />
+                                                            <Run Text="+HR +DT:" />
+                                                            <Run Text="{Binding Beatmap.ApproachRateHardRockDoubleTime, StringFormat=\{0:0.##\}, Mode=OneWay}" />
+                                                        </TextBlock>
+                                                    </Run.ToolTip>
+                                                </Run>
+                                                <Run Text="OD:" />
+                                                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Beatmap.OverallDifficulty, StringFormat=\{0:0.##\}, Mode=OneWay}">
+                                                    <Run.ToolTip>
+                                                        <TextBlock>
+                                                            <Run Text="+HR:" />
+                                                            <Run Text="{Binding Beatmap.OverallDifficultyHardRock, StringFormat=\{0:0.##\}, Mode=OneWay}" />
+                                                            <LineBreak />
+                                                            <Run Text="+DT:" />
+                                                            <Run Text="{Binding Beatmap.OverallDifficultyDoubleTime, StringFormat=\{0:0.##\}, Mode=OneWay}" />
+                                                            <LineBreak />
+                                                            <Run Text="+HR +DT:" />
+                                                            <Run Text="{Binding Beatmap.OverallDifficultyHardRockDoubleTime, StringFormat=\{0:0.##\}, Mode=OneWay}" />
+                                                        </TextBlock>
+                                                    </Run.ToolTip>
+                                                </Run>
+                                                <Run Text="CS:" />
+                                                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Beatmap.CircleSize, StringFormat=\{0:0.##\}, Mode=OneWay}">
+                                                    <Run.ToolTip>
+                                                        <TextBlock>
+                                                            <Run Text="+HR:" />
+                                                            <Run Text="{Binding Beatmap.CircleSizeHardRock, StringFormat=\{0:0.##\}, Mode=OneWay}" />
+                                                        </TextBlock>
+                                                    </Run.ToolTip>
+                                                </Run>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGrid.RowDetailsTemplate>
+
+                        <!--  Columns  -->
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="*"
+                                                Binding="{Binding Beatmap.FullName}"
+                                                Header="Name" />
+                            <DataGridTextColumn Width="Auto"
+                                                Binding="{Binding ModsString}"
+                                                Header="Mods" />
+                            <DataGridTextColumn Width="Auto"
+                                                Binding="{Binding Beatmap.Stars, StringFormat=\{0:0.##\}}"
+                                                Header="★" />
+                            <DataGridTextColumn Width="Auto"
+                                                Binding="{Binding Beatmap.BeatsPerMinute, StringFormat=\{0:N0\}}"
+                                                Header="BPM" />
+                            <DataGridTextColumn Width="Auto"
+                                                Binding="{Binding Beatmap.ApproachRate, StringFormat=\{0:0.##\}}"
+                                                Header="AR" />
+                            <DataGridTextColumn Width="Auto"
+                                                Binding="{Binding Beatmap.OverallDifficulty, StringFormat=\{0:0.##\}}"
+                                                Header="OD" />
+                            <DataGridTextColumn Width="Auto"
+                                                Binding="{Binding Beatmap.HitLengthString}"
+                                                Header="Length" />
+                            <DataGridTextColumn Width="Auto"
+                                                Binding="{Binding ExpectedAccuracy, StringFormat=\{0:P2\}}"
+                                                FontWeight="SemiBold"
+                                                Header="Accuracy" />
+                            <DataGridTextColumn Width="Auto"
+                                                Binding="{Binding ExpectedPerformancePoints, StringFormat=\{0:0.##\}}"
+                                                FontWeight="SemiBold"
+                                                Header="PP" />
+                            <DataGridTextColumn Width="Auto"
+                                                Binding="{Binding Popularity}"
+                                                Header="Pop."
+                                                SortDirection="Descending" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!--  Tool strip  -->
+                    <Border Grid.Row="2"
+                            Padding="5"
                             BorderBrush="{DynamicResource MiscBrush}"
-                            BorderThickness="0,0,0,1"
-                            Padding="5">
+                            BorderThickness="0,1,0,0">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -155,6 +404,7 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
+                            <!--  Filters  -->
                             <WrapPanel Grid.Column="0"
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center">
@@ -177,11 +427,14 @@
                                           IsChecked="{Binding HdFilter}"
                                           IsThreeState="True" />
                             </WrapPanel>
+
+                            <!--  Recommendation count  -->
                             <TextBlock Grid.Column="1"
                                        Margin="5"
                                        VerticalAlignment="Center"
-                                       Text="{Binding Recommendations.Count,
-                                                      StringFormat=Total: \{0\}}" />
+                                       Text="{Binding Recommendations.Count, StringFormat=Total: \{0\}}" />
+
+                            <!--  Refresh button  -->
                             <Button Grid.Column="2"
                                     Margin="2"
                                     VerticalAlignment="Center"
@@ -193,186 +446,128 @@
                             </Button>
                         </Grid>
                     </Border>
-
-                    <ProgressBar Grid.Row="1"
-                                 Foreground="{DynamicResource SecondaryAccentBrush}"
-                                 Maximum="1"
-                                 Minimum="0"
-                                 Visibility="{Binding CanUpdate,
-                                                      Converter={StaticResource InvertBoolToVisibilityConverter}}"
-                                 Value="{Binding Progress}" />
-
-                    <DataGrid x:Name="BeatmapListDataGrid"
-                              Grid.Row="2"
-                              AutoGenerateColumns="False"
-                              CanUserAddRows="False"
-                              CanUserDeleteRows="False"
-                              CanUserResizeRows="False"
-                              ColumnWidth="SizeToHeader"
-                              HorizontalScrollBarVisibility="Disabled"
-                              IsReadOnly="True"
-                              ItemsSource="{Binding Recommendations}"
-                              MouseLeftButtonUp="BeatmapListDataGrid_MouseLeftButtonUp"
-                              SelectedItem="{Binding SelectedRecommendation}"
-                              SelectionMode="Single"
-                              SelectionUnit="FullRow">
-                        <DataGrid.ColumnHeaderStyle>
-                            <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
-                                <Setter Property="Padding" Value="3" />
-                            </Style>
-                        </DataGrid.ColumnHeaderStyle>
-                        <DataGrid.CellStyle>
-                            <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="DataGridCell">
-                                <Setter Property="Padding" Value="3" />
-                            </Style>
-                        </DataGrid.CellStyle>
-
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Width="*"
-                                                Binding="{Binding Beatmap.FullName}"
-                                                Header="Name" />
-                            <DataGridTextColumn Width="Auto"
-                                                Binding="{Binding ModsString}"
-                                                Header="Mods" />
-                            <DataGridTextColumn Width="Auto"
-                                                Binding="{Binding Beatmap.Stars,
-                                                                  StringFormat=\{0:N2\}}"
-                                                Header="★" />
-                            <DataGridTextColumn Width="Auto"
-                                                Binding="{Binding Beatmap.BeatsPerMinute,
-                                                                  StringFormat=\{0:N0\}}"
-                                                Header="BPM" />
-                            <DataGridTextColumn Width="Auto"
-                                                Binding="{Binding Beatmap.ApproachRate,
-                                                                  StringFormat=\{0:N1\}}"
-                                                Header="AR" />
-                            <DataGridTextColumn Width="Auto"
-                                                Binding="{Binding Beatmap.OverallDifficulty,
-                                                                  StringFormat=\{0:N1\}}"
-                                                Header="OD" />
-                            <DataGridTextColumn Width="Auto"
-                                                Binding="{Binding Beatmap.HitLengthString}"
-                                                Header="Length" />
-                            <DataGridTextColumn Width="Auto"
-                                                Binding="{Binding ExpectedAccuracy,
-                                                                  StringFormat=\{0:P2\}}"
-                                                FontWeight="SemiBold"
-                                                Header="Accuracy" />
-                            <DataGridTextColumn Width="Auto"
-                                                Binding="{Binding ExpectedPerformancePoints,
-                                                                  StringFormat=\{0:N0\}}"
-                                                FontWeight="SemiBold"
-                                                Header="PP" />
-                            <DataGridTextColumn Width="Auto"
-                                                Binding="{Binding Popularity}"
-                                                Header="Pop."
-                                                SortDirection="Descending" />
-                        </DataGrid.Columns>
-                    </DataGrid>
                 </Grid>
             </TabItem>
 
-            <TabItem DataContext="{Binding CalculatorViewModel,
-                                           Source={StaticResource Locator}}"
+            <!--  Oppai  -->
+            <TabItem DataContext="{Binding CalculatorViewModel, Source={StaticResource Locator}}"
                      Header="PP Calculator"
                      TextElement.Foreground="{DynamicResource SecondaryTextBrush}">
 
-                <StackPanel>
-                    <Border BorderBrush="{DynamicResource MiscBrush}" BorderThickness="0,0,0,1">
-                        <StackPanel>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                                <TextBlock x:Name="CalculatorBeatmapID"
-                                           Grid.Column="0"
-                                           Margin="5"
-                                           VerticalAlignment="Center"
-                                           Text="Beatmap ID or URL:" />
-                                <TextBox Grid.Column="1"
-                                         Margin="5"
-                                         VerticalAlignment="Center"
-                                         Text="{Binding BeatmapID}" />
-                                <Button Grid.Column="2"
-                                        Margin="5"
-                                        VerticalAlignment="Center"
-                                        Command="{Binding SetCurrentlyPlayingBeatmapIDCommand}"
-                                        Content="« Now Playing" />
-                            </Grid>
-                            <WrapPanel>
-                                <TextBlock Margin="5"
-                                           VerticalAlignment="Center"
-                                           Text="Mods:" />
-                                <CheckBox Margin="5"
-                                          VerticalAlignment="Center"
-                                          Content="HR"
-                                          IsChecked="{Binding HrEnabled}" />
-                                <CheckBox Margin="5"
-                                          VerticalAlignment="Center"
-                                          Content="DT"
-                                          IsChecked="{Binding DtEnabled}" />
-                                <CheckBox Margin="5"
-                                          VerticalAlignment="Center"
-                                          Content="HD"
-                                          IsChecked="{Binding HdEnabled}" />
-                            </WrapPanel>
-                            <Button Margin="5"
-                                    HorizontalAlignment="Left"
-                                    Command="{Binding AnalyzeCommand}"
-                                    Content="Analyze Beatmap" />
-                        </StackPanel>
-                    </Border>
+                    <StackPanel Grid.Row="0">
+                        <!--  Beatmap and mods  -->
+                        <Border BorderBrush="{DynamicResource MiscBrush}" BorderThickness="0,0,0,1">
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
 
-                    <Border Visibility="{Binding IsAnalyzed, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <StackPanel>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                                    <!--  Beatmap ID  -->
+                                    <TextBlock x:Name="CalculatorBeatmapID"
+                                               Grid.Column="0"
+                                               Margin="5"
+                                               VerticalAlignment="Center"
+                                               Text="Beatmap ID or URL:" />
+                                    <TextBox Grid.Column="1"
+                                             Margin="5"
+                                             VerticalAlignment="Center"
+                                             Text="{Binding BeatmapID}" />
 
-                                <WrapPanel Grid.Column="0">
+                                    <!--  Get currently playing  -->
+                                    <Button Grid.Column="2"
+                                            Margin="5"
+                                            VerticalAlignment="Center"
+                                            Command="{Binding SetCurrentlyPlayingBeatmapIDCommand}"
+                                            Content="« Now Playing" />
+                                </Grid>
+
+                                <!--  Mods  -->
+                                <WrapPanel>
                                     <TextBlock Margin="5"
                                                VerticalAlignment="Center"
-                                               Text="Accuracy:" />
-                                    <TextBox Margin="5"
-                                             VerticalAlignment="Center"
-                                             Text="{Binding ExpectedAccuracyString,
-                                                            UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBlock Margin="0,5,5,5"
-                                               VerticalAlignment="Center"
-                                               Text="%" />
+                                               Text="Mods:" />
+                                    <CheckBox Margin="5"
+                                              VerticalAlignment="Center"
+                                              Content="HR"
+                                              IsChecked="{Binding HrEnabled}" />
+                                    <CheckBox Margin="5"
+                                              VerticalAlignment="Center"
+                                              Content="DT"
+                                              IsChecked="{Binding DtEnabled}" />
+                                    <CheckBox Margin="5"
+                                              VerticalAlignment="Center"
+                                              Content="HD"
+                                              IsChecked="{Binding HdEnabled}" />
                                 </WrapPanel>
-                                <Slider x:Name="CalculatorExpectedAccuracySlider"
-                                        Grid.Column="1"
-                                        Margin="5"
-                                        VerticalAlignment="Center"
-                                        LargeChange="0.01"
-                                        Maximum="1"
-                                        Minimum="0.6"
-                                        SmallChange="0.001"
-                                        Value="{Binding ExpectedAccuracy}" />
-                            </Grid>
 
-                            <WrapPanel>
-                                <TextBlock Margin="5"
-                                           VerticalAlignment="Center"
-                                           Text="Expected PP:" />
-                                <TextBlock Margin="5"
-                                           VerticalAlignment="Center"
-                                           FontSize="16"
-                                           FontWeight="Bold"
-                                           Foreground="{DynamicResource PrimaryTextBrush}"
-                                           Text="{Binding ExpectedPerformancePoints,
-                                                          StringFormat=\{0:N2\}pp}" />
-                            </WrapPanel>
+                                <!--  Submit button  -->
+                                <Button Margin="5"
+                                        HorizontalAlignment="Left"
+                                        Command="{Binding AnalyzeCommand}"
+                                        Content="Analyze Beatmap" />
+                            </StackPanel>
+                        </Border>
 
-                        </StackPanel>
-                    </Border>
-                    <TextBlock Margin="5,25,5,5"
+                        <!--  Acc and pp  -->
+                        <Border Visibility="{Binding IsAnalyzed, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!--  Accuracy  -->
+                                    <WrapPanel Grid.Column="0">
+                                        <TextBlock Margin="5"
+                                                   VerticalAlignment="Center"
+                                                   Text="Accuracy:" />
+                                        <TextBox Margin="5"
+                                                 VerticalAlignment="Center"
+                                                 Text="{Binding ExpectedAccuracyString, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock Margin="0,5,5,5"
+                                                   VerticalAlignment="Center"
+                                                   Text="%" />
+                                    </WrapPanel>
+                                    <Slider x:Name="CalculatorExpectedAccuracySlider"
+                                            Grid.Column="1"
+                                            Margin="5"
+                                            VerticalAlignment="Center"
+                                            LargeChange="0.01"
+                                            Maximum="1"
+                                            Minimum="0.6"
+                                            SmallChange="0.001"
+                                            Value="{Binding ExpectedAccuracy}" />
+                                </Grid>
+
+                                <!--  PP  -->
+                                <WrapPanel>
+                                    <TextBlock Margin="5"
+                                               VerticalAlignment="Center"
+                                               Text="Expected PP:" />
+                                    <TextBlock Margin="5"
+                                               VerticalAlignment="Center"
+                                               FontSize="16"
+                                               FontWeight="Bold"
+                                               Foreground="{DynamicResource PrimaryTextBrush}"
+                                               Text="{Binding ExpectedPerformancePoints, StringFormat=\{0:N2\}pp}" />
+                                </WrapPanel>
+
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <TextBlock Grid.Row="1"
+                               Margin="5"
                                HorizontalAlignment="Right"
                                TextAlignment="Right">
                         <Run Text="This PP calculator is implementing" />
@@ -382,9 +577,10 @@
                         <LineBreak />
                         <Run Text="If you find any inconsistencies - please report them to the developers." />
                     </TextBlock>
-                </StackPanel>
+                </Grid>
             </TabItem>
 
+            <!--  About  -->
             <TabItem Header="About" TextElement.Foreground="{DynamicResource SecondaryTextBrush}">
                 <StackPanel>
                     <TextBlock Margin="5" FontSize="16">
@@ -404,184 +600,6 @@
                 </StackPanel>
             </TabItem>
         </dragablz:TabablzControl>
-
-        <Popup x:Name="BeatmapInfoPopup"
-               Width="350"
-               Height="400"
-               AllowsTransparency="True"
-               Closed="BeatmapInfoPopup_Closed"
-               DataContext="{Binding RecommenderViewModel,
-                                     Source={StaticResource Locator}}"
-               Focusable="False"
-               Opened="BeatmapInfoPopup_Opened"
-               Placement="Left"
-               PlacementTarget="{Binding ElementName=BeatmapListDataGrid}"
-               PopupAnimation="Fade"
-               StaysOpen="False">
-            <materialDesign:Card HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-
-                    <Border Grid.Row="0" Background="{DynamicResource PrimaryHueMidBrush}">
-                        <TextBlock Margin="10"
-                                   HorizontalAlignment="Center"
-                                   FontSize="15"
-                                   FontWeight="SemiBold"
-                                   Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                                   Text="{Binding SelectedRecommendation.Beatmap.FullName}"
-                                   TextTrimming="CharacterEllipsis"
-                                   TextWrapping="NoWrap"
-                                   ToolTip="{Binding SelectedRecommendation.Beatmap.FullName}" />
-                    </Border>
-
-                    <Image Grid.Row="1"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Cursor="Hand"
-                           Source="{Binding SelectedRecommendation.Beatmap.ThumbnailURL}"
-                           Stretch="UniformToFill"
-                           StretchDirection="Both"
-                           ToolTip="Click for sound preview">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="MouseLeftButtonUp">
-                                <i:InvokeCommandAction Command="{Binding SoundPreviewBeatmapCommand}" CommandParameter="{Binding SelectedRecommendation.Beatmap}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </Image>
-
-                    <DockPanel Grid.Row="2"
-                               Margin="5"
-                               HorizontalAlignment="Stretch">
-                        <WrapPanel HorizontalAlignment="Left" DockPanel.Dock="Left">
-                            <TextBlock Text="Last Update: " />
-                            <TextBlock Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SelectedRecommendation.Beatmap.LastUpdateDate, StringFormat=\{0:MMMM d\, yyyy\}}" />
-                        </WrapPanel>
-                        <WrapPanel HorizontalAlignment="Right" DockPanel.Dock="Right">
-                            <TextBlock Text="Creator: " />
-                            <TextBlock Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SelectedRecommendation.Beatmap.Creator}" />
-                        </WrapPanel>
-                    </DockPanel>
-
-                    <Grid Grid.Row="3"
-                          Margin="5"
-                          HorizontalAlignment="Stretch"
-                          Background="Transparent"
-                          ToolTip="{Binding SelectedRecommendation.Beatmap.ExtendedDifficultyInfoString}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Row="0"
-                                   Grid.Column="0"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Text="★" />
-                        <TextBlock Grid.Row="0"
-                                   Grid.Column="1"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Text="AR" />
-                        <TextBlock Grid.Row="0"
-                                   Grid.Column="2"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Text="OD" />
-                        <TextBlock Grid.Row="0"
-                                   Grid.Column="3"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Text="BPM" />
-                        <TextBlock Grid.Row="0"
-                                   Grid.Column="4"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Text="Length" />
-                        <TextBlock Grid.Row="0"
-                                   Grid.Column="5"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Text="Combo" />
-
-                        <TextBlock Grid.Row="1"
-                                   Grid.Column="0"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Foreground="{DynamicResource PrimaryTextBrush}"
-                                   Text="{Binding SelectedRecommendation.Beatmap.Stars,
-                                                  StringFormat=\{0:N2\}}" />
-                        <TextBlock Grid.Row="1"
-                                   Grid.Column="1"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Foreground="{DynamicResource PrimaryTextBrush}"
-                                   Text="{Binding SelectedRecommendation.Beatmap.ApproachRate,
-                                                  StringFormat=\{0:N1\}}" />
-                        <TextBlock Grid.Row="1"
-                                   Grid.Column="2"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Foreground="{DynamicResource PrimaryTextBrush}"
-                                   Text="{Binding SelectedRecommendation.Beatmap.OverallDifficulty,
-                                                  StringFormat=\{0:N1\}}" />
-                        <TextBlock Grid.Row="1"
-                                   Grid.Column="3"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Foreground="{DynamicResource PrimaryTextBrush}"
-                                   Text="{Binding SelectedRecommendation.Beatmap.BeatsPerMinute,
-                                                  StringFormat=\{0:N0\}}" />
-                        <TextBlock Grid.Row="1"
-                                   Grid.Column="4"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Foreground="{DynamicResource PrimaryTextBrush}"
-                                   Text="{Binding SelectedRecommendation.Beatmap.HitLengthString}" />
-                        <TextBlock Grid.Row="1"
-                                   Grid.Column="5"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Foreground="{DynamicResource PrimaryTextBrush}"
-                                   Text="{Binding SelectedRecommendation.Beatmap.MaxCombo}" />
-                    </Grid>
-
-                    <UniformGrid Grid.Row="4"
-                                 Margin="5"
-                                 Columns="2">
-                        <Button Margin="2"
-                                Command="{Binding OpenBeatmapPageCommand}"
-                                CommandParameter="{Binding SelectedRecommendation.Beatmap}"
-                                Content="Page" />
-                        <Button Margin="2"
-                                Command="{Binding DirectDownloadBeatmapCommand}"
-                                CommandParameter="{Binding SelectedRecommendation.Beatmap}"
-                                Content="osu!direct" />
-                        <Button Margin="2"
-                                Command="{Binding DownloadBeatmapCommand}"
-                                CommandParameter="{Binding SelectedRecommendation.Beatmap}"
-                                Content="Download" />
-                        <Button Margin="2"
-                                Command="{Binding BloodcatDownloadBeatmapCommand}"
-                                CommandParameter="{Binding SelectedRecommendation.Beatmap}"
-                                Content="Bloodcat" />
-                    </UniformGrid>
-                </Grid>
-            </materialDesign:Card>
-        </Popup>
     </Grid>
 </Window>
 

@@ -10,7 +10,6 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Navigation;
 using NegativeLayer.Extensions;
 
@@ -18,8 +17,6 @@ namespace OsuHelper.Views
 {
     public partial class MainWindow
     {
-        private object _lastSelectedPopupRecommendation;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -52,28 +49,9 @@ namespace OsuHelper.Views
             Persistence.Default.MainWindowRect = new Rect(Left, Top, Width, Height);
         }
 
-        private void BeatmapListDataGrid_MouseLeftButtonUp(object sender, MouseEventArgs e)
-        {
-            if (BeatmapListDataGrid.SelectedItem != null &&
-                _lastSelectedPopupRecommendation != BeatmapListDataGrid.SelectedItem)
-            {
-                BeatmapInfoPopup.IsOpen = true;
-            }
-        }
-
         private void Hyperlink_OnRequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             Process.Start(e.Uri.ToString());
-        }
-
-        private void BeatmapInfoPopup_Closed(object sender, EventArgs e)
-        {
-            _lastSelectedPopupRecommendation = null;
-        }
-
-        private void BeatmapInfoPopup_Opened(object sender, EventArgs e)
-        {
-            _lastSelectedPopupRecommendation = BeatmapListDataGrid.SelectedItem;
         }
     }
 }

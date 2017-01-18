@@ -19,8 +19,10 @@ namespace OsuHelper.Models.API
     {
         [JsonProperty("beatmap_id")]
         public string ID { get; private set; }
+
         [JsonProperty("beatmapset_id")]
         public string MapSetID { get; private set; }
+
         [JsonProperty("mode")]
         public GameMode Mode { get; private set; }
 
@@ -44,8 +46,10 @@ namespace OsuHelper.Models.API
 
         [JsonProperty("artist")]
         public string Artist { get; private set; }
+
         [JsonProperty("title")]
         public string Title { get; private set; }
+
         [JsonProperty("version")]
         public string DifficultyName { get; private set; }
 
@@ -55,54 +59,72 @@ namespace OsuHelper.Models.API
         [JsonConverter(typeof(SecondsToTimespanConverter))]
         [JsonProperty("total_length")]
         public TimeSpan TotalLength { get; private set; }
+
         [JsonConverter(typeof(SecondsToTimespanConverter))]
         [JsonProperty("hit_length")]
         public TimeSpan HitLength { get; private set; }
-        [JsonProperty("max_combo", NullValueHandling = NullValueHandling.Ignore)] // this is set to null on some game modes
+
+        [JsonProperty("max_combo", NullValueHandling = NullValueHandling.Ignore)]
+        // this is set to null on some game modes
         public int MaxCombo { get; private set; }
 
         [JsonIgnore]
         public string TotalLengthString => $"{Math.Truncate(TotalLength.TotalMinutes):00}:{TotalLength.Seconds:00}";
+
         [JsonIgnore]
         public string HitLengthString => $"{Math.Truncate(HitLength.TotalMinutes):00}:{HitLength.Seconds:00}";
 
         [JsonProperty("bpm")]
         public double BeatsPerMinute { get; private set; }
+
         [JsonProperty("difficultyrating")]
         public double Stars { get; private set; }
+
         [JsonProperty("diff_size")]
         public double CircleSize { get; private set; }
+
         [JsonProperty("diff_overall")]
         public double OverallDifficulty { get; private set; }
+
         [JsonProperty("diff_approach")]
         public double ApproachRate { get; private set; }
+
         [JsonProperty("diff_drain")]
         public double Drain { get; private set; }
 
         [JsonIgnore]
+        public TimeSpan HitLengthDoubleTime => TimeSpan.FromSeconds(HitLength.TotalSeconds/1.5);
+
+        [JsonIgnore]
+        public string HitLengthDoubleTimeString => $"{Math.Truncate(HitLengthDoubleTime.TotalMinutes):00}:{HitLengthDoubleTime.Seconds:00}";
+
+        [JsonIgnore]
+        public double BeatsPerMinuteDoubleTime => BeatsPerMinute*1.5;
+
+        [JsonIgnore]
         public double ApproachRateHardRock => (ApproachRate*1.4).ClampMax(10);
+
         [JsonIgnore]
         public double OverallDifficultyHardRock => (OverallDifficulty*1.4).ClampMax(10);
 
         [JsonIgnore]
+        public double CircleSizeHardRock => (CircleSize*1.3).ClampMax(10);
+
+        [JsonIgnore]
         public double ApproachRateDoubleTime => Ext.CalculateDoubleTimeApproachRate(ApproachRate);
+
         [JsonIgnore]
         public double OverallDifficultyDoubleTime => Ext.CalculateDoubleTimeOverallDifficulty(OverallDifficulty);
 
         [JsonIgnore]
         public double ApproachRateHardRockDoubleTime => Ext.CalculateDoubleTimeApproachRate(ApproachRateHardRock);
-        [JsonIgnore]
-        public double OverallDifficultyHardRockDoubleTime => Ext.CalculateDoubleTimeOverallDifficulty(OverallDifficultyHardRock);
 
         [JsonIgnore]
-        public string ExtendedDifficultyInfoString =>
-            $"<Hard Rock>{Environment.NewLine}" +
-            $"AR: {Math.Round(ApproachRateHardRock, 2)} | OD: {Math.Round(OverallDifficultyHardRock, 2)} | BPM: {Math.Round(BeatsPerMinute, 2)}{Environment.NewLine}" +
-            $"<Double Time>{Environment.NewLine}" +
-            $"AR: {Math.Round(ApproachRateDoubleTime, 2)} | OD: {Math.Round(OverallDifficultyDoubleTime, 2)} | BPM: {Math.Round(BeatsPerMinute*1.5, 2)}{Environment.NewLine}" +
-            $"<Hard Rock + Double Time>{Environment.NewLine}" +
-            $"AR: {Math.Round(ApproachRateHardRockDoubleTime, 2)} | OD: {Math.Round(OverallDifficultyHardRockDoubleTime, 2)} | BPM: {Math.Round(BeatsPerMinute*1.5, 2)}";
+        public double OverallDifficultyHardRockDoubleTime
+            => Ext.CalculateDoubleTimeOverallDifficulty(OverallDifficultyHardRock);
 
-        private Beatmap() { }
+        private Beatmap()
+        {
+        }
     }
 }

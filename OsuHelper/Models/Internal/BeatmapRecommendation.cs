@@ -21,7 +21,7 @@ namespace OsuHelper.Models.Internal
 
         public EnabledMods Mods { get; }
 
-        public int Popularity { get; }
+        public double Popularity { get; }
 
         [JsonIgnore]
         public string ModsString => Mods.GetModsString();
@@ -31,7 +31,7 @@ namespace OsuHelper.Models.Internal
             double expectedPerformancePoints,
             double expectedAccuracy,
             EnabledMods mods,
-            int popularity)
+            double popularity)
         {
             Beatmap = beatmap;
             ExpectedPerformancePoints = expectedPerformancePoints;

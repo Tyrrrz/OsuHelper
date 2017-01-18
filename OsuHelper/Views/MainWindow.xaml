@@ -198,7 +198,7 @@
                                             <!--  Beatmap thumbnail image  -->
                                             <Image Width="130"
                                                    HorizontalAlignment="Center"
-                                                   VerticalAlignment="Stretch"
+                                                   VerticalAlignment="Center"
                                                    Source="{Binding Beatmap.ThumbnailURL}" />
 
                                             <!--  Tool buttons  -->
@@ -336,6 +336,16 @@
                                                         <TextBlock>
                                                             <Run Text="+HR:" />
                                                             <Run Text="{Binding Beatmap.CircleSizeHardRock, StringFormat=\{0:0.##\}, Mode=OneWay}" />
+                                                        </TextBlock>
+                                                    </Run.ToolTip>
+                                                </Run>
+
+                                                <Run Text="HP:" />
+                                                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Beatmap.Drain, StringFormat=\{0:0.##\}, Mode=OneWay}">
+                                                    <Run.ToolTip>
+                                                        <TextBlock>
+                                                            <Run Text="+HR:" />
+                                                            <Run Text="{Binding Beatmap.DrainHardRock, StringFormat=\{0:0.##\}, Mode=OneWay}" />
                                                         </TextBlock>
                                                     </Run.ToolTip>
                                                 </Run>

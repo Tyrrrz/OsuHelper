@@ -111,6 +111,9 @@ namespace OsuHelper.Models.API
         public double CircleSizeHardRock => (CircleSize*1.3).ClampMax(10);
 
         [JsonIgnore]
+        public double DrainHardRock => (Drain*1.4).ClampMax(10);
+
+        [JsonIgnore]
         public double ApproachRateDoubleTime => Ext.CalculateDoubleTimeApproachRate(ApproachRate);
 
         [JsonIgnore]

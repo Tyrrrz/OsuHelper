@@ -390,7 +390,7 @@
                                                 FontWeight="SemiBold"
                                                 Header="PP" />
                             <DataGridTextColumn Width="Auto"
-                                                Binding="{Binding Popularity, StringFormat=\{0:0.#\}}"
+                                                Binding="{Binding Popularity}"
                                                 Header="Popularity"
                                                 SortDirection="Descending" />
                         </DataGrid.Columns>

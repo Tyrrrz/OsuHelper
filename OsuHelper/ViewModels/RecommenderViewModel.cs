@@ -405,7 +405,7 @@ namespace OsuHelper.ViewModels
                     median.PerformancePoints,
                     median.Accuracy,
                     median.Mods,
-                    100.0*count/recommendationsTemp.Count));
+                    (double) recommendationGroups.Length*count/recommendationsTemp.Count));
 
                 Progress += 0.75*(1.0/recommendationGroups.Length);
             }));

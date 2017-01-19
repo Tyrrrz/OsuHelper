@@ -199,7 +199,7 @@
                                             <Image Width="130"
                                                    Height="100"
                                                    HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"
+                                                   VerticalAlignment="Right"
                                                    Source="{Binding Beatmap.ThumbnailURL}"
                                                    Stretch="UniformToFill"
                                                    StretchDirection="Both" />

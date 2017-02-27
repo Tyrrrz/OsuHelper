@@ -4,6 +4,8 @@ osu!helper
 
 Stand-alone application that recommends osu! beatmaps, based on user's top plays and calculates expected PP gain using [Oppai](https://github.com/Francesco149/oppai).
 
+_Note: This project is no longer maintained. The last release version still remains functional, but new updates are not expected. You are welcome to fork, but pull requests and issues are likely to be ignored._
+
 **Download:**
 Last version can be downloaded from the [releases](https://github.com/Tyrrrz/OsuHelper/releases) page.
 

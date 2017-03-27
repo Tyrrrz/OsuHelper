@@ -2,10 +2,10 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
              xmlns:ignore="http://www.galasoft.ch/ignore"
              xmlns:local="clr-namespace:OsuHelper"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Exit="App_OnExit"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              StartupUri="Views/MainWindow.xaml"
              mc:Ignorable="d ignore">
@@ -15,16 +15,15 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/materialdesign.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/WPFExtensions;component/ConvertersDictionary.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Tyrrrz.WpfExtensions;component/ConvertersDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <!--  Colors  -->
             <Color x:Key="PrimaryColor">#343838</Color>
             <Color x:Key="PrimaryDarkColor">#2B2C2C</Color>
             <Color x:Key="AccentColor">#F9A825</Color>
-            <Color x:Key="TextColor">Black</Color>
-            <Color x:Key="InverseTextColor">Snow</Color>
+            <Color x:Key="TextColor">#000000</Color>
+            <Color x:Key="InverseTextColor">#fffffa</Color>
 
             <SolidColorBrush x:Key="PrimaryHueLightBrush"
                              Opacity="0.75"
@@ -50,6 +49,7 @@
             <SolidColorBrush x:Key="SecondaryAccentForegroundBrush"
                              Opacity="0.64"
                              Color="{DynamicResource TextColor}" />
+
             <SolidColorBrush x:Key="PrimaryTextBrush"
                              Opacity="0.87"
                              Color="{DynamicResource TextColor}" />
@@ -59,14 +59,25 @@
             <SolidColorBrush x:Key="DimTextBrush"
                              Opacity="0.45"
                              Color="{DynamicResource TextColor}" />
+            <SolidColorBrush x:Key="PrimaryInverseTextBrush"
+                             Opacity="1"
+                             Color="{DynamicResource InverseTextColor}" />
+            <SolidColorBrush x:Key="SecondaryInverseTextBrush"
+                             Opacity="0.7"
+                             Color="{DynamicResource InverseTextColor}" />
+            <SolidColorBrush x:Key="DimInverseTextBrush"
+                             Opacity="0.52"
+                             Color="{DynamicResource InverseTextColor}" />
+            <SolidColorBrush x:Key="AccentTextBrush"
+                             Opacity="1"
+                             Color="{DynamicResource AccentColor}" />
             <SolidColorBrush x:Key="MiscBrush"
                              Opacity="0.18"
                              Color="{DynamicResource TextColor}" />
 
             <!--  Styles  -->
             <Style TargetType="{x:Type materialDesign:Card}">
-                <Setter Property="VerticalAlignment" Value="Stretch" />
-                <Setter Property="Margin" Value="2" />
+                <Setter Property="Margin" Value="5" />
             </Style>
 
             <Style TargetType="{x:Type Image}">
@@ -77,6 +88,15 @@
                         <Setter Property="Opacity" Value="0.5" />
                     </Trigger>
                 </Style.Triggers>
+            </Style>
+
+            <Style TargetType="{x:Type ProgressBar}">
+                <Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
+                <Setter Property="BorderThickness" Value="0" />
+            </Style>
+
+            <Style TargetType="{x:Type Hyperlink}">
+                <Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
             </Style>
 
             <Style BasedOn="{StaticResource MaterialDesignTextBox}" TargetType="{x:Type TextBox}">
@@ -107,11 +127,10 @@
                 <Setter Property="FocusVisualStyle" Value="{x:Null}" />
             </Style>
 
-            <Style TargetType="{x:Type Hyperlink}">
-                <Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
+            <Style BasedOn="{StaticResource MaterialDesignSwitchToggleButton}" TargetType="{x:Type ToggleButton}">
+                <Setter Property="HorizontalAlignment" Value="Left" />
+                <Setter Property="VerticalAlignment" Value="Top" />
             </Style>
-
-            <Style BasedOn="{StaticResource MaterialDesignTabablzControlStyle}" TargetType="dragablz:TabablzControl" />
 
             <!--  Data Sources  -->
             <local:Locator x:Key="Locator" d:IsDataSource="True" />

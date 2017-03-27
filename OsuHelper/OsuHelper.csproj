@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OsuHelper</RootNamespace>
-    <AssemblyName>OsuRepleh</AssemblyName>
+    <AssemblyName>osu!helper</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -40,14 +40,6 @@
     <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dragablz, Version=0.0.3.182, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dragablz.0.0.3.182\lib\net45\Dragablz.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Extensions, Version=1.0.6156.26738, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLExtensions.1.1.2\lib\net45\Extensions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.4.0.0, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.0-alpha\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
       <Private>True</Private>
@@ -64,72 +56,42 @@
       <HintPath>..\packages\MaterialDesignColors.1.1.3\lib\net45\MaterialDesignColors.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MaterialDesignThemes.Wpf, Version=2.2.1.750, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MaterialDesignThemes.2.2.1.750\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=2.3.0.823, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.2.3.0.823\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.2-beta1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Settings, Version=1.0.6224.40993, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLSettings.1.0.13\lib\net45\Settings.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.0-alpha\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="Tyrrrz.Extensions, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tyrrrz.Extensions.1.2.1\lib\netstandard1.0\Tyrrrz.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Tyrrrz.WpfExtensions, Version=1.0.6269.37170, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tyrrrz.WpfExtensions.1.0.5\lib\net45\Tyrrrz.WpfExtensions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="WPFExtensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLWPFExtensions.1.1.10\lib\net45\WPFExtensions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Ext.cs" />
-    <Compile Include="FileSystem.cs" />
     <Compile Include="Locator.cs" />
-    <Compile Include="Models\API\Beatmap.cs" />
-    <Compile Include="Models\API\BeatmapRankingStatus.cs" />
-    <Compile Include="Models\API\EnabledMods.cs" />
-    <Compile Include="Models\API\GameMode.cs" />
-    <Compile Include="Models\API\Play.cs" />
-    <Compile Include="Models\API\PlayRank.cs" />
-    <Compile Include="Models\Converters\SecondsToTimespanConverter.cs" />
-    <Compile Include="Models\Internal\APIProvider.cs" />
-    <Compile Include="Models\Internal\APIServiceConfiguration.cs" />
-    <Compile Include="Models\Internal\BeatmapRecommendation.cs" />
-    <Compile Include="Persistence.cs" />
-    <Compile Include="Services\APIService.cs" />
-    <Compile Include="Services\OppaiService.cs" />
-    <Compile Include="Services\OsuGameService.cs" />
-    <Compile Include="Services\OsuSearchService.cs" />
-    <Compile Include="Services\WindowService.cs" />
-    <Compile Include="Settings.cs" />
-    <Compile Include="ViewModels\CalculatorViewModel.cs" />
-    <Compile Include="ViewModels\RecommenderViewModel.cs" />
-    <Compile Include="ViewModels\SetupViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -165,9 +127,17 @@
     <Resource Include="favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="oppai.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <ProjectReference Include="..\OsuHelper.Core\OsuHelper.Core.csproj">
+      <Project>{a9ad3646-ec70-4af5-9d67-4c7e6c6e98cb}</Project>
+      <Name>OsuHelper.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OsuHelper.Impl\OsuHelper.Impl.csproj">
+      <Project>{3b6dd376-c749-460b-9239-be9cfd69f17f}</Project>
+      <Name>OsuHelper.Impl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

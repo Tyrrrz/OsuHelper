@@ -1,11 +1,4 @@
-﻿// ------------------------------------------------------------------ 
-//  Solution: <OsuHelper>
-//  Project: <OsuHelper>
-//  File: <App.xaml.cs>
-//  Created By: Alexey Golub
-//  Date: 20/08/2016
-// ------------------------------------------------------------------ 
-
+﻿using System.Windows;
 using GalaSoft.MvvmLight.Threading;
 
 namespace OsuHelper
@@ -15,6 +8,11 @@ namespace OsuHelper
         static App()
         {
             DispatcherHelper.Initialize();
+        }
+
+        private void App_OnExit(object sender, ExitEventArgs e)
+        {
+            Locator.Cleanup();
         }
     }
 }

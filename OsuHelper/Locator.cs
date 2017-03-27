@@ -1,15 +1,5 @@
-﻿// ------------------------------------------------------------------ 
-//  Solution: <OsuHelper>
-//  Project: <OsuHelper>
-//  File: <Locator.cs>
-//  Created By: Alexey Golub
-//  Date: 20/08/2016
-// ------------------------------------------------------------------ 
-
-using GalaSoft.MvvmLight.Ioc;
+﻿using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
-using OsuHelper.Services;
-using OsuHelper.ViewModels;
 
 namespace OsuHelper
 {
@@ -18,22 +8,13 @@ namespace OsuHelper
         static Locator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
-
-            SimpleIoc.Default.Register<APIService>();
-            SimpleIoc.Default.Register<OppaiService>();
-            SimpleIoc.Default.Register<OsuGameService>();
-            SimpleIoc.Default.Register<OsuSearchService>();
-            SimpleIoc.Default.Register<WindowService>();
-
-            SimpleIoc.Default.Register<SetupViewModel>();
-            SimpleIoc.Default.Register<RecommenderViewModel>();
-            SimpleIoc.Default.Register<CalculatorViewModel>();
         }
 
         public static T Resolve<T>() => ServiceLocator.Current.GetInstance<T>();
+        public static T Resolve<T>(string id) => ServiceLocator.Current.GetInstance<T>(id);
 
-        public SetupViewModel SetupViewModel => Resolve<SetupViewModel>();
-        public RecommenderViewModel RecommenderViewModel => Resolve<RecommenderViewModel>();
-        public CalculatorViewModel CalculatorViewModel => Resolve<CalculatorViewModel>();
+        public static void Cleanup()
+        {
+        }
     }
 }

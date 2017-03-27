@@ -1,14 +1,6 @@
-﻿// ------------------------------------------------------------------ 
-//  Solution: <OsuHelper>
-//  Project: <OsuHelper>
-//  File: <EnabledMods.cs>
-//  Created By: Alexey Golub
-//  Date: 20/08/2016
-// ------------------------------------------------------------------ 
+﻿using System;
 
-using System;
-
-namespace OsuHelper.Models.API
+namespace OsuHelper.Models
 {
     [Flags]
     public enum EnabledMods

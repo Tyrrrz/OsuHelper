@@ -52,7 +52,7 @@
     <Compile Include="Services\RecommendationService.cs" />
     <Compile Include="Services\OsuDataService.cs" />
     <Compile Include="Services\RippleDataService.cs" />
-    <Compile Include="Services\WebApiServiceBase.cs" />
+    <Compile Include="Services\HttpService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OsuHelper.Core\OsuHelper.Core.csproj">

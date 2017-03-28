@@ -7,11 +7,21 @@ using Tyrrrz.Extensions;
 
 namespace OsuHelper.Services
 {
-    public class OsuDataService : WebApiServiceBase, IDataService
+    public class OsuDataService :  IDataService
     {
-        protected virtual string GetApiRoot() => "https://osu.ppy.sh/api/";
+        private readonly IHttpService _httpService;
 
         public string ApiKey { get; set; }
+
+        public OsuDataService(IHttpService httpService)
+        {
+            if (httpService == null)
+                throw new ArgumentNullException(nameof(httpService));
+
+            _httpService = httpService;
+        }
+
+        protected virtual string GetApiRoot() => "https://osu.ppy.sh/api/";
 
         public async Task<Beatmap> GetBeatmapAsync(GameMode gameMode, string beatmapId)
         {
@@ -20,7 +30,7 @@ namespace OsuHelper.Services
 
             // Get
             string url = GetApiRoot() + $"get_beatmaps?k={ApiKey}&m={(int) gameMode}&b={beatmapId}&limit=1&a=1";
-            string response = await GetStringAsync(url);
+            string response = await _httpService.GetStringAsync(url);
 
             // Parse
             var parsed = JToken.Parse(response).First;
@@ -55,7 +65,7 @@ namespace OsuHelper.Services
 
             // Get
             string url = GetApiRoot() + $"get_user_best?k={ApiKey}&m={(int) gameMode}&u={userId.UrlEncode()}&limit=100";
-            string response = await GetStringAsync(url);
+            string response = await _httpService.GetStringAsync(url);
 
             // Parse
             var parsed = JToken.Parse(response);
@@ -90,7 +100,7 @@ namespace OsuHelper.Services
             // Get
             string url = GetApiRoot() + $"get_scores?k={ApiKey}&m={(int) gameMode}&b={beatmapId}&limit=100";
             if (enabledMods != EnabledMods.Any) url += $"&mods={(int) enabledMods}";
-            string response = await GetStringAsync(url);
+            string response = await _httpService.GetStringAsync(url);
 
             // Parse
             var parsed = JToken.Parse(response);

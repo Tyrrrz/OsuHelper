@@ -1,23 +1,28 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace OsuHelper.Services
 {
-    public abstract class WebApiServiceBase : IDisposable
+    public class HttpService : IHttpService, IDisposable
     {
         private readonly HttpClient _client;
 
         private readonly TimeSpan _minRequestInterval = TimeSpan.FromSeconds(0.05);
         private DateTime _lastRequestDateTime = DateTime.MinValue;
 
-        protected WebApiServiceBase()
+        protected HttpService()
         {
-            _client = new HttpClient();
+            var handler = new HttpClientHandler();
+            if (handler.SupportsAutomaticDecompression)
+                handler.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+
+            _client = new HttpClient(handler);
             _client.DefaultRequestHeaders.Add("User-Agent", "osu!helper (github.com/Tyrrrz/OsuHelper)");
         }
 
-        ~WebApiServiceBase()
+        ~HttpService()
         {
             Dispose(false);
         }
@@ -33,7 +38,7 @@ namespace OsuHelper.Services
             _lastRequestDateTime = DateTime.Now;
         }
 
-        protected async Task<string> GetStringAsync(string url)
+        public async Task<string> GetStringAsync(string url)
         {
             await RequestThrottlingAsync();
             return await _client.GetStringAsync(url);

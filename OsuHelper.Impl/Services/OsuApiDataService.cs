@@ -49,7 +49,7 @@ namespace OsuHelper.Services
             result.Artist = parsed["artist"].Value<string>();
             result.Title = parsed["title"].Value<string>();
             result.DifficultyName = parsed["version"].Value<string>();
-            result.Length = parsed["hit_length"].Value<TimeSpan>();
+            result.Length = TimeSpan.FromSeconds(parsed["hit_length"].Value<double>());
             result.MaxCombo = parsed["max_combo"].Value<int?>().GetValueOrDefault(); // can be null sometimes
             result.BeatsPerMinute = parsed["bpm"].Value<double>();
             result.Stars = parsed["difficultyrating"].Value<double>();

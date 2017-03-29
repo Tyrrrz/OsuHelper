@@ -24,7 +24,7 @@ namespace OsuHelper.Models
 
         public string FullName => $"{Artist} - {Title} [{DifficultyName}]";
 
-        public TimeSpan Length { get; set; }
+        public TimeSpan Duration { get; set; }
 
         public int MaxCombo { get; set; }
 
@@ -32,11 +32,11 @@ namespace OsuHelper.Models
 
         public double Stars { get; set; }
 
-        public double CircleSize { get; set; }
+        public double ApproachRate { get; set; }
 
         public double OverallDifficulty { get; set; }
 
-        public double ApproachRate { get; set; }
+        public double CircleSize { get; set; }
 
         public double Drain { get; set; }
 

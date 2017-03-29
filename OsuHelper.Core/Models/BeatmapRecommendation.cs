@@ -1,4 +1,6 @@
-﻿namespace OsuHelper.Models
+﻿using System;
+
+namespace OsuHelper.Models
 {
     public class BeatmapRecommendation
     {
@@ -12,16 +14,18 @@
 
         public double ExpectedPerformancePoints { get; set; }
 
-        public double ActualBeatsPerMinute { get; set; }
+        public TimeSpan ActualDuration => Beatmap.Duration;
 
-        public double ActualStars { get; set; }
+        public double ActualBeatsPerMinute => Beatmap.BeatsPerMinute;
 
-        public double ActualCircleSize { get; set; }
+        public double ActualStars => Beatmap.Stars;
 
-        public double ActualOverallDifficulty { get; set; }
+        public double ActualApproachRate => Beatmap.ApproachRate;
 
-        public double ActualApproachRate { get; set; }
+        public double ActualOverallDifficulty => Beatmap.OverallDifficulty;
 
-        public double ActualDrain { get; set; }
+        public double ActualCircleSize => Beatmap.CircleSize;
+
+        public double ActualDrain => Beatmap.Drain;
     }
 }

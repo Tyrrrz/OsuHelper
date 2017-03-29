@@ -96,17 +96,7 @@ namespace OsuHelper.Services
                 int count = group.Count();
 
                 // Get median play based on PP
-                Play play;
-                if (count == 1)
-                {
-                    play = group.First();
-                }
-                else
-                {
-                    var ordered = group.OrderBy(p => p.PerformancePoints);
-                    int mid = count/2;
-                    play = ordered.ElementAt(mid);
-                }
+                var play = group.OrderBy(p => p.PerformancePoints).ElementAt(count/2);
 
                 // Get beatmap data
                 var beatmap = await _dataService.GetBeatmapAsync(gameMode, play.BeatmapId);

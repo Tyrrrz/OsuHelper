@@ -7,29 +7,32 @@ using Tyrrrz.Extensions;
 
 namespace OsuHelper.Services
 {
-    public class OsuDataService :  IDataService
+    public class OsuApiDataService : IDataService
     {
+        private readonly ISettingsService _settingsService;
         private readonly IHttpService _httpService;
 
-        public string ApiKey { get; set; }
-
-        public OsuDataService(IHttpService httpService)
+        public OsuApiDataService(ISettingsService settingsService, IHttpService httpService)
         {
+            if (settingsService == null)
+                throw new ArgumentNullException(nameof(settingsService));
             if (httpService == null)
                 throw new ArgumentNullException(nameof(httpService));
 
+            _settingsService = settingsService;
             _httpService = httpService;
         }
-
-        protected virtual string GetApiRoot() => "https://osu.ppy.sh/api/";
 
         public async Task<Beatmap> GetBeatmapAsync(GameMode gameMode, string beatmapId)
         {
             if (beatmapId == null)
                 throw new ArgumentNullException(nameof(beatmapId));
 
+            string apiRoot = _settingsService.DataSourceApiRoot.EnsureEndsWith("/");
+            string apiKey = _settingsService.DataSourceApiKey;
+
             // Get
-            string url = GetApiRoot() + $"get_beatmaps?k={ApiKey}&m={(int) gameMode}&b={beatmapId}&limit=1&a=1";
+            string url = apiRoot + $"get_beatmaps?k={apiKey}&m={(int) gameMode}&b={beatmapId}&limit=1&a=1";
             string response = await _httpService.GetStringAsync(url);
 
             // Parse
@@ -40,7 +43,7 @@ namespace OsuHelper.Services
             result.Id = parsed["beatmap_id"].Value<string>();
             result.MapSetId = parsed["beatmapset_id"].Value<string>();
             result.GameMode = gameMode;
-            result.RankingStatus = (BeatmapRankingStatus)parsed["approved"].Value<int>();
+            result.RankingStatus = (BeatmapRankingStatus) parsed["approved"].Value<int>();
             result.Creator = parsed["creator"].Value<string>();
             result.LastUpdate = parsed["last_update"].Value<DateTime>();
             result.Artist = parsed["artist"].Value<string>();
@@ -63,8 +66,11 @@ namespace OsuHelper.Services
             if (userId == null)
                 throw new ArgumentNullException(nameof(userId));
 
+            string apiRoot = _settingsService.DataSourceApiRoot.EnsureEndsWith("/");
+            string apiKey = _settingsService.DataSourceApiKey;
+
             // Get
-            string url = GetApiRoot() + $"get_user_best?k={ApiKey}&m={(int) gameMode}&u={userId.UrlEncode()}&limit=100";
+            string url = apiRoot + $"get_user_best?k={apiKey}&m={(int) gameMode}&u={userId.UrlEncode()}&limit=100";
             string response = await _httpService.GetStringAsync(url);
 
             // Parse
@@ -92,13 +98,17 @@ namespace OsuHelper.Services
             return result;
         }
 
-        public async Task<IEnumerable<Play>> GetBeatmapTopPlaysAsync(GameMode gameMode, string beatmapId, EnabledMods enabledMods)
+        public async Task<IEnumerable<Play>> GetBeatmapTopPlaysAsync(GameMode gameMode, string beatmapId,
+            EnabledMods enabledMods)
         {
             if (beatmapId == null)
                 throw new ArgumentNullException(nameof(beatmapId));
 
+            string apiRoot = _settingsService.DataSourceApiRoot.EnsureEndsWith("/");
+            string apiKey = _settingsService.DataSourceApiKey;
+
             // Get
-            string url = GetApiRoot() + $"get_scores?k={ApiKey}&m={(int) gameMode}&b={beatmapId}&limit=100";
+            string url = apiRoot + $"get_scores?k={apiKey}&m={(int) gameMode}&b={beatmapId}&limit=100";
             if (enabledMods != EnabledMods.Any) url += $"&mods={(int) enabledMods}";
             string response = await _httpService.GetStringAsync(url);
 
@@ -112,7 +122,7 @@ namespace OsuHelper.Services
                 var play = new Play();
                 play.PlayerId = jPlay["user_id"].Value<string>();
                 play.BeatmapId = beatmapId;
-                play.Mods = (EnabledMods)jPlay["enabled_mods"].Value<int>();
+                play.Mods = (EnabledMods) jPlay["enabled_mods"].Value<int>();
                 play.Rank = jPlay["rank"].Value<string>().ParseEnum<PlayRank>();
                 play.MaxCombo = jPlay["maxcombo"].Value<int>();
                 play.Count300 = jPlay["count300"].Value<int>();

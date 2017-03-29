@@ -108,7 +108,7 @@
                                     <Run Text="BPM:" />
                                     <Run Foreground="{DynamicResource PrimaryInverseTextBrush}" Text="{Binding ActualBeatsPerMinute, StringFormat=\{0:0.#\}, Mode=OneWay}" />
                                     <Run Text="Duration:" />
-                                    <Run Foreground="{DynamicResource PrimaryInverseTextBrush}" Text="{Binding ActualDuration, Mode=OneWay}" />
+                                    <Run Foreground="{DynamicResource PrimaryInverseTextBrush}" Text="{Binding ActualDuration, Converter={StaticResource TimeSpanToShortStringConverter}, Mode=OneWay}" />
                                     <Run Text="Combo:" />
                                     <Run Foreground="{DynamicResource PrimaryInverseTextBrush}" Text="{Binding Beatmap.MaxCombo, Mode=OneWay}" /><Run Text="x" />
 

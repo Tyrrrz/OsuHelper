@@ -8,7 +8,7 @@ namespace OsuHelper
 {
     public class Locator
     {
-        static Locator()
+        public static void Init()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
@@ -20,6 +20,9 @@ namespace OsuHelper
 
             // View models
             SimpleIoc.Default.Register<IMainViewModel, MainViewModel>();
+
+            // Load settings
+            SimpleIoc.Default.GetInstance<ISettingsService>().Load();
         }
 
         public static void Cleanup()

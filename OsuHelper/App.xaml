@@ -5,8 +5,9 @@
              xmlns:ignore="http://www.galasoft.ch/ignore"
              xmlns:local="clr-namespace:OsuHelper"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             Exit="App_OnExit"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             Exit="App_OnExit"
+             Startup="App_OnStartup"
              StartupUri="Views/MainWindow.xaml"
              mc:Ignorable="d ignore">
 

@@ -3,11 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:ignore="http://www.galasoft.ch/ignore"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Title="osu!helper v{0}"
-        Width="500"
-        Height="425"
+        Width="845"
+        Height="625"
         Background="{DynamicResource MaterialDesignPaper}"
+        DataContext="{Binding MainViewModel, Source={StaticResource Locator}}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Icon="/osu!helper;component/favicon.ico"
         SnapsToDevicePixels="True"
@@ -18,5 +20,81 @@
         TextOptions.TextRenderingMode="Auto"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d ignore">
-    <Grid />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--  Toolbar  -->
+        <materialDesign:ColorZone Grid.Column="0"
+                                  Panel.ZIndex="1"
+                                  materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                  Mode="PrimaryMid">
+            <StackPanel Orientation="Vertical">
+                <!--  Buttons  -->
+                <UniformGrid Margin="5"
+                             HorizontalAlignment="Right"
+                             VerticalAlignment="Center"
+                             Rows="1">
+                    <Button Command="{Binding GetRecommendationsCommand}"
+                            Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+                            Style="{DynamicResource FlatButtonStyle}">
+                        <materialDesign:PackIcon Width="24"
+                                                 Height="24"
+                                                 Kind="Refresh" />
+                    </Button>
+                </UniformGrid>
+
+                <!--  Progress bar  -->
+                <ProgressBar Height="2"
+                             Background="Transparent"
+                             IsIndeterminate="{Binding IsBusy}" />
+            </StackPanel>
+        </materialDesign:ColorZone>
+
+        <!--  Recommendations  -->
+        <ScrollViewer Grid.Row="1"
+                      Panel.ZIndex="0"
+                      HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto">
+            <ItemsControl HorizontalAlignment="Center" ItemsSource="{Binding Recommendations}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <materialDesign:Card Width="400"
+                                             Height="100"
+                                             Margin="2.5">
+                            <!--  Image background  -->
+                            <materialDesign:Card.Background>
+                                <ImageBrush ImageSource="{Binding Beatmap.CardUrl}" />
+                            </materialDesign:Card.Background>
+
+                            <!--  Info  -->
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <!--  Full name  -->
+                                <TextBlock Grid.Row="0"
+                                           Margin="2.5"
+                                           Padding="2.5"
+                                           Background="#66000000"
+                                           Foreground="{DynamicResource PrimaryInverseTextBrush}"
+                                           Text="{Binding Beatmap.FullName}" />
+                            </Grid>
+                        </materialDesign:Card>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
 </Window>

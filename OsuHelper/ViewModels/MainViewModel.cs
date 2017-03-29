@@ -9,6 +9,7 @@ namespace OsuHelper.ViewModels
 {
     public class MainViewModel : ViewModelBase, IMainViewModel
     {
+        private readonly ISettingsService _settingsService;
         private readonly IRecommendationService _recommendationService;
 
         private bool _isBusy;
@@ -28,15 +29,21 @@ namespace OsuHelper.ViewModels
 
         public RelayCommand GetRecommendationsCommand { get; }
 
-        public MainViewModel(IRecommendationService recommendationService)
+        public MainViewModel(ISettingsService settingsService, IRecommendationService recommendationService)
         {
+            if (settingsService == null)
+                throw new ArgumentNullException(nameof(settingsService));
             if (recommendationService == null)
                 throw new ArgumentNullException(nameof(recommendationService));
 
+            _settingsService = settingsService;
             _recommendationService = recommendationService;
 
             // Commands
             GetRecommendationsCommand = new RelayCommand(GetRecommendationsAsync);
+
+            // Load stored recommendations
+            Recommendations = _settingsService.LastRecommendations;
         }
 
         private async void GetRecommendationsAsync()
@@ -44,6 +51,7 @@ namespace OsuHelper.ViewModels
             IsBusy = true;
 
             Recommendations = await _recommendationService.GetRecommendationsAsync(GameMode.Standard, "Tyrrrz", 100);
+            _settingsService.LastRecommendations = Recommendations;
 
             IsBusy = false;
         }

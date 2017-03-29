@@ -22,19 +22,24 @@ namespace OsuHelper
             SimpleIoc.Default.Register<IMainViewModel, MainViewModel>();
 
             // Load settings
-            SimpleIoc.Default.GetInstance<ISettingsService>().Load();
+            ServiceLocator.Current.GetInstance<ISettingsService>().Load();
         }
 
         public static void Cleanup()
         {
-            // ReSharper disable SuspiciousTypeConversion.Global
-            (SimpleIoc.Default.GetInstance<IDataService>() as IDisposable)?.Dispose();
-            (SimpleIoc.Default.GetInstance<IHttpService>() as IDisposable)?.Dispose();
-            (SimpleIoc.Default.GetInstance<IRecommendationService>() as IDisposable)?.Dispose();
-            (SimpleIoc.Default.GetInstance<ISettingsService>() as IDisposable)?.Dispose();
+            // Save settings
+            ServiceLocator.Current.GetInstance<ISettingsService>().Save();
 
-            (SimpleIoc.Default.GetInstance<IMainViewModel>() as IDisposable)?.Dispose();
+            // ReSharper disable SuspiciousTypeConversion.Global
+            (ServiceLocator.Current.GetInstance<IDataService>() as IDisposable)?.Dispose();
+            (ServiceLocator.Current.GetInstance<IHttpService>() as IDisposable)?.Dispose();
+            (ServiceLocator.Current.GetInstance<IRecommendationService>() as IDisposable)?.Dispose();
+            (ServiceLocator.Current.GetInstance<ISettingsService>() as IDisposable)?.Dispose();
+
+            (ServiceLocator.Current.GetInstance<IMainViewModel>() as IDisposable)?.Dispose();
             // ReSharper restore SuspiciousTypeConversion.Global
         }
+
+        public IMainViewModel MainViewModel => ServiceLocator.Current.GetInstance<IMainViewModel>();
     }
 }

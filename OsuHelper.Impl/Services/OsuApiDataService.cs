@@ -28,8 +28,8 @@ namespace OsuHelper.Services
             if (beatmapId == null)
                 throw new ArgumentNullException(nameof(beatmapId));
 
-            string apiRoot = _settingsService.DataSourceApiRoot.EnsureEndsWith("/");
-            string apiKey = _settingsService.DataSourceApiKey;
+            string apiRoot = _settingsService.OsuApiRoot.EnsureEndsWith("/");
+            string apiKey = _settingsService.OsuApiKey;
 
             // Get
             string url = apiRoot + $"get_beatmaps?k={apiKey}&m={(int) gameMode}&b={beatmapId}&limit=1&a=1";
@@ -66,8 +66,8 @@ namespace OsuHelper.Services
             if (userId == null)
                 throw new ArgumentNullException(nameof(userId));
 
-            string apiRoot = _settingsService.DataSourceApiRoot.EnsureEndsWith("/");
-            string apiKey = _settingsService.DataSourceApiKey;
+            string apiRoot = _settingsService.OsuApiRoot.EnsureEndsWith("/");
+            string apiKey = _settingsService.OsuApiKey;
 
             // Get
             string url = apiRoot + $"get_user_best?k={apiKey}&m={(int) gameMode}&u={userId.UrlEncode()}&limit=100";
@@ -104,8 +104,8 @@ namespace OsuHelper.Services
             if (beatmapId == null)
                 throw new ArgumentNullException(nameof(beatmapId));
 
-            string apiRoot = _settingsService.DataSourceApiRoot.EnsureEndsWith("/");
-            string apiKey = _settingsService.DataSourceApiKey;
+            string apiRoot = _settingsService.OsuApiRoot.EnsureEndsWith("/");
+            string apiKey = _settingsService.OsuApiKey;
 
             // Get
             string url = apiRoot + $"get_scores?k={apiKey}&m={(int) gameMode}&b={beatmapId}&limit=100";

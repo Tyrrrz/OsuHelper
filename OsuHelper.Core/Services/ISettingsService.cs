@@ -2,8 +2,8 @@
 {
     public interface ISettingsService
     {
-        string DataSourceApiRoot { get; set; }
-        string DataSourceApiKey { get; set; }
+        string OsuApiRoot { get; set; }
+        string OsuApiKey { get; set; }
 
         void Load();
         void Save();

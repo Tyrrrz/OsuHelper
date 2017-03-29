@@ -4,8 +4,8 @@ namespace OsuHelper.Services
 {
     public class FileSettingsService : SettingsManager, ISettingsService
     {
-        public string DataSourceApiRoot { get; set; } = "https://osu.ppy.sh/api/";
-        public string DataSourceApiKey { get; set; }
+        public string OsuApiRoot { get; set; } = "https://osu.ppy.sh/api/";
+        public string OsuApiKey { get; set; }
 
         public FileSettingsService()
         {

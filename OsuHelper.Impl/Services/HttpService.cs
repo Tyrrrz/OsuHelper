@@ -12,7 +12,7 @@ namespace OsuHelper.Services
         private readonly TimeSpan _minRequestInterval = TimeSpan.FromSeconds(0.05);
         private DateTime _lastRequestDateTime = DateTime.MinValue;
 
-        protected HttpService()
+        public HttpService()
         {
             var handler = new HttpClientHandler();
             if (handler.SupportsAutomaticDecompression)

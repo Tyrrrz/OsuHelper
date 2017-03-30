@@ -29,7 +29,7 @@
         <!--  Toolbar  -->
         <materialDesign:ColorZone Grid.Column="0"
                                   Panel.ZIndex="1"
-                                  materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                  materialDesign:ShadowAssist.ShadowDepth="Depth1"
                                   Mode="PrimaryMid">
             <StackPanel Orientation="Vertical">
                 <!--  Buttons  -->

@@ -39,7 +39,7 @@
                              Rows="1">
                     <Button Command="{Binding GetRecommendationsCommand}"
                             Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                            Style="{DynamicResource FlatButtonStyle}">
+                            Style="{DynamicResource MaterialDesignFlatDarkButton}">
                         <materialDesign:PackIcon Width="24"
                                                  Height="24"
                                                  Kind="Refresh" />
@@ -158,7 +158,7 @@
                                             Margin="2"
                                             Padding="0"
                                             Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                                            Style="{DynamicResource FlatButtonStyle}"
+                                            Style="{DynamicResource MaterialDesignFlatDarkButton}"
                                             ToolTip="Play music preview">
                                         <materialDesign:PackIcon Width="16"
                                                                  Height="16"
@@ -168,7 +168,7 @@
                                             Margin="2"
                                             Padding="0"
                                             Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                                            Style="{DynamicResource FlatButtonStyle}"
+                                            Style="{DynamicResource MaterialDesignFlatDarkButton}"
                                             ToolTip="Open beatmap page">
                                         <materialDesign:PackIcon Width="16"
                                                                  Height="16"
@@ -178,7 +178,7 @@
                                             Margin="2"
                                             Padding="0"
                                             Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                                            Style="{DynamicResource FlatButtonStyle}"
+                                            Style="{DynamicResource MaterialDesignFlatDarkButton}"
                                             ToolTip="Download the beatmap">
                                         <materialDesign:PackIcon Width="16"
                                                                  Height="16"

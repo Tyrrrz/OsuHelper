@@ -27,19 +27,17 @@
         </Grid.RowDefinitions>
 
         <!--  Toolbar  -->
-        <materialDesign:ColorZone Grid.Column="0"
-                                  Panel.ZIndex="1"
-                                  materialDesign:ShadowAssist.ShadowDepth="Depth1"
-                                  Mode="PrimaryMid">
+        <Border Grid.Column="0"
+                materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                Background="{DynamicResource PrimaryHueMidBrush}"
+                TextElement.Foreground="{DynamicResource SecondaryInverseTextBrush}">
             <StackPanel Orientation="Vertical">
                 <!--  Buttons  -->
                 <UniformGrid Margin="5"
                              HorizontalAlignment="Right"
                              VerticalAlignment="Center"
                              Rows="1">
-                    <Button Command="{Binding GetRecommendationsCommand}"
-                            Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                            Style="{DynamicResource MaterialDesignFlatDarkButton}">
+                    <Button Command="{Binding GetRecommendationsCommand}" Style="{DynamicResource MaterialDesignFlatDarkButton}">
                         <materialDesign:PackIcon Width="24"
                                                  Height="24"
                                                  Kind="Refresh" />
@@ -49,7 +47,7 @@
                 <!--  Progress bar  -->
                 <ProgressBar Background="Transparent" IsIndeterminate="{Binding IsBusy}" />
             </StackPanel>
-        </materialDesign:ColorZone>
+        </Border>
 
         <!--  Recommendations  -->
         <ScrollViewer Grid.Row="1"
@@ -157,7 +155,6 @@
                                     <Button Width="24"
                                             Margin="2"
                                             Padding="0"
-                                            Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                                             Style="{DynamicResource MaterialDesignFlatDarkButton}"
                                             ToolTip="Play music preview">
                                         <materialDesign:PackIcon Width="16"
@@ -167,7 +164,6 @@
                                     <Button Width="24"
                                             Margin="2"
                                             Padding="0"
-                                            Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                                             Style="{DynamicResource MaterialDesignFlatDarkButton}"
                                             ToolTip="Open beatmap page">
                                         <materialDesign:PackIcon Width="16"
@@ -177,7 +173,6 @@
                                     <Button Width="24"
                                             Margin="2"
                                             Padding="0"
-                                            Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                                             Style="{DynamicResource MaterialDesignFlatDarkButton}"
                                             ToolTip="Download the beatmap">
                                         <materialDesign:PackIcon Width="16"

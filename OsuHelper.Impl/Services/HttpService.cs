@@ -9,9 +9,6 @@ namespace OsuHelper.Services
     {
         private readonly HttpClient _client;
 
-        private readonly TimeSpan _minRequestInterval = TimeSpan.FromSeconds(0.05);
-        private DateTime _lastRequestDateTime = DateTime.MinValue;
-
         public HttpService()
         {
             var handler = new HttpClientHandler();
@@ -27,20 +24,8 @@ namespace OsuHelper.Services
             Dispose(false);
         }
 
-        private async Task RequestThrottlingAsync()
-        {
-            var timeSinceLastRequest = DateTime.Now - _lastRequestDateTime;
-            if (timeSinceLastRequest > TimeSpan.Zero && timeSinceLastRequest < _minRequestInterval)
-            {
-                var timeLeft = _minRequestInterval - timeSinceLastRequest;
-                await Task.Delay(timeLeft);
-            }
-            _lastRequestDateTime = DateTime.Now;
-        }
-
         public async Task<string> GetStringAsync(string url)
         {
-            await RequestThrottlingAsync();
             return await _client.GetStringAsync(url);
         }
 

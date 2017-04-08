@@ -12,7 +12,7 @@ namespace OsuHelper.Services
 
         public FileSettingsService()
         {
-            Configuration.FileName = "Configuration.dat";
+            Configuration.FileName = "Config.dat";
             Configuration.SubDirectoryPath = "";
             Configuration.StorageSpace = StorageSpace.Instance;
         }

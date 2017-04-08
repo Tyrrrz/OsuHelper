@@ -37,7 +37,7 @@ namespace OsuHelper.Services
 
             // Get similar players
             var similarPlayers = (await topPlays.ParallelSelectAsync(async play => await _dataService.GetBeatmapTopPlaysAsync(gameMode, play.BeatmapId, play.Mods)))
-                .SelectMany() // Flatten
+                .SelectMany(p => p) // Flatten
                 .Select(p => p.PlayerId) // Select player ID
                 .Distinct() // Only unique
                 .Take(200)
@@ -47,7 +47,7 @@ namespace OsuHelper.Services
             // Get their top plays
             var ignoredBeatmaps = topPlays.Select(p => p.BeatmapId).ToArray();
             var similarTopPlays = (await similarPlayers.ParallelSelectAsync(async player => await _dataService.GetUserTopPlaysAsync(gameMode, player)))
-                .SelectMany() // Flatten
+                .SelectMany(p => p) // Flatten
                 .Where(p => p.Rank >= PlayRank.S) // At least S rank;
                 .Where(p => !p.BeatmapId.IsEither(ignoredBeatmaps)) // Not ignored beatmap
                 .Take(200)

@@ -11,7 +11,6 @@
              Startup="App_OnStartup"
              StartupUri="Views/MainWindow.xaml"
              mc:Ignorable="d ignore">
-
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -72,6 +71,18 @@
                 <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
             </Style>
 
+            <Style BasedOn="{StaticResource MaterialDesignDataGrid}" TargetType="{x:Type DataGrid}">
+                <Setter Property="AutoGenerateColumns" Value="False" />
+                <Setter Property="IsReadOnly" Value="True" />
+                <Setter Property="CanUserAddRows" Value="False" />
+                <Setter Property="CanUserDeleteRows" Value="False" />
+                <Setter Property="CanUserReorderColumns" Value="True" />
+                <Setter Property="CanUserResizeColumns" Value="True" />
+                <Setter Property="CanUserSortColumns" Value="True" />
+                <Setter Property="SelectionMode" Value="Single" />
+                <Setter Property="SelectionUnit" Value="FullRow" />
+            </Style>
+
             <Style x:Key="MaterialDesignFlatDarkButton"
                    BasedOn="{StaticResource MaterialDesignRaisedButton}"
                    TargetType="{x:Type Button}">
@@ -85,11 +96,11 @@
             </Style>
 
             <!--  Converters  -->
+            <converters:EnabledModsToStringConverter x:Key="EnabledModsToStringConverter" />
             <converters:TimeSpanToShortStringConverter x:Key="TimeSpanToShortStringConverter" />
 
             <!--  Locator  -->
             <local:Locator x:Key="Locator" d:IsDataSource="True" />
         </ResourceDictionary>
     </Application.Resources>
-
 </Application>

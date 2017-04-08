@@ -50,141 +50,34 @@
         </Border>
 
         <!--  Recommendations  -->
-        <ScrollViewer Grid.Row="1"
-                      Panel.ZIndex="0"
-                      HorizontalScrollBarVisibility="Disabled"
-                      VerticalScrollBarVisibility="Auto">
-            <ItemsControl Margin="5"
-                          HorizontalAlignment="Center"
-                          ItemsSource="{Binding Recommendations}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <materialDesign:Card Width="400"
-                                             Height="100"
-                                             Margin="1.5">
-                            <!--  Image background  -->
-                            <materialDesign:Card.Background>
-                                <ImageBrush ImageSource="{Binding Beatmap.CardUrl}" />
-                            </materialDesign:Card.Background>
-
-                            <!--  Info  -->
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <!--  Full name  -->
-                                <TextBlock Grid.Row="0"
-                                           Grid.Column="0"
-                                           Grid.ColumnSpan="3"
-                                           Margin="2,2,2,0"
-                                           Padding="2"
-                                           Background="#99000000"
-                                           Foreground="{DynamicResource PrimaryInverseTextBrush}"
-                                           Text="{Binding Beatmap.FullName}" />
-
-                                <!--  Map stats  -->
-                                <TextBlock Grid.Row="1"
-                                           Grid.Column="0"
-                                           Margin="2,2,2,2"
-                                           Padding="2"
-                                           Background="#99000000"
-                                           Foreground="{DynamicResource SecondaryInverseTextBrush}">
-                                    <Run Text="BPM:" />
-                                    <Run Foreground="{DynamicResource PrimaryInverseTextBrush}" Text="{Binding ActualBeatsPerMinute, StringFormat=\{0:0.#\}, Mode=OneWay}" />
-                                    <Run Text="Duration:" />
-                                    <Run Foreground="{DynamicResource PrimaryInverseTextBrush}" Text="{Binding ActualDuration, Converter={StaticResource TimeSpanToShortStringConverter}, Mode=OneWay}" />
-                                    <Run Text="Combo:" />
-                                    <Run Foreground="{DynamicResource PrimaryInverseTextBrush}" Text="{Binding Beatmap.MaxCombo, Mode=OneWay}" /><Run Text="x" />
-
-                                    <LineBreak />
-
-                                    <Run Text="SR:" />
-                                    <Run Foreground="{DynamicResource PrimaryInverseTextBrush}" Text="{Binding ActualStars, StringFormat=\{0:0.#\}, Mode=OneWay}" />
-                                    <Run Text="AR:" />
-                                    <Run Foreground="{DynamicResource PrimaryInverseTextBrush}" Text="{Binding ActualApproachRate, StringFormat=\{0:0.#\}, Mode=OneWay}" />
-                                    <Run Text="OD:" />
-                                    <Run Foreground="{DynamicResource PrimaryInverseTextBrush}" Text="{Binding ActualOverallDifficulty, StringFormat=\{0:0.#\}, Mode=OneWay}" />
-                                    <Run Text="CS:" />
-                                    <Run Foreground="{DynamicResource PrimaryInverseTextBrush}" Text="{Binding ActualCircleSize, StringFormat=\{0:0.#\}, Mode=OneWay}" />
-                                    <Run Text="HP:" />
-                                    <Run Foreground="{DynamicResource PrimaryInverseTextBrush}" Text="{Binding ActualDrain, StringFormat=\{0:0.#\}, Mode=OneWay}" />
-                                </TextBlock>
-
-                                <!--  Expected accuracy, mods and pp  -->
-                                <TextBlock Grid.Row="1"
-                                           Grid.Column="2"
-                                           Margin="2,2,2,2"
-                                           Padding="2"
-                                           Background="#99000000"
-                                           Foreground="{DynamicResource SecondaryInverseTextBrush}"
-                                           TextAlignment="Right">
-                                    <Run Foreground="{DynamicResource PrimaryInverseTextBrush}" Text="HDHR" />
-                                    <Run Text="with" />
-                                    <Run Foreground="{DynamicResource PrimaryInverseTextBrush}" Text="{Binding ExpectedAccuracy, StringFormat=\{0:P2\}, Mode=OneWay}" />
-
-                                    <LineBreak />
-
-                                    <Run Text="gives" />
-                                    <Run Foreground="{DynamicResource PrimaryInverseTextBrush}" Text="{Binding ExpectedPerformancePoints, StringFormat=\{0:0.#\}, Mode=OneWay}" />
-                                    <Run Text="pp" />
-                                </TextBlock>
-
-                                <!--  Buttons  -->
-                                <UniformGrid Grid.Row="2"
-                                             Grid.Column="0"
-                                             Grid.ColumnSpan="3"
-                                             Margin="2,0,2,2"
-                                             HorizontalAlignment="Right"
-                                             VerticalAlignment="Bottom"
-                                             Background="#99000000"
-                                             Rows="1">
-                                    <Button Width="24"
-                                            Margin="2"
-                                            Padding="0"
-                                            Style="{DynamicResource MaterialDesignFlatDarkButton}"
-                                            ToolTip="Play music preview">
-                                        <materialDesign:PackIcon Width="16"
-                                                                 Height="16"
-                                                                 Kind="Play" />
-                                    </Button>
-                                    <Button Width="24"
-                                            Margin="2"
-                                            Padding="0"
-                                            Style="{DynamicResource MaterialDesignFlatDarkButton}"
-                                            ToolTip="Open beatmap page">
-                                        <materialDesign:PackIcon Width="16"
-                                                                 Height="16"
-                                                                 Kind="Web" />
-                                    </Button>
-                                    <Button Width="24"
-                                            Margin="2"
-                                            Padding="0"
-                                            Style="{DynamicResource MaterialDesignFlatDarkButton}"
-                                            ToolTip="Download the beatmap">
-                                        <materialDesign:PackIcon Width="16"
-                                                                 Height="16"
-                                                                 Kind="Download" />
-                                    </Button>
-                                </UniformGrid>
-                            </Grid>
-                        </materialDesign:Card>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+        <DataGrid Grid.Row="1"
+                  HorizontalScrollBarVisibility="Disabled"
+                  ItemsSource="{Binding Recommendations}"
+                  VerticalScrollBarVisibility="Auto">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="*"
+                                    Binding="{Binding Beatmap.FullName}"
+                                    Header="Name" />
+                <DataGridTextColumn Binding="{Binding Mods, Converter={StaticResource EnabledModsToStringConverter}}" Header="Mods" />
+                <DataGridTextColumn Binding="{Binding ActualStars, StringFormat=\{0:0.#\}}" Header="SR" />
+                <DataGridTextColumn Binding="{Binding ActualApproachRate, StringFormat=\{0:0.#\}}" Header="AR" />
+                <DataGridTextColumn Binding="{Binding ActualOverallDifficulty, StringFormat=\{0:0.#\}}" Header="OD" />
+                <DataGridTextColumn Binding="{Binding ActualBeatsPerMinute, StringFormat=\{0:N0\}}" Header="BPM" />
+                <DataGridTextColumn Binding="{Binding ActualDuration, Converter={StaticResource TimeSpanToShortStringConverter}}" Header="Length" />
+                <DataGridTextColumn Binding="{Binding ExpectedAccuracy, StringFormat=\{0:P2\}}" Header="Accuracy" />
+                <DataGridTextColumn Binding="{Binding ExpectedPerformancePoints, StringFormat=\{0:N0\} pp}" Header="Gain" />
+            </DataGrid.Columns>
+            <DataGrid.ColumnHeaderStyle>
+                <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="Padding" Value="5" />
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+            <DataGrid.CellStyle>
+                <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="{x:Type DataGridCell}">
+                    <Setter Property="Padding" Value="5" />
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                </Style>
+            </DataGrid.CellStyle>
+        </DataGrid>
     </Grid>
 </Window>

@@ -20,6 +20,7 @@ namespace OsuHelper
 
             // View models
             SimpleIoc.Default.Register<IMainViewModel, MainViewModel>();
+            SimpleIoc.Default.Register<ISettingsViewModel, SettingsViewModel>();
 
             // Load settings
             ServiceLocator.Current.GetInstance<ISettingsService>().Load();
@@ -37,9 +38,11 @@ namespace OsuHelper
             (ServiceLocator.Current.GetInstance<ISettingsService>() as IDisposable)?.Dispose();
 
             (ServiceLocator.Current.GetInstance<IMainViewModel>() as IDisposable)?.Dispose();
+            (ServiceLocator.Current.GetInstance<ISettingsViewModel>() as IDisposable)?.Dispose();
             // ReSharper restore SuspiciousTypeConversion.Global
         }
 
         public IMainViewModel MainViewModel => ServiceLocator.Current.GetInstance<IMainViewModel>();
+        public ISettingsViewModel SettingsViewModel => ServiceLocator.Current.GetInstance<ISettingsViewModel>();
     }
 }

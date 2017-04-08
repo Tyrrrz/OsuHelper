@@ -5,6 +5,7 @@
         xmlns:ignore="http://www.galasoft.ch/ignore"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:OsuHelper.Views"
         Title="osu!helper v{0}"
         Width="850"
         Height="625"
@@ -20,64 +21,78 @@
         TextOptions.TextRenderingMode="Auto"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d ignore">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <materialDesign:DialogHost CloseOnClickAway="True">
+        <materialDesign:DialogHost.DialogContent>
+            <views:SettingsDialog />
+        </materialDesign:DialogHost.DialogContent>
 
-        <!--  Toolbar  -->
-        <Border Grid.Column="0"
-                materialDesign:ShadowAssist.ShadowDepth="Depth1"
-                Background="{DynamicResource PrimaryHueMidBrush}"
-                TextElement.Foreground="{DynamicResource SecondaryInverseTextBrush}">
-            <StackPanel Orientation="Vertical">
-                <!--  Buttons  -->
-                <UniformGrid Margin="5"
-                             HorizontalAlignment="Right"
-                             VerticalAlignment="Center"
-                             Rows="1">
-                    <Button Command="{Binding GetRecommendationsCommand}" Style="{DynamicResource MaterialDesignFlatDarkButton}">
-                        <materialDesign:PackIcon Width="24"
-                                                 Height="24"
-                                                 Kind="Refresh" />
-                    </Button>
-                </UniformGrid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-                <!--  Progress bar  -->
-                <ProgressBar Background="Transparent" IsIndeterminate="{Binding IsBusy}" />
-            </StackPanel>
-        </Border>
+            <!--  Toolbar  -->
+            <Border Grid.Column="0"
+                    Background="{DynamicResource PrimaryHueMidBrush}"
+                    TextElement.Foreground="{DynamicResource SecondaryInverseTextBrush}">
+                <StackPanel Orientation="Vertical">
+                    <!--  Buttons  -->
+                    <UniformGrid Margin="5"
+                                 HorizontalAlignment="Right"
+                                 VerticalAlignment="Center"
+                                 Rows="1">
+                        <Button Margin="5,0,5,0"
+                                Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                Style="{DynamicResource MaterialDesignFlatDarkButton}">
+                            <materialDesign:PackIcon Width="24"
+                                                     Height="24"
+                                                     Kind="Settings" />
+                        </Button>
+                        <Button Margin="5,0,5,0"
+                                Command="{Binding GetRecommendationsCommand}"
+                                Style="{DynamicResource MaterialDesignFlatDarkButton}">
+                            <materialDesign:PackIcon Width="24"
+                                                     Height="24"
+                                                     Kind="Refresh" />
+                        </Button>
+                    </UniformGrid>
 
-        <!--  Recommendations  -->
-        <DataGrid Grid.Row="1"
-                  HorizontalScrollBarVisibility="Disabled"
-                  ItemsSource="{Binding Recommendations}"
-                  VerticalScrollBarVisibility="Auto">
-            <DataGrid.Columns>
-                <DataGridTextColumn Width="*"
-                                    Binding="{Binding Beatmap.FullName}"
-                                    Header="Name" />
-                <DataGridTextColumn Binding="{Binding Mods, Converter={StaticResource EnabledModsToStringConverter}}" Header="Mods" />
-                <DataGridTextColumn Binding="{Binding ActualStars, StringFormat=\{0:0.#\}}" Header="SR" />
-                <DataGridTextColumn Binding="{Binding ActualApproachRate, StringFormat=\{0:0.#\}}" Header="AR" />
-                <DataGridTextColumn Binding="{Binding ActualOverallDifficulty, StringFormat=\{0:0.#\}}" Header="OD" />
-                <DataGridTextColumn Binding="{Binding ActualBeatsPerMinute, StringFormat=\{0:N0\}}" Header="BPM" />
-                <DataGridTextColumn Binding="{Binding ActualDuration, Converter={StaticResource TimeSpanToShortStringConverter}}" Header="Length" />
-                <DataGridTextColumn Binding="{Binding ExpectedAccuracy, StringFormat=\{0:P2\}}" Header="Accuracy" />
-                <DataGridTextColumn Binding="{Binding ExpectedPerformancePoints, StringFormat=\{0:N0\} pp}" Header="Gain" />
-            </DataGrid.Columns>
-            <DataGrid.ColumnHeaderStyle>
-                <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="{x:Type DataGridColumnHeader}">
-                    <Setter Property="Padding" Value="5" />
-                </Style>
-            </DataGrid.ColumnHeaderStyle>
-            <DataGrid.CellStyle>
-                <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="{x:Type DataGridCell}">
-                    <Setter Property="Padding" Value="5" />
-                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                </Style>
-            </DataGrid.CellStyle>
-        </DataGrid>
-    </Grid>
+                    <!--  Progress bar  -->
+                    <ProgressBar Background="Transparent" IsIndeterminate="{Binding IsBusy}" />
+                </StackPanel>
+            </Border>
+
+            <!--  Recommendations  -->
+            <DataGrid Grid.Row="1"
+                      HorizontalScrollBarVisibility="Disabled"
+                      ItemsSource="{Binding Recommendations}"
+                      VerticalScrollBarVisibility="Auto">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="*"
+                                        Binding="{Binding Beatmap.FullName}"
+                                        Header="Name" />
+                    <DataGridTextColumn Binding="{Binding Mods, Converter={StaticResource EnabledModsToStringConverter}}" Header="Mods" />
+                    <DataGridTextColumn Binding="{Binding ActualStars, StringFormat=\{0:0.#\}}" Header="SR" />
+                    <DataGridTextColumn Binding="{Binding ActualApproachRate, StringFormat=\{0:0.#\}}" Header="AR" />
+                    <DataGridTextColumn Binding="{Binding ActualOverallDifficulty, StringFormat=\{0:0.#\}}" Header="OD" />
+                    <DataGridTextColumn Binding="{Binding ActualBeatsPerMinute, StringFormat=\{0:N0\}}" Header="BPM" />
+                    <DataGridTextColumn Binding="{Binding ActualDuration, Converter={StaticResource TimeSpanToShortStringConverter}}" Header="Length" />
+                    <DataGridTextColumn Binding="{Binding ExpectedAccuracy, StringFormat=\{0:P2\}}" Header="Accuracy" />
+                    <DataGridTextColumn Binding="{Binding ExpectedPerformancePoints, StringFormat=\{0:N0\} pp}" Header="Gain" />
+                </DataGrid.Columns>
+                <DataGrid.ColumnHeaderStyle>
+                    <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="{x:Type DataGridColumnHeader}">
+                        <Setter Property="Padding" Value="5" />
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.CellStyle>
+                    <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="{x:Type DataGridCell}">
+                        <Setter Property="Padding" Value="5" />
+                        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                    </Style>
+                </DataGrid.CellStyle>
+            </DataGrid>
+        </Grid>
+    </materialDesign:DialogHost>
 </Window>

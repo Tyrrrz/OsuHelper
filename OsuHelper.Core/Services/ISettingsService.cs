@@ -5,9 +5,13 @@ namespace OsuHelper.Services
 {
     public interface ISettingsService
     {
+        string Username { get; set; }
+        string ApiRoot { get; set; }
+        string ApiKey { get; set; }
+        GameMode GameMode { get; set; }
+        bool ShouldDownloadWithoutVideo { get; set; }
+
         IEnumerable<BeatmapRecommendation> LastRecommendations { get; set; }
-        string OsuApiRoot { get; set; }
-        string OsuApiKey { get; set; }
 
         void Load();
         void Save();

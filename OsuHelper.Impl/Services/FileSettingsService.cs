@@ -6,9 +6,12 @@ namespace OsuHelper.Services
 {
     public class FileSettingsService : SettingsManager, ISettingsService
     {
+        public string Username { get; set; }
+        public string ApiRoot { get; set; } = "https://osu.ppy.sh/api/";
+        public string ApiKey { get; set; }
+        public GameMode GameMode { get; set; } = GameMode.Standard;
+        public bool ShouldDownloadWithoutVideo { get; set; }
         public IEnumerable<BeatmapRecommendation> LastRecommendations { get; set; }
-        public string OsuApiRoot { get; set; } = "https://osu.ppy.sh/api/";
-        public string OsuApiKey { get; set; }
 
         public FileSettingsService()
         {

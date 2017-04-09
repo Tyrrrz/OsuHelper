@@ -6,8 +6,8 @@ namespace OsuHelper.Services
 {
     public interface IDataService
     {
-        Task<Beatmap> GetBeatmapAsync(GameMode gameMode, string beatmapId);
-        Task<IEnumerable<Play>> GetUserTopPlaysAsync(GameMode gameMode, string userId);
-        Task<IEnumerable<Play>> GetBeatmapTopPlaysAsync(GameMode gameMode, string beatmapId, EnabledMods enabledMods);
+        Task<Beatmap> GetBeatmapAsync(string beatmapId, GameMode gameMode);
+        Task<IEnumerable<Play>> GetUserTopPlaysAsync(string userId, GameMode gameMode);
+        Task<IEnumerable<Play>> GetBeatmapTopPlaysAsync(string beatmapId, GameMode gameMode, EnabledMods enabledMods);
     }
 }

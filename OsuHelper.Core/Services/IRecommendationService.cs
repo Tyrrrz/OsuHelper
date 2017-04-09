@@ -6,6 +6,6 @@ namespace OsuHelper.Services
 {
     public interface IRecommendationService
     {
-        Task<IEnumerable<BeatmapRecommendation>> GetRecommendationsAsync(GameMode gameMode, string userId, int maxCount);
+        Task<IEnumerable<BeatmapRecommendation>> GetRecommendationsAsync();
     }
 }

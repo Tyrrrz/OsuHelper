@@ -5,7 +5,7 @@ namespace OsuHelper.Services
 {
     public interface ISettingsService
     {
-        string Username { get; set; }
+        string UserId { get; set; }
         string ApiRoot { get; set; }
         string ApiKey { get; set; }
         GameMode GameMode { get; set; }

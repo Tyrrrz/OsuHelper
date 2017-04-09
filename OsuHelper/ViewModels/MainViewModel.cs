@@ -50,7 +50,7 @@ namespace OsuHelper.ViewModels
         {
             IsBusy = true;
 
-            Recommendations = await _recommendationService.GetRecommendationsAsync(GameMode.Standard, "Tyrrrz", 100);
+            Recommendations = await _recommendationService.GetRecommendationsAsync();
             _settingsService.LastRecommendations = Recommendations;
 
             IsBusy = false;

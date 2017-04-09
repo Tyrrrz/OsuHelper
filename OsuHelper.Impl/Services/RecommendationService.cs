@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using OsuHelper.Models;
@@ -10,58 +9,82 @@ namespace OsuHelper.Services
 {
     public class RecommendationService : IRecommendationService
     {
+        private readonly ISettingsService _settingsService;
         private readonly IDataService _dataService;
 
-        public RecommendationService(IDataService dataService)
+        private string UserId => _settingsService.UserId;
+        private GameMode GameMode => _settingsService.GameMode;
+
+        public RecommendationService(ISettingsService settingsService, IDataService dataService)
         {
+            if (settingsService == null)
+                throw new ArgumentNullException(nameof(settingsService));
             if (dataService == null)
                 throw new ArgumentNullException(nameof(dataService));
 
+            _settingsService = settingsService;
             _dataService = dataService;
         }
 
-        public async Task<IEnumerable<BeatmapRecommendation>> GetRecommendationsAsync(GameMode gameMode, string userId, int maxCount)
+        public async Task<IEnumerable<BeatmapRecommendation>> GetRecommendationsAsync()
         {
-            if (userId == null)
-                throw new ArgumentNullException(nameof(userId));
-            if (maxCount < 0)
-                throw new ArgumentOutOfRangeException(nameof(maxCount));
-
             // Get user's top plays
-            var topPlays = (await _dataService.GetUserTopPlaysAsync(gameMode, userId))
+            var ownTopPlays = (await _dataService.GetUserTopPlaysAsync(UserId, GameMode))
                 .OrderByDescending(p => p.PerformancePoints)
                 .ToArray();
 
+            // Get maps where they were made
+            var ownTopPlaysMaps = ownTopPlays
+                .Select(p => p.BeatmapId)
+                .ToArray();
+
             // If no top plays - return empty
-            if (!topPlays.Any()) return Enumerable.Empty<BeatmapRecommendation>();
+            if (!ownTopPlays.Any()) return Enumerable.Empty<BeatmapRecommendation>();
 
-            // Get similar players
-            var similarPlayers = (await topPlays.ParallelSelectAsync(async play => await _dataService.GetBeatmapTopPlaysAsync(gameMode, play.BeatmapId, play.Mods)))
-                .SelectMany(p => p) // Flatten
-                .Select(p => p.PlayerId) // Select player ID
-                .Distinct() // Only unique
-                .Take(200)
-                .ToArray();
-            Debug.WriteLine($"Obtained IDs of {similarPlayers.Length} similar players", GetType().Name);
+            // Set boundaries
+            double minPP = ownTopPlays.Take(15).Average(p => p.PerformancePoints);
+            double maxPP = ownTopPlays.Take(15).Average(p => p.PerformancePoints)*1.25;
 
-            // Get their top plays
-            var ignoredBeatmaps = topPlays.Select(p => p.BeatmapId).ToArray();
-            var similarTopPlays = (await similarPlayers.ParallelSelectAsync(async player => await _dataService.GetUserTopPlaysAsync(gameMode, player)))
-                .SelectMany(p => p) // Flatten
-                .Where(p => p.Rank >= PlayRank.S) // At least S rank;
-                .Where(p => !p.BeatmapId.IsEither(ignoredBeatmaps)) // Not ignored beatmap
-                .Take(200)
-                .ToArray();
-            Debug.WriteLine($"Obtained {similarTopPlays.Length} similar top plays", GetType().Name);
+            // Prepare buffer for recommendation bases
+            var recommendationBases = new List<Play>();
 
-            // Prepare recommendations
-            var potentialRecommendations = similarTopPlays
-                .GroupBy(p => p.BeatmapId) // Group by beatmap
-                .ToArray();
-            Debug.WriteLine($"Obtained {potentialRecommendations.Length} potential recommendations", GetType().Name);
+            // Go through top X plays
+            await ownTopPlays.Take(15).ParallelForEachAsync(async ownTopPlay =>
+            {
+                // Get the map's top plays
+                var mapTopPlays = await _dataService.GetBeatmapTopPlaysAsync(ownTopPlay.BeatmapId, GameMode, ownTopPlay.Mods);
+
+                // Filter by PP difference
+                mapTopPlays = mapTopPlays
+                    .OrderBy(p => Math.Abs(p.PerformancePoints - ownTopPlay.PerformancePoints))
+                    .Take(10);
+
+                // Go through those top plays
+                await mapTopPlays.ParallelForEachAsync(async mapTopPlay =>
+                {
+                    // Get top plays of that user
+                    var otherUserTopPlays = await _dataService.GetUserTopPlaysAsync(mapTopPlay.PlayerId, GameMode);
+
+                    // Filter by PP difference and total PP
+                    otherUserTopPlays = otherUserTopPlays
+                        .Where(p => p.Rank >= PlayRank.S)
+                        .Where(p => p.PerformancePoints >= minPP)
+                        .Where(p => p.PerformancePoints <= maxPP)
+                        .OrderBy(p => Math.Abs(p.PerformancePoints - ownTopPlay.PerformancePoints))
+                        .Take(10);
+
+                    recommendationBases.AddRange(otherUserTopPlays);
+                });
+            });
+
+            // Prepare recommendation groups
+            var recommendationGroups = recommendationBases
+                .GroupBy(p => p.BeatmapId)
+                .Where(g => !g.Key.IsEither(ownTopPlaysMaps));
 
             // Assemble recommendations
-            var result = (await potentialRecommendations.ParallelSelectAsync(async group =>
+            var result = new List<BeatmapRecommendation>();
+            await recommendationGroups.ParallelForEachAsync(async group =>
             {
                 int count = group.Count();
 
@@ -69,7 +92,7 @@ namespace OsuHelper.Services
                 var play = group.OrderBy(p => p.PerformancePoints).ElementAt(count/2);
 
                 // Get beatmap data
-                var beatmap = await _dataService.GetBeatmapAsync(gameMode, play.BeatmapId);
+                var beatmap = await _dataService.GetBeatmapAsync(play.BeatmapId, GameMode);
 
                 // Add recommendation
                 var recommendation = new BeatmapRecommendation();
@@ -79,14 +102,10 @@ namespace OsuHelper.Services
                 recommendation.ExpectedAccuracy = play.Accuracy;
                 recommendation.ExpectedPerformancePoints = play.PerformancePoints;
 
-                return recommendation;
-            }))
-            .OrderByDescending(r => r.Popularity) // Order by popularity
-            .Take(maxCount) // Limit to max count
-            .ToArray();
-            Debug.WriteLine($"Generated {result.Length} recommendations", GetType().Name);
+                result.Add(recommendation);
+            });
 
-            return result;
+            return result.OrderByDescending(r => r.Popularity);
         }
     }
 }

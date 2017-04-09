@@ -6,7 +6,7 @@ namespace OsuHelper.Services
 {
     public class FileSettingsService : SettingsManager, ISettingsService
     {
-        public string Username { get; set; }
+        public string UserId { get; set; }
         public string ApiRoot { get; set; } = "https://osu.ppy.sh/api/";
         public string ApiKey { get; set; }
         public GameMode GameMode { get; set; } = GameMode.Standard;

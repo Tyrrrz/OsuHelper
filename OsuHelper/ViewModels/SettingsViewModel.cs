@@ -1,5 +1,4 @@
-﻿using System;
-using OsuHelper.Services;
+﻿using OsuHelper.Services;
 
 namespace OsuHelper.ViewModels
 {
@@ -9,9 +8,6 @@ namespace OsuHelper.ViewModels
 
         public SettingsViewModel(ISettingsService settingsService)
         {
-            if (settingsService == null)
-                throw new ArgumentNullException(nameof(settingsService));
-
             SettingsService = settingsService;
         }
     }

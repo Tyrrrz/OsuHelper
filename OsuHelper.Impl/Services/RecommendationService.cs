@@ -17,11 +17,6 @@ namespace OsuHelper.Services
 
         public RecommendationService(ISettingsService settingsService, IDataService dataService)
         {
-            if (settingsService == null)
-                throw new ArgumentNullException(nameof(settingsService));
-            if (dataService == null)
-                throw new ArgumentNullException(nameof(dataService));
-
             _settingsService = settingsService;
             _dataService = dataService;
         }

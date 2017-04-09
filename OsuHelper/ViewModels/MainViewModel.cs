@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using OsuHelper.Models;
@@ -35,11 +34,6 @@ namespace OsuHelper.ViewModels
 
         public MainViewModel(ISettingsService settingsService, IRecommendationService recommendationService)
         {
-            if (settingsService == null)
-                throw new ArgumentNullException(nameof(settingsService));
-            if (recommendationService == null)
-                throw new ArgumentNullException(nameof(recommendationService));
-
             _settingsService = settingsService;
             _recommendationService = recommendationService;
 

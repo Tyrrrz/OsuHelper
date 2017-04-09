@@ -17,20 +17,12 @@ namespace OsuHelper.Services
 
         public OsuApiDataService(ISettingsService settingsService, IHttpService httpService)
         {
-            if (settingsService == null)
-                throw new ArgumentNullException(nameof(settingsService));
-            if (httpService == null)
-                throw new ArgumentNullException(nameof(httpService));
-
             _settingsService = settingsService;
             _httpService = httpService;
         }
 
         public async Task<Beatmap> GetBeatmapAsync(string beatmapId, GameMode gameMode)
         {
-            if (beatmapId == null)
-                throw new ArgumentNullException(nameof(beatmapId));
-
             // Get
             string url = ApiRoot + $"/get_beatmaps?k={ApiKey}&m={(int) gameMode}&b={beatmapId}&limit=1&a=1";
             string response = await _httpService.GetStringAsync(url);
@@ -63,9 +55,6 @@ namespace OsuHelper.Services
 
         public async Task<IEnumerable<Play>> GetUserTopPlaysAsync(string userId, GameMode gameMode)
         {
-            if (userId == null)
-                throw new ArgumentNullException(nameof(userId));
-
             // Get
             string url = ApiRoot + $"/get_user_best?k={ApiKey}&m={(int) gameMode}&u={userId.UrlEncode()}&limit=100";
             string response = await _httpService.GetStringAsync(url);
@@ -98,9 +87,6 @@ namespace OsuHelper.Services
         public async Task<IEnumerable<Play>> GetBeatmapTopPlaysAsync(string beatmapId, GameMode gameMode,
             EnabledMods enabledMods)
         {
-            if (beatmapId == null)
-                throw new ArgumentNullException(nameof(beatmapId));
-
             // Get
             string url = ApiRoot + $"/get_scores?k={ApiKey}&m={(int) gameMode}&b={beatmapId}&limit=100";
             if (enabledMods != EnabledMods.Any) url += $"&mods={(int) enabledMods}";

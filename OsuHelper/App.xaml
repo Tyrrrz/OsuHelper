@@ -87,6 +87,15 @@
                 <Setter Property="SelectionUnit" Value="FullRow" />
             </Style>
 
+            <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="{x:Type DataGridColumnHeader}">
+                <Setter Property="Padding" Value="5" />
+            </Style>
+
+            <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="{x:Type DataGridCell}">
+                <Setter Property="Padding" Value="5" />
+                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            </Style>
+
             <Style x:Key="MaterialDesignFlatDarkButton"
                    BasedOn="{StaticResource MaterialDesignRaisedButton}"
                    TargetType="{x:Type Button}">

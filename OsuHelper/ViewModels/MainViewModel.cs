@@ -18,7 +18,11 @@ namespace OsuHelper.ViewModels
         public bool IsBusy
         {
             get { return _isBusy; }
-            private set { Set(ref _isBusy, value); }
+            private set
+            {
+                Set(ref _isBusy, value);
+                GetRecommendationsCommand.RaiseCanExecuteChanged();
+            }
         }
 
         public IEnumerable<BeatmapRecommendation> Recommendations
@@ -40,10 +44,10 @@ namespace OsuHelper.ViewModels
             _recommendationService = recommendationService;
 
             // Commands
-            GetRecommendationsCommand = new RelayCommand(GetRecommendationsAsync);
+            GetRecommendationsCommand = new RelayCommand(GetRecommendationsAsync, () => !IsBusy);
 
             // Load stored recommendations
-            Recommendations = _settingsService.LastRecommendations;
+            _recommendations = _settingsService.LastRecommendations;
         }
 
         private async void GetRecommendationsAsync()

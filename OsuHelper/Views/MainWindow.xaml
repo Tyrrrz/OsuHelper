@@ -44,6 +44,7 @@
                                  Rows="1">
                         <Button Margin="5,0,5,0"
                                 Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"
                                 Style="{DynamicResource MaterialDesignFlatDarkButton}">
                             <materialDesign:PackIcon Width="24"
                                                      Height="24"
@@ -54,7 +55,7 @@
                                 Style="{DynamicResource MaterialDesignFlatDarkButton}">
                             <materialDesign:PackIcon Width="24"
                                                      Height="24"
-                                                     Kind="Refresh" />
+                                                     Kind="Reload" />
                         </Button>
                     </UniformGrid>
 
@@ -68,6 +69,32 @@
                       HorizontalScrollBarVisibility="Disabled"
                       ItemsSource="{Binding Recommendations}"
                       VerticalScrollBarVisibility="Auto">
+                <DataGrid.Style>
+                    <Style BasedOn="{StaticResource {x:Type DataGrid}}" TargetType="{x:Type DataGrid}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsBusy}" Value="True">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard TargetProperty="Opacity">
+                                            <DoubleAnimation From="1"
+                                                             To="0"
+                                                             Duration="0:0:0.5" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard TargetProperty="Opacity">
+                                            <DoubleAnimation From="0"
+                                                             To="1"
+                                                             Duration="0:0:0.5" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Style>
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="*"
                                         Binding="{Binding Beatmap.FullName}"
@@ -81,17 +108,6 @@
                     <DataGridTextColumn Binding="{Binding ExpectedAccuracy, StringFormat=\{0:P2\}}" Header="Accuracy" />
                     <DataGridTextColumn Binding="{Binding ExpectedPerformancePoints, StringFormat=\{0:N0\} pp}" Header="Gain" />
                 </DataGrid.Columns>
-                <DataGrid.ColumnHeaderStyle>
-                    <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="{x:Type DataGridColumnHeader}">
-                        <Setter Property="Padding" Value="5" />
-                    </Style>
-                </DataGrid.ColumnHeaderStyle>
-                <DataGrid.CellStyle>
-                    <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="{x:Type DataGridCell}">
-                        <Setter Property="Padding" Value="5" />
-                        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                    </Style>
-                </DataGrid.CellStyle>
             </DataGrid>
         </Grid>
     </materialDesign:DialogHost>

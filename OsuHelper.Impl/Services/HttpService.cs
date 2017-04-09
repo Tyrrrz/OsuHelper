@@ -7,10 +7,11 @@ namespace OsuHelper.Services
 {
     public class HttpService : IHttpService, IDisposable
     {
-        private const int MaxActiveConnections = 15;
-        private static readonly TimeSpan ThrottlingDelay = TimeSpan.FromMilliseconds(200);
+        private const int MaxActiveConnections = 40;
+        private static readonly TimeSpan ThrottlingDelay = TimeSpan.FromMilliseconds(50);
 
         private readonly HttpClient _client;
+        private DateTime _lastRequestTime;
         private int _activeConnections;
 
         public HttpService()
@@ -22,7 +23,7 @@ namespace OsuHelper.Services
 
             _client = new HttpClient(handler);
             _client.DefaultRequestHeaders.Add("User-Agent", "osu!helper (github.com/Tyrrrz/OsuHelper)");
-            _client.DefaultRequestHeaders.Add("Connection", "Close");
+            _client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
         }
 
         ~HttpService()
@@ -30,12 +31,24 @@ namespace OsuHelper.Services
             Dispose(false);
         }
 
-        public async Task<string> GetStringAsync(string url)
+        private async Task ThrottleRequests()
         {
+            // Frequency-based throttling
+            var timeLeft = ThrottlingDelay - (DateTime.Now - _lastRequestTime);
+            if (timeLeft > TimeSpan.Zero)
+                await Task.Delay(timeLeft);
+
+            // Pressure-based throttling
             while (_activeConnections >= MaxActiveConnections)
                 await Task.Delay(ThrottlingDelay);
+        }
+
+        public async Task<string> GetStringAsync(string url)
+        {
+            await ThrottleRequests();
 
             _activeConnections++;
+            _lastRequestTime = DateTime.Now;
             var result = await _client.GetStringAsync(url);
             _activeConnections--;
             return result;

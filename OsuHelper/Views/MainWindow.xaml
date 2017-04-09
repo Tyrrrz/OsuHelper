@@ -30,6 +30,7 @@
             <!--  Toolbar  -->
             <Border Grid.Column="0"
                     Background="{DynamicResource PrimaryHueMidBrush}"
+                    IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"
                     TextElement.Foreground="{DynamicResource SecondaryInverseTextBrush}">
                 <StackPanel Orientation="Vertical">
                     <!--  Buttons  -->
@@ -40,7 +41,6 @@
                         <Button x:Name="ShowSettingsDialogButton"
                                 Margin="5,0,5,0"
                                 Click="ShowSettingsDialogButton_OnClick"
-                                IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"
                                 Style="{DynamicResource MaterialDesignFlatDarkButton}">
                             <materialDesign:PackIcon Width="24"
                                                      Height="24"
@@ -64,6 +64,7 @@
             <DataGrid Grid.Row="1"
                       Background="{DynamicResource MaterialDesignCardBackground}"
                       HorizontalScrollBarVisibility="Disabled"
+                      IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"
                       ItemsSource="{Binding Recommendations}"
                       VerticalScrollBarVisibility="Auto">
                 <DataGrid.Style>

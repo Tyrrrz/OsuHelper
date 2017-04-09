@@ -11,17 +11,17 @@
              TextOptions.TextFormattingMode="Ideal"
              TextOptions.TextRenderingMode="Auto">
     <StackPanel Margin="5" Orientation="Vertical">
-        <TextBlock Margin="5" Text="Username:" />
+        <TextBlock Margin="5" Text="Username or ID:" />
         <TextBox Margin="5,0,5,5" Text="{Binding SettingsService.UserId}" />
-        <TextBlock Margin="5" Text="API Key:" />
+        <TextBlock Margin="5" Text="API key:" />
         <TextBox Margin="5,0,5,5" Text="{Binding SettingsService.ApiKey}" />
-        <TextBlock Margin="5" Text="Gamemode:" />
+        <TextBlock Margin="5" Text="Game mode:" />
         <ComboBox Margin="5,0,5,5"
                   IsReadOnly="True"
                   SelectedItem="{Binding SettingsService.GameMode, Converter={StaticResource EnumToStringConverter}}">
             <system:String>Standard</system:String>
             <system:String>Taiko</system:String>
-            <system:String>Catch the Beat</system:String>
+            <system:String>Catch The Beat</system:String>
             <system:String>Mania</system:String>
         </ComboBox>
 

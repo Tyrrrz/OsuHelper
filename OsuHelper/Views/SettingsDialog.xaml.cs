@@ -1,28 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+﻿using System.Diagnostics;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace OsuHelper.Views
 {
-    /// <summary>
-    /// Interaction logic for SettingsDialog.xaml
-    /// </summary>
-    public partial class SettingsDialog : UserControl
+    public partial class SettingsDialog
     {
         public SettingsDialog()
         {
             InitializeComponent();
+        }
+
+        private void Hyperlink_OnRequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            Process.Start(e.Uri.ToString());
         }
     }
 }

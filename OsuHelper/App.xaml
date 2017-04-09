@@ -75,6 +75,21 @@
                 <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
             </Style>
 
+            <Style TargetType="{x:Type Hyperlink}">
+                <Setter Property="FontSize" Value="13" />
+                <Setter Property="FontWeight" Value="Regular" />
+                <Style.Triggers>
+                    <MultiTrigger>
+                        <MultiTrigger.Conditions>
+                            <Condition Property="IsEnabled" Value="True" />
+                            <Condition Property="IsMouseOver" Value="True" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="TextDecorations" Value="Underline" />
+                        <Setter Property="Foreground" Value="{DynamicResource AccentTextBrush}" />
+                    </MultiTrigger>
+                </Style.Triggers>
+            </Style>
+
             <Style BasedOn="{StaticResource MaterialDesignDataGrid}" TargetType="{x:Type DataGrid}">
                 <Setter Property="AutoGenerateColumns" Value="False" />
                 <Setter Property="IsReadOnly" Value="True" />

@@ -66,6 +66,7 @@
 
             <!--  Recommendations  -->
             <DataGrid Grid.Row="1"
+                      Background="{DynamicResource MaterialDesignCardBackground}"
                       HorizontalScrollBarVisibility="Disabled"
                       ItemsSource="{Binding Recommendations}"
                       VerticalScrollBarVisibility="Auto">

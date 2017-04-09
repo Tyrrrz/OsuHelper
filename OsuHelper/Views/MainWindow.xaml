@@ -5,7 +5,6 @@
         xmlns:ignore="http://www.galasoft.ch/ignore"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:views="clr-namespace:OsuHelper.Views"
         Title="osu!helper v{0}"
         Width="850"
         Height="625"
@@ -22,10 +21,6 @@
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d ignore">
     <materialDesign:DialogHost CloseOnClickAway="True">
-        <materialDesign:DialogHost.DialogContent>
-            <views:SettingsDialog />
-        </materialDesign:DialogHost.DialogContent>
-
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -42,8 +37,9 @@
                                  HorizontalAlignment="Right"
                                  VerticalAlignment="Center"
                                  Rows="1">
-                        <Button Margin="5,0,5,0"
-                                Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                        <Button x:Name="ShowSettingsDialogButton"
+                                Margin="5,0,5,0"
+                                Click="ShowSettingsDialogButton_OnClick"
                                 IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"
                                 Style="{DynamicResource MaterialDesignFlatDarkButton}">
                             <materialDesign:PackIcon Width="24"

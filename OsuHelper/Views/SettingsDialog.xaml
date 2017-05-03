@@ -13,7 +13,6 @@
     TextOptions.TextFormattingMode="Ideal"
     TextOptions.TextRenderingMode="Auto">
     <StackPanel Margin="5" Orientation="Vertical">
-
         <TextBlock Margin="5" Text="Username or ID:" />
         <TextBox Margin="5,0,5,5" Text="{Binding SettingsService.UserId}" />
 

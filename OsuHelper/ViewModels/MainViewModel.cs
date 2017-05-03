@@ -16,7 +16,7 @@ namespace OsuHelper.ViewModels
 
         public bool IsBusy
         {
-            get { return _isBusy; }
+            get => _isBusy;
             private set
             {
                 Set(ref _isBusy, value);
@@ -26,8 +26,8 @@ namespace OsuHelper.ViewModels
 
         public IEnumerable<BeatmapRecommendation> Recommendations
         {
-            get { return _recommendations; }
-            private set { Set(ref _recommendations, value); }
+            get => _recommendations;
+            private set => Set(ref _recommendations, value);
         }
 
         public RelayCommand GetRecommendationsCommand { get; }

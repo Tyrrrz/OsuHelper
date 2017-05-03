@@ -8,6 +8,6 @@ namespace OsuHelper.Services
     {
         Task<Beatmap> GetBeatmapAsync(string beatmapId, GameMode gameMode);
         Task<IEnumerable<Play>> GetUserTopPlaysAsync(string userId, GameMode gameMode);
-        Task<IEnumerable<Play>> GetBeatmapTopPlaysAsync(string beatmapId, GameMode gameMode, EnabledMods enabledMods);
+        Task<IEnumerable<Play>> GetBeatmapTopPlaysAsync(string beatmapId, GameMode gameMode, Mods mods);
     }
 }

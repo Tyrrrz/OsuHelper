@@ -9,7 +9,7 @@ namespace OsuHelper.Services
         string ApiRoot { get; set; }
         string ApiKey { get; set; }
         GameMode GameMode { get; set; }
-        bool ShouldDownloadWithoutVideo { get; set; }
+        bool DownloadWithoutVideo { get; set; }
 
         IEnumerable<BeatmapRecommendation> LastRecommendations { get; set; }
 

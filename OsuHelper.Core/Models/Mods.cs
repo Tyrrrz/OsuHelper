@@ -3,9 +3,8 @@
 namespace OsuHelper.Models
 {
     [Flags]
-    public enum EnabledMods
+    public enum Mods
     {
-        Any = -1,
         None = 0,
         NoFail = 1,
         Easy = 2,

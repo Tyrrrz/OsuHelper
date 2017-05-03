@@ -12,7 +12,7 @@ namespace OsuHelper.Services
 
         public string UserId
         {
-            get { return _userId; }
+            get => _userId;
             set
             {
                 string fromUrl = Regex.Match(value, @".*?.ppy.sh/\w/([\w\d]+)").Groups[1].Value;
@@ -26,7 +26,7 @@ namespace OsuHelper.Services
 
         public GameMode GameMode { get; set; } = GameMode.Standard;
 
-        public bool ShouldDownloadWithoutVideo { get; set; }
+        public bool DownloadWithoutVideo { get; set; }
 
         public IEnumerable<BeatmapRecommendation> LastRecommendations { get; set; }
 

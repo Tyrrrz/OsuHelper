@@ -35,14 +35,17 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Models\BeatmapTraits.cs" />
     <Compile Include="Models\Beatmap.cs" />
     <Compile Include="Models\BeatmapRankingStatus.cs" />
     <Compile Include="Models\BeatmapRecommendation.cs" />
-    <Compile Include="Models\EnabledMods.cs" />
+    <Compile Include="Models\Mods.cs" />
     <Compile Include="Models\GameMode.cs" />
     <Compile Include="Models\Play.cs" />
     <Compile Include="Models\PlayRank.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IBeatmapProcessorService.cs" />
     <Compile Include="Services\IDataService.cs" />
     <Compile Include="Services\IHttpService.cs" />
     <Compile Include="Services\IRecommendationService.cs" />

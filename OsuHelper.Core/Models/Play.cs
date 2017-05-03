@@ -6,7 +6,7 @@
 
         public string BeatmapId { get; set; }
 
-        public EnabledMods Mods { get; set; }
+        public Mods Mods { get; set; }
 
         public PlayRank Rank { get; set; }
 

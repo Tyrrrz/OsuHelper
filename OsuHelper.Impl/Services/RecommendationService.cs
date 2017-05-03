@@ -11,14 +11,17 @@ namespace OsuHelper.Services
     {
         private readonly ISettingsService _settingsService;
         private readonly IDataService _dataService;
+        private readonly IBeatmapProcessorService _beatmapProcessorService;
 
         private string UserId => _settingsService.UserId;
         private GameMode GameMode => _settingsService.GameMode;
 
-        public RecommendationService(ISettingsService settingsService, IDataService dataService)
+        public RecommendationService(ISettingsService settingsService, IDataService dataService,
+            IBeatmapProcessorService beatmapProcessorService)
         {
             _settingsService = settingsService;
             _dataService = dataService;
+            _beatmapProcessorService = beatmapProcessorService;
         }
 
         public async Task<IEnumerable<BeatmapRecommendation>> GetRecommendationsAsync()
@@ -75,7 +78,9 @@ namespace OsuHelper.Services
             // Prepare recommendation groups
             var recommendationGroups = recommendationBases
                 .GroupBy(p => p.BeatmapId)
-                .Where(g => !g.Key.IsEither(ownTopPlaysMaps));
+                .Where(g => !g.Key.IsEither(ownTopPlaysMaps))
+                .OrderByDescending(g => g.Count())
+                .Take(100);
 
             // Assemble recommendations
             var result = new List<BeatmapRecommendation>();
@@ -89,11 +94,15 @@ namespace OsuHelper.Services
                 // Get beatmap data
                 var beatmap = await _dataService.GetBeatmapAsync(play.BeatmapId, GameMode);
 
+                // Calculate modded traits
+                var traitsWithMods = await _beatmapProcessorService.CalculateTraitsWithModsAsync(beatmap, play.Mods);
+
                 // Add recommendation
                 var recommendation = new BeatmapRecommendation();
                 recommendation.Popularity = count;
                 recommendation.Beatmap = beatmap;
                 recommendation.Mods = play.Mods;
+                recommendation.TraitsWithMods = traitsWithMods;
                 recommendation.ExpectedAccuracy = play.Accuracy;
                 recommendation.ExpectedPerformancePoints = play.PerformancePoints;
 

@@ -42,7 +42,7 @@
                        Text="Download maps without video:" />
             <ToggleButton Grid.Column="1"
                           Margin="5"
-                          IsChecked="{Binding SettingsService.ShouldDownloadWithoutVideo}" />
+                          IsChecked="{Binding SettingsService.DownloadWithoutVideo}" />
         </Grid>
 
         <Button Margin="5"

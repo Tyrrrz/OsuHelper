@@ -13,6 +13,7 @@ namespace OsuHelper
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             // Services
+            SimpleIoc.Default.Register<IBeatmapProcessorService, OppaiBeatmapProcessorService>();
             SimpleIoc.Default.Register<IDataService, OsuApiDataService>();
             SimpleIoc.Default.Register<IHttpService, HttpService>();
             SimpleIoc.Default.Register<IRecommendationService, RecommendationService>();
@@ -32,6 +33,7 @@ namespace OsuHelper
             ServiceLocator.Current.GetInstance<ISettingsService>().Save();
 
             // ReSharper disable SuspiciousTypeConversion.Global
+            (ServiceLocator.Current.GetInstance<IBeatmapProcessorService>() as IDisposable)?.Dispose();
             (ServiceLocator.Current.GetInstance<IDataService>() as IDisposable)?.Dispose();
             (ServiceLocator.Current.GetInstance<IHttpService>() as IDisposable)?.Dispose();
             (ServiceLocator.Current.GetInstance<IRecommendationService>() as IDisposable)?.Dispose();

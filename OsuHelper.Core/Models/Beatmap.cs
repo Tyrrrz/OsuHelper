@@ -10,8 +10,6 @@ namespace OsuHelper.Models
 
         public GameMode GameMode { get; set; }
 
-        public BeatmapRankingStatus RankingStatus { get; set; }
-
         public string Creator { get; set; }
 
         public DateTime LastUpdate { get; set; }
@@ -20,32 +18,16 @@ namespace OsuHelper.Models
 
         public string Title { get; set; }
 
-        public string DifficultyName { get; set; }
+        public string Version { get; set; }
 
-        public string FullName => $"{Artist} - {Title} [{DifficultyName}]";
+        public BeatmapTraits Traits { get; set; }
 
-        public TimeSpan Duration { get; set; }
-
-        public int MaxCombo { get; set; }
-
-        public double BeatsPerMinute { get; set; }
-
-        public double Stars { get; set; }
-
-        public double ApproachRate { get; set; }
-
-        public double OverallDifficulty { get; set; }
-
-        public double CircleSize { get; set; }
-
-        public double Drain { get; set; }
+        public string FullName => $"{Artist} - {Title} [{Version}]";
 
         public string ThumbnailUrl => $"https://b.ppy.sh/thumb/{MapSetId}l.jpg";
 
         public string CoverUrl => $"https://assets.ppy.sh/beatmaps/{MapSetId}/covers/cover.jpg";
 
         public string CardUrl => $"https://assets.ppy.sh/beatmaps/{MapSetId}/covers/card.jpg";
-
-        public string SoundPreviewUrl => $"https://b.ppy.sh/preview/{MapSetId}.mp3";
     }
 }

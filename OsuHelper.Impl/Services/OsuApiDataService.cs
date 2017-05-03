@@ -35,20 +35,20 @@ namespace OsuHelper.Services
             result.Id = parsed["beatmap_id"].Value<string>();
             result.MapSetId = parsed["beatmapset_id"].Value<string>();
             result.GameMode = gameMode;
-            result.RankingStatus = (BeatmapRankingStatus) parsed["approved"].Value<int>();
             result.Creator = parsed["creator"].Value<string>();
             result.LastUpdate = parsed["last_update"].Value<DateTime>();
             result.Artist = parsed["artist"].Value<string>();
             result.Title = parsed["title"].Value<string>();
-            result.DifficultyName = parsed["version"].Value<string>();
-            result.Duration = TimeSpan.FromSeconds(parsed["hit_length"].Value<double>());
-            result.MaxCombo = parsed["max_combo"].Value<int?>().GetValueOrDefault(); // can be null sometimes
-            result.BeatsPerMinute = parsed["bpm"].Value<double>();
-            result.Stars = parsed["difficultyrating"].Value<double>();
-            result.ApproachRate = parsed["diff_approach"].Value<double>();
-            result.OverallDifficulty = parsed["diff_overall"].Value<double>();
-            result.CircleSize = parsed["diff_size"].Value<double>();
-            result.Drain = parsed["diff_drain"].Value<double>();
+            result.Version = parsed["version"].Value<string>();
+            result.Traits = new BeatmapTraits();
+            result.Traits.MaxCombo = parsed["max_combo"].Value<int?>().GetValueOrDefault(); // can be null sometimes
+            result.Traits.Duration = TimeSpan.FromSeconds(parsed["hit_length"].Value<double>());
+            result.Traits.BeatsPerMinute = parsed["bpm"].Value<double>();
+            result.Traits.StarRating = parsed["difficultyrating"].Value<double>();
+            result.Traits.ApproachRate = parsed["diff_approach"].Value<double>();
+            result.Traits.OverallDifficulty = parsed["diff_overall"].Value<double>();
+            result.Traits.CircleSize = parsed["diff_size"].Value<double>();
+            result.Traits.Drain = parsed["diff_drain"].Value<double>();
 
             return result;
         }
@@ -69,7 +69,7 @@ namespace OsuHelper.Services
                 var play = new Play();
                 play.PlayerId = jPlay["user_id"].Value<string>();
                 play.BeatmapId = jPlay["beatmap_id"].Value<string>();
-                play.Mods = (EnabledMods) jPlay["enabled_mods"].Value<int>();
+                play.Mods = (Mods) jPlay["enabled_mods"].Value<int>();
                 play.Rank = jPlay["rank"].Value<string>().ParseEnum<PlayRank>();
                 play.MaxCombo = jPlay["maxcombo"].Value<int>();
                 play.Count300 = jPlay["count300"].Value<int>();
@@ -84,12 +84,10 @@ namespace OsuHelper.Services
             return result;
         }
 
-        public async Task<IEnumerable<Play>> GetBeatmapTopPlaysAsync(string beatmapId, GameMode gameMode,
-            EnabledMods enabledMods)
+        public async Task<IEnumerable<Play>> GetBeatmapTopPlaysAsync(string beatmapId, GameMode gameMode, Mods mods)
         {
             // Get
             string url = ApiRoot + $"/get_scores?k={ApiKey}&m={(int) gameMode}&b={beatmapId}&limit=100";
-            if (enabledMods != EnabledMods.Any) url += $"&mods={(int) enabledMods}";
             string response = await _httpService.GetStringAsync(url);
 
             // Parse
@@ -102,7 +100,7 @@ namespace OsuHelper.Services
                 var play = new Play();
                 play.PlayerId = jPlay["user_id"].Value<string>();
                 play.BeatmapId = beatmapId;
-                play.Mods = (EnabledMods) jPlay["enabled_mods"].Value<int>();
+                play.Mods = (Mods) jPlay["enabled_mods"].Value<int>();
                 play.Rank = jPlay["rank"].Value<string>().ParseEnum<PlayRank>();
                 play.MaxCombo = jPlay["maxcombo"].Value<int>();
                 play.Count300 = jPlay["count300"].Value<int>();

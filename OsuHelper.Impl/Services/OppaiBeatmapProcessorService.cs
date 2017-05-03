@@ -17,7 +17,7 @@ namespace OsuHelper.Services
         public OppaiBeatmapProcessorService(IHttpService httpService)
         {
             _httpService = httpService;
-            _cli = new Cli(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "oppai.exe"));
+            _cli = new Cli(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "External\\", "oppai.exe"));
         }
 
         private async Task<string> ExecuteOppaiAsync(string beatmapFilePath, Mods mods)

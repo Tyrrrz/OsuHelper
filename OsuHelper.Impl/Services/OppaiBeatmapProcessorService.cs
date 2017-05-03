@@ -51,6 +51,14 @@ namespace OsuHelper.Services
 
         public async Task<BeatmapTraits> CalculateTraitsWithModsAsync(Beatmap beatmap, Mods mods)
         {
+            // No mods - just return base traits
+            if (mods == Mods.None)
+                return beatmap.Traits;
+
+            // Not standard - return base traits (oppai doesn't support other modes)
+            if (beatmap.GameMode != GameMode.Standard)
+                return beatmap.Traits;
+
             // Download map
             string url = $"https://osu.ppy.sh/osu/{beatmap.Id}";
             string beatmapFilePath = Path.GetTempFileName();

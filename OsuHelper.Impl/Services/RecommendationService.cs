@@ -95,7 +95,7 @@ namespace OsuHelper.Services
                 var beatmap = await _dataService.GetBeatmapAsync(play.BeatmapId, GameMode);
 
                 // Calculate traits with mods
-                var traitsWithMods = play.Mods == Mods.None
+                var traitsWithMods = play.Mods == Mods.None || beatmap.GameMode != GameMode.Standard
                     ? beatmap.Traits
                     : await _beatmapProcessorService.CalculateTraitsWithModsAsync(beatmap, play.Mods);
 

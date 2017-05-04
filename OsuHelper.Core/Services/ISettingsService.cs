@@ -6,8 +6,8 @@ namespace OsuHelper.Services
     public interface ISettingsService
     {
         string UserId { get; set; }
-        string OsuRoot { get; set; }
-        string ApiKey { get; set; }
+        string OsuWebRoot { get; set; }
+        string OsuApiKey { get; set; }
         GameMode GameMode { get; set; }
         bool DownloadWithoutVideo { get; set; }
 

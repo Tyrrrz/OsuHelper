@@ -13,8 +13,8 @@ namespace OsuHelper.Services
         private readonly IHttpService _httpService;
         private readonly ICacheService _cacheService;
 
-        private string OsuRoot => _settingsService.OsuRoot.Trim('/');
-        private string ApiKey => _settingsService.ApiKey;
+        private string OsuWebRoot => _settingsService.OsuWebRoot.Trim('/');
+        private string OsuApiKey => _settingsService.OsuApiKey;
 
         public OsuWebDataService(ISettingsService settingsService, IHttpService httpService, ICacheService cacheService)
         {
@@ -30,7 +30,7 @@ namespace OsuHelper.Services
             if (cached != null) return cached;
 
             // Get
-            string url = OsuRoot + $"/api/get_beatmaps?k={ApiKey}&m={(int) gameMode}&b={beatmapId}&limit=1&a=1";
+            string url = OsuWebRoot + $"/api/get_beatmaps?k={OsuApiKey}&m={(int) gameMode}&b={beatmapId}&limit=1&a=1";
             string response = await _httpService.GetStringAsync(url);
 
             // Parse
@@ -69,7 +69,7 @@ namespace OsuHelper.Services
             if (cached != null) return cached;
 
             // Get
-            string url = OsuRoot + $"/osu/{beatmapId}";
+            string url = OsuWebRoot + $"/osu/{beatmapId}";
             string response = await _httpService.GetStringAsync(url);
 
             // Save to cache
@@ -83,7 +83,7 @@ namespace OsuHelper.Services
             // Don't cache volatile data
 
             // Get
-            string url = OsuRoot + $"/api/get_user_best?k={ApiKey}&m={(int) gameMode}&u={userId.UrlEncode()}&limit=100";
+            string url = OsuWebRoot + $"/api/get_user_best?k={OsuApiKey}&m={(int) gameMode}&u={userId.UrlEncode()}&limit=100";
             string response = await _httpService.GetStringAsync(url);
 
             // Parse
@@ -116,7 +116,7 @@ namespace OsuHelper.Services
             // Don't cache volatile data
 
             // Get
-            string url = OsuRoot + $"/api/get_scores?k={ApiKey}&m={(int) gameMode}&b={beatmapId}&limit=100";
+            string url = OsuWebRoot + $"/api/get_scores?k={OsuApiKey}&m={(int) gameMode}&b={beatmapId}&limit=100";
             string response = await _httpService.GetStringAsync(url);
 
             // Parse

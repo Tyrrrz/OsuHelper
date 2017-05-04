@@ -17,7 +17,7 @@
     TextOptions.TextFormattingMode="Ideal"
     TextOptions.TextRenderingMode="Auto"
     WindowStartupLocation="CenterScreen">
-    <materialDesign:DialogHost CloseOnClickAway="True">
+    <materialDesign:DialogHost>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -41,11 +41,11 @@
                             Margin="5,0,5,0"
                             Command="{Binding GetRecommendationsCommand}"
                             Style="{DynamicResource MaterialDesignFlatDarkButton}"
-                            ToolTip="Refresh suggestions">
+                            ToolTip="Refresh recommendations">
                             <materialDesign:PackIcon
                                 Width="24"
                                 Height="24"
-                                Kind="Reload" />
+                                Kind="Sync" />
                         </Button>
                         <Button
                             x:Name="ShowSettingsDialogButton"

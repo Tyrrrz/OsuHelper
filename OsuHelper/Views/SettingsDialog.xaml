@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
-    Width="400"
+    Width="350"
     DataContext="{Binding SettingsViewModel, Source={StaticResource Locator}}"
     SnapsToDevicePixels="True"
     TextElement.FontSize="13"
@@ -33,26 +33,16 @@
             <system:String>Mania</system:String>
         </ComboBox>
 
-        <Grid Margin="0,5,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <TextBlock
-                Grid.Column="0"
-                Margin="5"
-                Text="Download maps without video:" />
-            <ToggleButton
-                Grid.Column="1"
-                Margin="5"
-                IsChecked="{Binding SettingsService.DownloadWithoutVideo}" />
-        </Grid>
+        <CheckBox
+            Margin="5"
+            Content="Download maps without video"
+            IsChecked="{Binding SettingsService.DownloadWithoutVideo}" />
 
         <Button
-            Margin="5,10,5,5"
+            Margin="5,20,5,5"
             HorizontalAlignment="Right"
             Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-            Content="OK" />
+            Content="CLOSE"
+            Style="{DynamicResource MaterialDesignFlatButton}" />
     </StackPanel>
 </UserControl>

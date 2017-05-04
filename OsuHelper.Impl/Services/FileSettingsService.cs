@@ -28,7 +28,7 @@ namespace OsuHelper.Services
 
         public bool DownloadWithoutVideo { get; set; }
 
-        public IEnumerable<BeatmapRecommendation> LastRecommendations { get; set; }
+        public IReadOnlyList<BeatmapRecommendation> LastRecommendations { get; set; }
 
         public FileSettingsService()
         {

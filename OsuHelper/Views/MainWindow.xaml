@@ -70,7 +70,8 @@
                 HorizontalScrollBarVisibility="Disabled"
                 IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"
                 ItemsSource="{Binding Recommendations}"
-                VerticalScrollBarVisibility="Auto">
+                VerticalScrollBarVisibility="Auto"
+                Visibility="{Binding HasData, Converter={StaticResource BoolToVisibilityConverter}}">
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Width="*"

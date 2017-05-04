@@ -8,7 +8,9 @@ namespace OsuHelper.ViewModels
     {
         bool IsBusy { get; }
 
-        IEnumerable<BeatmapRecommendation> Recommendations { get; }
+        IReadOnlyList<BeatmapRecommendation> Recommendations { get; }
+
+        bool HasData { get; }
 
         RelayCommand GetRecommendationsCommand { get; }
     }

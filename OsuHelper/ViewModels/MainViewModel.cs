@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using OsuHelper.Models;
 using OsuHelper.Services;
+using Tyrrrz.Extensions;
 
 namespace OsuHelper.ViewModels
 {
@@ -12,7 +14,7 @@ namespace OsuHelper.ViewModels
         private readonly IRecommendationService _recommendationService;
 
         private bool _isBusy;
-        private IEnumerable<BeatmapRecommendation> _recommendations;
+        private IReadOnlyList<BeatmapRecommendation> _recommendations;
 
         public bool IsBusy
         {
@@ -24,11 +26,17 @@ namespace OsuHelper.ViewModels
             }
         }
 
-        public IEnumerable<BeatmapRecommendation> Recommendations
+        public IReadOnlyList<BeatmapRecommendation> Recommendations
         {
             get => _recommendations;
-            private set => Set(ref _recommendations, value);
+            private set
+            {
+                Set(ref _recommendations, value);
+                RaisePropertyChanged(() => HasData);
+            }
         }
+
+        public bool HasData => Recommendations.NotNullAndAny();
 
         public RelayCommand GetRecommendationsCommand { get; }
 
@@ -48,7 +56,7 @@ namespace OsuHelper.ViewModels
         {
             IsBusy = true;
 
-            Recommendations = await _recommendationService.GetRecommendationsAsync();
+            Recommendations = (await _recommendationService.GetRecommendationsAsync()).ToArray();
             _settingsService.LastRecommendations = Recommendations;
 
             IsBusy = false;

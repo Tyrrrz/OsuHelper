@@ -11,7 +11,7 @@ namespace OsuHelper.Services
         GameMode GameMode { get; set; }
         bool DownloadWithoutVideo { get; set; }
 
-        IEnumerable<BeatmapRecommendation> LastRecommendations { get; set; }
+        IReadOnlyList<BeatmapRecommendation> LastRecommendations { get; set; }
 
         void Load();
         void Save();

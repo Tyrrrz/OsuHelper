@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using CliWrap;
+using CliWrap.Models;
 using Newtonsoft.Json.Linq;
 using OsuHelper.Models;
 
@@ -10,25 +11,23 @@ namespace OsuHelper.Services
 {
     public class OppaiBeatmapProcessorService : IBeatmapProcessorService
     {
-        private readonly IHttpService _httpService;
+        private readonly IDataService _dataService;
 
         private readonly Cli _cli;
 
-        public OppaiBeatmapProcessorService(IHttpService httpService)
+        public OppaiBeatmapProcessorService(IDataService dataService)
         {
-            _httpService = httpService;
+            _dataService = dataService;
             _cli = new Cli(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "External\\", "oppai.exe"));
         }
 
-        private async Task<string> ExecuteOppaiAsync(string beatmapFilePath, Mods mods)
+        private async Task<string> ExecuteOppaiAsync(string rawBeatmapData, Mods mods)
         {
             // Assemble arguments
             var argsBuffer = new StringBuilder();
 
             // -- beatmap
-            argsBuffer.Append('"');
-            argsBuffer.Append(beatmapFilePath);
-            argsBuffer.Append('"');
+            argsBuffer.Append('-');
             argsBuffer.Append(' ');
 
             // -- mods
@@ -43,7 +42,8 @@ namespace OsuHelper.Services
             argsBuffer.Append("-ojson");
 
             // Execute
-            var output = await _cli.ExecuteAsync(argsBuffer.ToString());
+            var input = new ExecutionInput(argsBuffer.ToString(), rawBeatmapData);
+            var output = await _cli.ExecuteAsync(input);
             output.ThrowIfError();
 
             return output.StandardOutput;
@@ -59,13 +59,11 @@ namespace OsuHelper.Services
             if (beatmap.GameMode != GameMode.Standard)
                 return beatmap.Traits;
 
-            // Download map
-            string url = $"https://osu.ppy.sh/osu/{beatmap.Id}";
-            string beatmapFilePath = Path.GetTempFileName();
-            await _httpService.DownloadAsync(url, beatmapFilePath);
+            // Get raw beatmap data
+            string beatmapRaw = await _dataService.GetBeatmapRawAsync(beatmap.Id);
 
             // Run oppai
-            string oppaiOutput = await ExecuteOppaiAsync(beatmapFilePath, mods);
+            string oppaiOutput = await ExecuteOppaiAsync(beatmapRaw, mods);
 
             // Parse
             var parsed = JToken.Parse(oppaiOutput);

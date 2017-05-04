@@ -20,7 +20,7 @@ namespace OsuHelper.Services
             }
         }
 
-        public string ApiRoot { get; set; } = "https://osu.ppy.sh/api/";
+        public string OsuRoot { get; set; } = "https://osu.ppy.sh/";
 
         public string ApiKey { get; set; }
 

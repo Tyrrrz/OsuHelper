@@ -7,24 +7,30 @@ using Tyrrrz.Extensions;
 
 namespace OsuHelper.Services
 {
-    public class OsuApiDataService : IDataService
+    public class OsuWebDataService : IDataService
     {
         private readonly ISettingsService _settingsService;
         private readonly IHttpService _httpService;
+        private readonly ICacheService _cacheService;
 
-        private string ApiRoot => _settingsService.ApiRoot.Trim('/');
+        private string OsuRoot => _settingsService.OsuRoot.Trim('/');
         private string ApiKey => _settingsService.ApiKey;
 
-        public OsuApiDataService(ISettingsService settingsService, IHttpService httpService)
+        public OsuWebDataService(ISettingsService settingsService, IHttpService httpService, ICacheService cacheService)
         {
             _settingsService = settingsService;
             _httpService = httpService;
+            _cacheService = cacheService;
         }
 
         public async Task<Beatmap> GetBeatmapAsync(string beatmapId, GameMode gameMode)
         {
+            // Try get from cache first
+            var cached = _cacheService.RetrieveOrDefault<Beatmap>(beatmapId);
+            if (cached != null) return cached;
+
             // Get
-            string url = ApiRoot + $"/get_beatmaps?k={ApiKey}&m={(int) gameMode}&b={beatmapId}&limit=1&a=1";
+            string url = OsuRoot + $"/api/get_beatmaps?k={ApiKey}&m={(int) gameMode}&b={beatmapId}&limit=1&a=1";
             string response = await _httpService.GetStringAsync(url);
 
             // Parse
@@ -41,7 +47,7 @@ namespace OsuHelper.Services
             result.Title = parsed["title"].Value<string>();
             result.Version = parsed["version"].Value<string>();
             result.Traits = new BeatmapTraits();
-            result.Traits.MaxCombo = parsed["max_combo"].Value<int?>().GetValueOrDefault(); // can be null sometimes
+            result.Traits.MaxCombo = parsed["max_combo"].Value<int?>() ?? 0; // can be null sometimes
             result.Traits.Duration = TimeSpan.FromSeconds(parsed["hit_length"].Value<double>());
             result.Traits.BeatsPerMinute = parsed["bpm"].Value<double>();
             result.Traits.StarRating = parsed["difficultyrating"].Value<double>();
@@ -50,13 +56,34 @@ namespace OsuHelper.Services
             result.Traits.CircleSize = parsed["diff_size"].Value<double>();
             result.Traits.Drain = parsed["diff_drain"].Value<double>();
 
+            // Save to cache
+            _cacheService.Store(beatmapId, result);
+
             return result;
+        }
+
+        public async Task<string> GetBeatmapRawAsync(string beatmapId)
+        {
+            // Try get from cache first
+            var cached = _cacheService.RetrieveOrDefault<string>(beatmapId);
+            if (cached != null) return cached;
+
+            // Get
+            string url = OsuRoot + $"/osu/{beatmapId}";
+            string response = await _httpService.GetStringAsync(url);
+
+            // Save to cache
+            _cacheService.Store(beatmapId, response);
+
+            return response;
         }
 
         public async Task<IEnumerable<Play>> GetUserTopPlaysAsync(string userId, GameMode gameMode)
         {
+            // Don't cache volatile data
+
             // Get
-            string url = ApiRoot + $"/get_user_best?k={ApiKey}&m={(int) gameMode}&u={userId.UrlEncode()}&limit=100";
+            string url = OsuRoot + $"/api/get_user_best?k={ApiKey}&m={(int) gameMode}&u={userId.UrlEncode()}&limit=100";
             string response = await _httpService.GetStringAsync(url);
 
             // Parse
@@ -86,8 +113,10 @@ namespace OsuHelper.Services
 
         public async Task<IEnumerable<Play>> GetBeatmapTopPlaysAsync(string beatmapId, GameMode gameMode, Mods mods)
         {
+            // Don't cache volatile data
+
             // Get
-            string url = ApiRoot + $"/get_scores?k={ApiKey}&m={(int) gameMode}&b={beatmapId}&limit=100";
+            string url = OsuRoot + $"/api/get_scores?k={ApiKey}&m={(int) gameMode}&b={beatmapId}&limit=100";
             string response = await _httpService.GetStringAsync(url);
 
             // Parse

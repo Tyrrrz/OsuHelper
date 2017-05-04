@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CliWrap, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CliWrap.1.2.1\lib\net45\CliWrap.dll</HintPath>
+    <Reference Include="CliWrap, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CliWrap.1.2.2\lib\net45\CliWrap.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -58,10 +58,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\FileCacheService.cs" />
     <Compile Include="Services\OppaiBeatmapProcessorService.cs" />
     <Compile Include="Services\FileSettingsService.cs" />
     <Compile Include="Services\RecommendationService.cs" />
-    <Compile Include="Services\OsuApiDataService.cs" />
+    <Compile Include="Services\OsuWebDataService.cs" />
     <Compile Include="Services\HttpService.cs" />
   </ItemGroup>
   <ItemGroup>

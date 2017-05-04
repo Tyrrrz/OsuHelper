@@ -6,6 +6,7 @@
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     Width="350"
     DataContext="{Binding SettingsViewModel, Source={StaticResource Locator}}"
+    KeyDown="SettingsDialog_OnKeyDown"
     SnapsToDevicePixels="True"
     TextElement.FontSize="13"
     TextElement.FontWeight="Regular"
@@ -34,12 +35,12 @@
         </ComboBox>
 
         <CheckBox
-            Margin="5"
+            Margin="2,10,5,5"
             Content="Download maps without video"
             IsChecked="{Binding SettingsService.DownloadWithoutVideo}" />
 
         <Button
-            Margin="5,20,5,5"
+            Margin="5,10,5,5"
             HorizontalAlignment="Right"
             Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
             Content="CLOSE"

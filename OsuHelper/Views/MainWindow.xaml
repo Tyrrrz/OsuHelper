@@ -38,23 +38,25 @@
                         VerticalAlignment="Center"
                         Rows="1">
                         <Button
-                            x:Name="ShowSettingsDialogButton"
-                            Margin="5,0,5,0"
-                            Click="ShowSettingsDialogButton_OnClick"
-                            Style="{DynamicResource MaterialDesignFlatDarkButton}">
-                            <materialDesign:PackIcon
-                                Width="24"
-                                Height="24"
-                                Kind="Settings" />
-                        </Button>
-                        <Button
                             Margin="5,0,5,0"
                             Command="{Binding GetRecommendationsCommand}"
-                            Style="{DynamicResource MaterialDesignFlatDarkButton}">
+                            Style="{DynamicResource MaterialDesignFlatDarkButton}"
+                            ToolTip="Refresh suggestions">
                             <materialDesign:PackIcon
                                 Width="24"
                                 Height="24"
                                 Kind="Reload" />
+                        </Button>
+                        <Button
+                            x:Name="ShowSettingsDialogButton"
+                            Margin="5,0,5,0"
+                            Click="ShowSettingsDialogButton_OnClick"
+                            Style="{DynamicResource MaterialDesignFlatDarkButton}"
+                            ToolTip="Settings">
+                            <materialDesign:PackIcon
+                                Width="24"
+                                Height="24"
+                                Kind="Settings" />
                         </Button>
                     </UniformGrid>
 

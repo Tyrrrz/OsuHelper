@@ -19,7 +19,7 @@
 
         <TextBlock Margin="5,10,5,5">
             <Run Text="API key:" />
-            <Hyperlink NavigateUri="https://osu.ppy.sh/p/api" RequestNavigate="Hyperlink_OnRequestNavigate">(click here to obtain one)</Hyperlink>
+            <Hyperlink Command="{Binding GetApiKeyCommand}">(click here to obtain one)</Hyperlink>
         </TextBlock>
         <TextBox Margin="5,0,5,5" Text="{Binding SettingsService.OsuApiKey}" />
 

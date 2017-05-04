@@ -12,11 +12,6 @@ namespace OsuHelper.Views
             InitializeComponent();
         }
 
-        private void Hyperlink_OnRequestNavigate(object sender, RequestNavigateEventArgs e)
-        {
-            Process.Start(e.Uri.ToString());
-        }
-
         private void SettingsDialog_OnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)

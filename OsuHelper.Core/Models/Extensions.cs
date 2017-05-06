@@ -1,11 +1,10 @@
 ﻿using System.Text;
-using OsuHelper.Models;
 
-namespace OsuHelper
+namespace OsuHelper.Models
 {
     public static class Extensions
     {
-        public static string FormatMods(this Mods mods)
+        public static string FormatToString(this Mods mods)
         {
             if (mods == Mods.None) return string.Empty;
 

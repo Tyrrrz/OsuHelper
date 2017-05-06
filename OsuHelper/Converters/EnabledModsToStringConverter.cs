@@ -14,7 +14,7 @@ namespace OsuHelper.Converters
                 throw new ArgumentNullException(nameof(value));
 
             var mods = (Mods) value;
-            return mods.FormatMods();
+            return mods.FormatToString();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -35,7 +35,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions.cs" />
+    <Compile Include="Models\Extensions.cs" />
     <Compile Include="Models\BeatmapTraits.cs" />
     <Compile Include="Models\Beatmap.cs" />
     <Compile Include="Models\BeatmapRankingStatus.cs" />

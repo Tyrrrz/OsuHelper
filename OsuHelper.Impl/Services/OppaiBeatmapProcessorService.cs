@@ -34,7 +34,7 @@ namespace OsuHelper.Services
             if (mods != Mods.None)
             {
                 argsBuffer.Append('+');
-                argsBuffer.Append(mods.FormatMods());
+                argsBuffer.Append(mods.FormatToString());
                 argsBuffer.Append(' ');
             }
 

@@ -25,45 +25,114 @@
             </Grid.RowDefinitions>
 
             <!--  Toolbar  -->
-            <Border
+            <Grid
                 Grid.Column="0"
                 Background="{DynamicResource PrimaryHueMidBrush}"
                 IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"
                 TextElement.Foreground="{DynamicResource SecondaryInverseTextBrush}">
-                <StackPanel Orientation="Vertical">
-                    <!--  Buttons  -->
-                    <UniformGrid
-                        Margin="5"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        Rows="1">
-                        <Button
-                            Margin="5,0,5,0"
-                            Command="{Binding GetRecommendationsCommand}"
-                            Style="{DynamicResource MaterialDesignFlatDarkButton}"
-                            ToolTip="Refresh recommendations">
-                            <materialDesign:PackIcon
-                                Width="24"
-                                Height="24"
-                                Kind="Sync" />
-                        </Button>
-                        <Button
-                            x:Name="ShowSettingsDialogButton"
-                            Margin="5,0,5,0"
-                            Click="ShowSettingsDialogButton_OnClick"
-                            Style="{DynamicResource MaterialDesignFlatDarkButton}"
-                            ToolTip="Settings">
-                            <materialDesign:PackIcon
-                                Width="24"
-                                Height="24"
-                                Kind="Settings" />
-                        </Button>
-                    </UniformGrid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-                    <!--  Progress bar  -->
-                    <ProgressBar Background="Transparent" IsIndeterminate="{Binding IsBusy}" />
+                <!--  Filters  -->
+                <StackPanel
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Margin="5"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Text="Filters:" />
+
+                    <CheckBox
+                        x:Name="NomodFilterCheckBox"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Checked="NomodFilterCheckBox_OnChecked"
+                        Content="NM"
+                        Foreground="{DynamicResource PrimaryInverseTextBrush}"
+                        IsChecked="True"
+                        Style="{DynamicResource MaterialDesignUserForegroundCheckBox}"
+                        Unchecked="NomodFilterCheckBox_OnUnchecked" />
+                    <CheckBox
+                        x:Name="HiddenFilterCheckBox"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Checked="HiddenFilterCheckBox_OnChecked"
+                        Content="HD"
+                        Foreground="{DynamicResource PrimaryInverseTextBrush}"
+                        IsChecked="True"
+                        Style="{DynamicResource MaterialDesignUserForegroundCheckBox}"
+                        Unchecked="HiddenFilterCheckBox_OnUnchecked" />
+                    <CheckBox
+                        x:Name="HardrockFilterCheckBox"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Checked="HardrockFilterCheckBox_OnChecked"
+                        Content="HR"
+                        Foreground="{DynamicResource PrimaryInverseTextBrush}"
+                        IsChecked="True"
+                        Style="{DynamicResource MaterialDesignUserForegroundCheckBox}"
+                        Unchecked="HardrockFilterCheckBox_OnUnchecked" />
+                    <CheckBox
+                        x:Name="DoubletimeFilterCheckBox"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Checked="DoubletimeFilterCheckBox_OnChecked"
+                        Content="DT"
+                        Foreground="{DynamicResource PrimaryInverseTextBrush}"
+                        IsChecked="True"
+                        Style="{DynamicResource MaterialDesignUserForegroundCheckBox}"
+                        Unchecked="DoubletimeFilterCheckBox_OnUnchecked" />
                 </StackPanel>
-            </Border>
+
+                <!--  Buttons  -->
+                <StackPanel
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Margin="5"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <Button
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Command="{Binding GetRecommendationsCommand}"
+                        Style="{DynamicResource MaterialDesignFlatDarkButton}"
+                        ToolTip="Refresh recommendations">
+                        <materialDesign:PackIcon
+                            Width="24"
+                            Height="24"
+                            Kind="Sync" />
+                    </Button>
+                    <Button
+                        x:Name="ShowSettingsDialogButton"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Click="ShowSettingsDialogButton_OnClick"
+                        Style="{DynamicResource MaterialDesignFlatDarkButton}"
+                        ToolTip="Settings">
+                        <materialDesign:PackIcon
+                            Width="24"
+                            Height="24"
+                            Kind="Settings" />
+                    </Button>
+                </StackPanel>
+
+                <!--  Progress bar  -->
+                <ProgressBar
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Background="Transparent"
+                    IsIndeterminate="{Binding IsBusy}" />
+            </Grid>
 
             <!--  Recommendations  -->
             <DataGrid
@@ -85,7 +154,7 @@
                             <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsStarRatingAffected}" Value="True">
-                                        <Setter Property="Foreground" Value="DarkRed" />
+                                        <Setter Property="Foreground" Value="OrangeRed" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -96,7 +165,7 @@
                             <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsApproachRateAffected}" Value="True">
-                                        <Setter Property="Foreground" Value="DarkRed" />
+                                        <Setter Property="Foreground" Value="OrangeRed" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -107,7 +176,7 @@
                             <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsOverallDifficultyAffected}" Value="True">
-                                        <Setter Property="Foreground" Value="DarkRed" />
+                                        <Setter Property="Foreground" Value="OrangeRed" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -118,7 +187,7 @@
                             <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsBeatsPerMinuteAffected}" Value="True">
-                                        <Setter Property="Foreground" Value="DarkRed" />
+                                        <Setter Property="Foreground" Value="OrangeRed" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -129,7 +198,7 @@
                             <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsDurationAffected}" Value="True">
-                                        <Setter Property="Foreground" Value="DarkRed" />
+                                        <Setter Property="Foreground" Value="OrangeRed" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>

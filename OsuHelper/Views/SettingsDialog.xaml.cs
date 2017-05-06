@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows.Input;
-using System.Windows.Navigation;
+﻿using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
 
 namespace OsuHelper.Views

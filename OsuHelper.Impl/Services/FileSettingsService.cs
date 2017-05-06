@@ -15,8 +15,15 @@ namespace OsuHelper.Services
             get => _userId;
             set
             {
-                string fromUrl = Regex.Match(value, @".*?.ppy.sh/\w/([\w\d]+)").Groups[1].Value;
-                _userId = fromUrl.IsNotBlank() ? fromUrl : value;
+                if (value != null)
+                {
+                    string fromUrl = Regex.Match(value, @".*?.ppy.sh/\w/([\w\d]+)").Groups[1].Value;
+                    _userId = fromUrl.IsNotBlank() ? fromUrl : value;
+                }
+                else
+                {
+                    _userId = null;
+                }
             }
         }
 

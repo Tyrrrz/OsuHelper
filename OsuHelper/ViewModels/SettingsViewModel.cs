@@ -1,10 +1,11 @@
 ﻿using System.Diagnostics;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using OsuHelper.Services;
 
 namespace OsuHelper.ViewModels
 {
-    public class SettingsViewModel : ISettingsViewModel
+    public class SettingsViewModel : ViewModelBase, ISettingsViewModel
     {
         private string OsuWebRoot => SettingsService.OsuWebRoot.Trim('/');
 

@@ -17,6 +17,13 @@
     TextOptions.TextFormattingMode="Ideal"
     TextOptions.TextRenderingMode="Auto"
     WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <CollectionViewSource
+            x:Key="RecommendationsView"
+            Filter="RecommendationsView_OnFilter"
+            Source="{Binding Recommendations}" />
+    </Window.Resources>
+
     <materialDesign:DialogHost>
         <Grid>
             <Grid.RowDefinitions>
@@ -136,11 +143,12 @@
 
             <!--  Recommendations  -->
             <DataGrid
+                x:Name="RecommendationsDataGrid"
                 Grid.Row="1"
                 Background="{DynamicResource MaterialDesignCardBackground}"
                 HorizontalScrollBarVisibility="Disabled"
                 IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"
-                ItemsSource="{Binding Recommendations}"
+                ItemsSource="{Binding Source={StaticResource RecommendationsView}}"
                 VerticalScrollBarVisibility="Auto"
                 Visibility="{Binding HasData, Converter={StaticResource BoolToVisibilityConverter}}">
                 <DataGrid.Columns>

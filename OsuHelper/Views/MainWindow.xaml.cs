@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
-using MaterialDesignThemes.Wpf;
 using OsuHelper.Models;
 using Tyrrrz.Extensions;
 
@@ -9,8 +8,7 @@ namespace OsuHelper.Views
 {
     public partial class MainWindow
     {
-        private CollectionViewSource RecommendationsViewSource => (CollectionViewSource) Resources[
-            "RecommendationsView"];
+        private CollectionViewSource RecommendationsViewSource => (CollectionViewSource) Resources["RecommendationsView"];
 
         public MainWindow()
         {
@@ -36,11 +34,6 @@ namespace OsuHelper.Views
                 e.Accepted = false;
             else
                 e.Accepted = true;
-        }
-
-        private void ShowSettingsDialogButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            DialogHost.Show(new SettingsDialog()).Forget();
         }
 
         private void NomodFilterCheckBox_OnChecked(object sender, RoutedEventArgs e)

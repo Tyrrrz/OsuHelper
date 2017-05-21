@@ -43,7 +43,7 @@
             Margin="5,10,5,5"
             HorizontalAlignment="Right"
             Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-            Content="CLOSE"
+            Content="SAVE"
             Style="{DynamicResource MaterialDesignFlatButton}" />
     </StackPanel>
 </UserControl>

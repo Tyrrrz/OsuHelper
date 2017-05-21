@@ -46,15 +46,12 @@ namespace OsuHelper.Services
             }
         }
 
-        public async Task DownloadAsync(string url, string filePath)
+        public async Task<Stream> GetStreamAsync(string url)
         {
             try
             {
                 await _semaphoreSlim.WaitAsync();
-
-                using (var input = await _client.GetStreamAsync(url))
-                using (var output = File.Create(filePath))
-                    await input.CopyToAsync(output);
+                return await _client.GetStreamAsync(url);
             }
             finally
             {

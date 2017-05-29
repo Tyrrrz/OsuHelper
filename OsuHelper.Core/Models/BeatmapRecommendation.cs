@@ -4,13 +4,13 @@ namespace OsuHelper.Models
 {
     public class BeatmapRecommendation
     {
-        public int Popularity { get; set; }
+        public int Popularity { get; }
 
-        public Beatmap Beatmap { get; set; }
+        public Beatmap Beatmap { get; }
 
-        public Mods Mods { get; set; }
+        public Mods Mods { get; }
 
-        public BeatmapTraits TraitsWithMods { get; set; }
+        public BeatmapTraits TraitsWithMods { get; }
 
         public bool IsDurationAffected
             => Math.Abs((Beatmap.Traits.Duration - TraitsWithMods.Duration).TotalSeconds) >= 0.01;
@@ -33,8 +33,19 @@ namespace OsuHelper.Models
         public bool IsDrainAffected
             => Math.Abs(Beatmap.Traits.Drain - TraitsWithMods.Drain) >= 0.01;
 
-        public double ExpectedAccuracy { get; set; }
+        public double ExpectedAccuracy { get; }
 
-        public double ExpectedPerformancePoints { get; set; }
+        public double ExpectedPerformancePoints { get; }
+
+        public BeatmapRecommendation(int popularity, Beatmap beatmap, Mods mods, BeatmapTraits traitsWithMods,
+            double expectedAccuracy, double expectedPerformancePoints)
+        {
+            Popularity = popularity;
+            Beatmap = beatmap;
+            Mods = mods;
+            TraitsWithMods = traitsWithMods;
+            ExpectedAccuracy = expectedAccuracy;
+            ExpectedPerformancePoints = expectedPerformancePoints;
+        }
     }
 }

@@ -98,14 +98,7 @@ namespace OsuHelper.Services
                 var traitsWithMods = await _beatmapProcessorService.CalculateTraitsWithModsAsync(beatmap, play.Mods);
 
                 // Add recommendation
-                var recommendation = new BeatmapRecommendation();
-                recommendation.Popularity = count;
-                recommendation.Beatmap = beatmap;
-                recommendation.Mods = play.Mods;
-                recommendation.TraitsWithMods = traitsWithMods;
-                recommendation.ExpectedAccuracy = play.Accuracy;
-                recommendation.ExpectedPerformancePoints = play.PerformancePoints;
-
+                var recommendation = new BeatmapRecommendation(count, beatmap, play.Mods, traitsWithMods, play.Accuracy, play.PerformancePoints);
                 result.Add(recommendation);
             });
 

@@ -4,23 +4,23 @@ namespace OsuHelper.Models
 {
     public class Beatmap
     {
-        public string Id { get; set; }
+        public string Id { get; }
 
-        public string MapSetId { get; set; }
+        public string MapSetId { get; }
 
-        public GameMode GameMode { get; set; }
+        public GameMode GameMode { get; }
 
-        public string Creator { get; set; }
+        public string Creator { get; }
 
-        public DateTime LastUpdate { get; set; }
+        public DateTime LastUpdate { get; }
 
-        public string Artist { get; set; }
+        public string Artist { get; }
 
-        public string Title { get; set; }
+        public string Title { get; }
 
-        public string Version { get; set; }
+        public string Version { get; }
 
-        public BeatmapTraits Traits { get; set; }
+        public BeatmapTraits Traits { get; }
 
         public string FullName => $"{Artist} - {Title} [{Version}]";
 
@@ -29,5 +29,19 @@ namespace OsuHelper.Models
         public string CoverUrl => $"https://assets.ppy.sh/beatmaps/{MapSetId}/covers/cover.jpg";
 
         public string CardUrl => $"https://assets.ppy.sh/beatmaps/{MapSetId}/covers/card.jpg";
+
+        public Beatmap(string id, string mapSetId, GameMode gameMode, string creator, DateTime lastUpdate,
+            string artist, string title, string version, BeatmapTraits traits)
+        {
+            Id = id;
+            MapSetId = mapSetId;
+            GameMode = gameMode;
+            Creator = creator;
+            LastUpdate = lastUpdate;
+            Artist = artist;
+            Title = title;
+            Version = version;
+            Traits = traits;
+        }
     }
 }

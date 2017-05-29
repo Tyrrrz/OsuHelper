@@ -66,33 +66,29 @@ namespace OsuHelper.Services
             string oppaiOutput = await ExecuteOppaiAsync(beatmapRaw, mods);
 
             // Parse
-            var parsed = JToken.Parse(oppaiOutput);
+            var oppaiJson = JToken.Parse(oppaiOutput);
 
             // Populate result
-            var result = new BeatmapTraits();
-            result.MaxCombo = beatmap.Traits.MaxCombo;
+            int maxCombo = beatmap.Traits.MaxCombo;
+            var duration = beatmap.Traits.Duration;
+            double bpm = beatmap.Traits.BeatsPerMinute;
             if (mods.HasFlag(Mods.DoubleTime))
             {
-                result.Duration = TimeSpan.FromSeconds(beatmap.Traits.Duration.TotalSeconds / 1.5);
-                result.BeatsPerMinute = beatmap.Traits.BeatsPerMinute * 1.5;
+                duration = TimeSpan.FromSeconds(beatmap.Traits.Duration.TotalSeconds / 1.5);
+                bpm = beatmap.Traits.BeatsPerMinute * 1.5;
             }
             else if (mods.HasFlag(Mods.HalfTime))
             {
-                result.Duration = TimeSpan.FromSeconds(beatmap.Traits.Duration.TotalSeconds / 0.75);
-                result.BeatsPerMinute = beatmap.Traits.BeatsPerMinute * 0.75;
+                duration = TimeSpan.FromSeconds(beatmap.Traits.Duration.TotalSeconds / 0.75);
+                bpm = beatmap.Traits.BeatsPerMinute * 0.75;
             }
-            else
-            {
-                result.Duration = beatmap.Traits.Duration;
-                result.BeatsPerMinute = beatmap.Traits.BeatsPerMinute;
-            }
-            result.StarRating = parsed["stars"].Value<double>();
-            result.ApproachRate = parsed["ar"].Value<double>();
-            result.OverallDifficulty = parsed["od"].Value<double>();
-            result.CircleSize = parsed["cs"].Value<double>();
-            result.Drain = parsed["hp"].Value<double>();
+            double sr = oppaiJson["stars"].Value<double>();
+            double ar = oppaiJson["ar"].Value<double>();
+            double od = oppaiJson["od"].Value<double>();
+            double cs = oppaiJson["cs"].Value<double>();
+            double hp = oppaiJson["hp"].Value<double>();
 
-            return result;
+            return new BeatmapTraits(maxCombo, duration, bpm, sr, ar, od, cs, hp);
         }
     }
 }

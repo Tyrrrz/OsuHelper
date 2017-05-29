@@ -4,20 +4,33 @@ namespace OsuHelper.Models
 {
     public class BeatmapTraits
     {
-        public int MaxCombo { get; set; }
+        public int MaxCombo { get; }
 
-        public TimeSpan Duration { get; set; }
+        public TimeSpan Duration { get; }
 
-        public double BeatsPerMinute { get; set; }
+        public double BeatsPerMinute { get; }
 
-        public double StarRating { get; set; }
+        public double StarRating { get; }
 
-        public double ApproachRate { get; set; }
+        public double ApproachRate { get; }
 
-        public double OverallDifficulty { get; set; }
+        public double OverallDifficulty { get; }
 
-        public double CircleSize { get; set; }
+        public double CircleSize { get; }
 
-        public double Drain { get; set; }
+        public double Drain { get; }
+
+        public BeatmapTraits(int maxCombo, TimeSpan duration, double beatsPerMinute, double starRating,
+            double approachRate, double overallDifficulty, double circleSize, double drain)
+        {
+            MaxCombo = maxCombo;
+            Duration = duration;
+            BeatsPerMinute = beatsPerMinute;
+            StarRating = starRating;
+            ApproachRate = approachRate;
+            OverallDifficulty = overallDifficulty;
+            CircleSize = circleSize;
+            Drain = drain;
+        }
     }
 }

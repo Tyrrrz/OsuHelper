@@ -29,19 +29,16 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <!--  Toolbar  -->
             <Grid
-                Grid.Column="0"
+                Grid.Row="0"
                 Background="{DynamicResource PrimaryHueMidBrush}"
                 IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"
                 TextElement.Foreground="{DynamicResource SecondaryInverseTextBrush}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
@@ -49,7 +46,6 @@
 
                 <!--  Filters  -->
                 <StackPanel
-                    Grid.Row="0"
                     Grid.Column="0"
                     Margin="5"
                     VerticalAlignment="Center"
@@ -103,7 +99,6 @@
 
                 <!--  Buttons  -->
                 <StackPanel
-                    Grid.Row="0"
                     Grid.Column="1"
                     Margin="5"
                     VerticalAlignment="Center"
@@ -135,20 +130,18 @@
                             Kind="Settings" />
                     </Button>
                 </StackPanel>
-
-                <!--  Progress bar  -->
-                <ProgressBar
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"
-                    Background="Transparent"
-                    IsIndeterminate="{Binding IsBusy}" />
             </Grid>
+
+            <!--  Progress bar  -->
+            <ProgressBar
+                Grid.Row="1"
+                Background="{DynamicResource PrimaryHueMidBrush}"
+                IsIndeterminate="{Binding IsBusy}" />
 
             <!--  Recommendations  -->
             <DataGrid
                 x:Name="RecommendationsDataGrid"
-                Grid.Row="1"
+                Grid.Row="2"
                 Background="{DynamicResource MaterialDesignCardBackground}"
                 HorizontalScrollBarVisibility="Disabled"
                 IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"

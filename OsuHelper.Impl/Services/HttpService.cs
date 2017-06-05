@@ -9,7 +9,7 @@ namespace OsuHelper.Services
 {
     public class HttpService : IHttpService, IDisposable
     {
-        private const int MaxConcurrentRequests = 15;
+        private const int MaxConcurrentRequests = 5;
 
         private readonly HttpClient _client;
         private readonly SemaphoreSlim _semaphoreSlim;

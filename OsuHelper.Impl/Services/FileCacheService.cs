@@ -26,7 +26,7 @@ namespace OsuHelper.Services
                 Directory.CreateDirectory(_cacheDirPath);
                 File.WriteAllText(GetCacheFilePath(id), obj as string);
             }
-            if (typeof(T) == typeof(Stream))
+            else if (typeof(T) == typeof(Stream))
             {
                 string id = "Bin_" + key;
                 Directory.CreateDirectory(_cacheDirPath);

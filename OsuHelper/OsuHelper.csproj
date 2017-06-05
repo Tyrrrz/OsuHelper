@@ -101,10 +101,15 @@
     <Compile Include="Converters\EnabledModsToStringConverter.cs" />
     <Compile Include="Converters\TimeSpanToShortStringConverter.cs" />
     <Compile Include="Locator.cs" />
+    <Compile Include="ViewModels\BeatmapDetailsViewModel.cs" />
+    <Compile Include="ViewModels\IBeatmapDetailsViewModel.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />
     <Compile Include="ViewModels\ISettingsViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="Views\BeatmapDetailsDialog.xaml.cs">
+      <DependentUpon>BeatmapDetailsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -115,6 +120,10 @@
     <Compile Include="Views\SettingsDialog.xaml.cs">
       <DependentUpon>SettingsDialog.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\BeatmapDetailsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

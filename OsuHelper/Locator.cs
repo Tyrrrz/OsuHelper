@@ -13,6 +13,7 @@ namespace OsuHelper
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             // Services
+            SimpleIoc.Default.Register<IAudioService, AudioService>();
             SimpleIoc.Default.Register<IBeatmapProcessorService, OppaiBeatmapProcessorService>();
             SimpleIoc.Default.Register<ICacheService, FileCacheService>();
             SimpleIoc.Default.Register<IDataService, OsuWebDataService>();
@@ -21,6 +22,7 @@ namespace OsuHelper
             SimpleIoc.Default.Register<ISettingsService, FileSettingsService>();
 
             // View models
+            SimpleIoc.Default.Register<IBeatmapDetailsViewModel, BeatmapDetailsViewModel>();
             SimpleIoc.Default.Register<IMainViewModel, MainViewModel>();
             SimpleIoc.Default.Register<ISettingsViewModel, SettingsViewModel>();
 
@@ -34,6 +36,7 @@ namespace OsuHelper
             ServiceLocator.Current.GetInstance<ISettingsService>().Save();
 
             // ReSharper disable SuspiciousTypeConversion.Global
+            (ServiceLocator.Current.GetInstance<IAudioService>() as IDisposable)?.Dispose();
             (ServiceLocator.Current.GetInstance<IBeatmapProcessorService>() as IDisposable)?.Dispose();
             (ServiceLocator.Current.GetInstance<ICacheService>() as IDisposable)?.Dispose();
             (ServiceLocator.Current.GetInstance<IDataService>() as IDisposable)?.Dispose();
@@ -41,11 +44,13 @@ namespace OsuHelper
             (ServiceLocator.Current.GetInstance<IRecommendationService>() as IDisposable)?.Dispose();
             (ServiceLocator.Current.GetInstance<ISettingsService>() as IDisposable)?.Dispose();
 
+            (ServiceLocator.Current.GetInstance<IBeatmapDetailsViewModel>() as IDisposable)?.Dispose();
             (ServiceLocator.Current.GetInstance<IMainViewModel>() as IDisposable)?.Dispose();
             (ServiceLocator.Current.GetInstance<ISettingsViewModel>() as IDisposable)?.Dispose();
             // ReSharper restore SuspiciousTypeConversion.Global
         }
 
+        public IBeatmapDetailsViewModel BeatmapDetailsViewModel => ServiceLocator.Current.GetInstance<IBeatmapDetailsViewModel>();
         public IMainViewModel MainViewModel => ServiceLocator.Current.GetInstance<IMainViewModel>();
         public ISettingsViewModel SettingsViewModel => ServiceLocator.Current.GetInstance<ISettingsViewModel>();
     }

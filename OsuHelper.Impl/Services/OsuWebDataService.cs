@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using OsuHelper.Models;
@@ -14,6 +15,7 @@ namespace OsuHelper.Services
         private readonly ICacheService _cacheService;
 
         private string OsuWebRoot => _settingsService.OsuWebRoot.Trim('/');
+        private string OsuArtifactsRoot => _settingsService.OsuArtifactsRoot.Trim('/');
         private string OsuApiKey => _settingsService.OsuApiKey;
 
         public OsuWebDataService(ISettingsService settingsService, IHttpService httpService, ICacheService cacheService)
@@ -65,7 +67,7 @@ namespace OsuHelper.Services
         public async Task<string> GetBeatmapRawAsync(string beatmapId)
         {
             // Try get from cache first
-            var cached = _cacheService.RetrieveOrDefault<string>(beatmapId);
+            string cached = _cacheService.RetrieveOrDefault<string>($"BeatmapRaw_{beatmapId}");
             if (cached != null) return cached;
 
             // Get
@@ -73,9 +75,25 @@ namespace OsuHelper.Services
             string response = await _httpService.GetStringAsync(url);
 
             // Save to cache
-            _cacheService.Store(beatmapId, response);
+            _cacheService.Store($"BeatmapRaw_{beatmapId}", response);
 
             return response;
+        }
+
+        public async Task<Stream> GetMapSetPreviewAsync(string mapSetId)
+        {
+            // Try get from cache first
+            var cached = _cacheService.RetrieveOrDefault<Stream>($"BeatmapPreview_{mapSetId}");
+            if (cached != null) return cached;
+
+            // Get
+            string url = OsuArtifactsRoot + $"/preview/{mapSetId}.mp3";
+            var response = await _httpService.GetStreamAsync(url);
+
+            // Save to cache
+            _cacheService.Store($"BeatmapPreview_{mapSetId}", response);
+
+            return _cacheService.RetrieveOrDefault<Stream>($"BeatmapPreview_{mapSetId}");
         }
 
         public async Task<IEnumerable<Play>> GetUserTopPlaysAsync(string userId, GameMode gameMode)

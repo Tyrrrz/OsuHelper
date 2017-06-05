@@ -45,6 +45,7 @@
     <Compile Include="Models\Play.cs" />
     <Compile Include="Models\PlayRank.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IAudioService.cs" />
     <Compile Include="Services\IBeatmapProcessorService.cs" />
     <Compile Include="Services\ICacheService.cs" />
     <Compile Include="Services\IDataService.cs" />

@@ -29,6 +29,8 @@ namespace OsuHelper.Services
 
         public string OsuWebRoot { get; set; } = "https://osu.ppy.sh/";
 
+        public string OsuArtifactsRoot { get; set; } = "https://b.ppy.sh/";
+
         public string OsuApiKey { get; set; }
 
         public GameMode GameMode { get; set; } = GameMode.Standard;

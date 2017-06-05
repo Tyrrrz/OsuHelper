@@ -1,6 +1,8 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
+using MaterialDesignThemes.Wpf;
 using OsuHelper.Models;
 using Tyrrrz.Extensions;
 
@@ -38,42 +40,50 @@ namespace OsuHelper.Views
 
         private void NomodFilterCheckBox_OnChecked(object sender, RoutedEventArgs e)
         {
-            RecommendationsViewSource.View.Refresh();
+            RecommendationsViewSource.View?.Refresh();
         }
 
         private void NomodFilterCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
         {
-            RecommendationsViewSource.View.Refresh();
+            RecommendationsViewSource.View?.Refresh();
         }
 
         private void HiddenFilterCheckBox_OnChecked(object sender, RoutedEventArgs e)
         {
-            RecommendationsViewSource.View.Refresh();
+            RecommendationsViewSource.View?.Refresh();
         }
 
         private void HiddenFilterCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
         {
-            RecommendationsViewSource.View.Refresh();
+            RecommendationsViewSource.View?.Refresh();
         }
 
         private void HardrockFilterCheckBox_OnChecked(object sender, RoutedEventArgs e)
         {
-            RecommendationsViewSource.View.Refresh();
+            RecommendationsViewSource.View?.Refresh();
         }
 
         private void HardrockFilterCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
         {
-            RecommendationsViewSource.View.Refresh();
+            RecommendationsViewSource.View?.Refresh();
         }
 
         private void DoubletimeFilterCheckBox_OnChecked(object sender, RoutedEventArgs e)
         {
-            RecommendationsViewSource.View.Refresh();
+            RecommendationsViewSource.View?.Refresh();
         }
 
         private void DoubletimeFilterCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
         {
-            RecommendationsViewSource.View.Refresh();
+            RecommendationsViewSource.View?.Refresh();
+        }
+
+        private async void RecommendationsDataGrid_OnMouseLeftButtonUp(object sender, EventArgs e)
+        {
+            var rec = (BeatmapRecommendation) RecommendationsDataGrid.SelectedItem;
+            new Locator().BeatmapDetailsViewModel.Beatmap = rec.Beatmap;
+            await DialogHost.Show(new BeatmapDetailsDialog());
+            new Locator().BeatmapDetailsViewModel.StopPreviewCommand.Execute(null);
         }
     }
 }

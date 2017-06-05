@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using OsuHelper.Models;
 
@@ -9,6 +10,8 @@ namespace OsuHelper.Services
         Task<Beatmap> GetBeatmapAsync(string beatmapId, GameMode gameMode);
 
         Task<string> GetBeatmapRawAsync(string beatmapId);
+
+        Task<Stream> GetMapSetPreviewAsync(string mapSetId);
 
         Task<IEnumerable<Play>> GetUserTopPlaysAsync(string userId, GameMode gameMode);
 

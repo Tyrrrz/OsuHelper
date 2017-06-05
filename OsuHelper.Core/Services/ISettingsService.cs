@@ -7,6 +7,7 @@ namespace OsuHelper.Services
     {
         string UserId { get; set; }
         string OsuWebRoot { get; set; }
+        string OsuArtifactsRoot { get; set; }
         string OsuApiKey { get; set; }
         GameMode GameMode { get; set; }
         bool DownloadWithoutVideo { get; set; }

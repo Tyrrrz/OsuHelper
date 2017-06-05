@@ -25,7 +25,7 @@
             Source="{Binding Recommendations}" />
     </Window.Resources>
 
-    <materialDesign:DialogHost>
+    <materialDesign:DialogHost CloseOnClickAway="True">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -146,8 +146,14 @@
                 HorizontalScrollBarVisibility="Disabled"
                 IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"
                 ItemsSource="{Binding Source={StaticResource RecommendationsView}}"
+                MouseLeftButtonUp="RecommendationsDataGrid_OnMouseLeftButtonUp"
                 VerticalScrollBarVisibility="Auto"
                 Visibility="{Binding HasData, Converter={StaticResource BoolToVisibilityConverter}}">
+                <DataGrid.RowStyle>
+                    <Style BasedOn="{StaticResource {x:Type DataGridRow}}" TargetType="{x:Type DataGridRow}">
+                        <Setter Property="Cursor" Value="Hand" />
+                    </Style>
+                </DataGrid.RowStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Width="*"

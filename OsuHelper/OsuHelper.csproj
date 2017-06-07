@@ -98,7 +98,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Converters\EnabledModsToStringConverter.cs" />
+    <Compile Include="Converters\ModsToStringConverter.cs" />
     <Compile Include="Converters\TimeSpanToShortStringConverter.cs" />
     <Compile Include="Locator.cs" />
     <Compile Include="ViewModels\BeatmapDetailsViewModel.cs" />

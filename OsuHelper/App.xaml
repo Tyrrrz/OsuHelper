@@ -64,11 +64,11 @@
 
             <!--  Styles  -->
             <Style BasedOn="{StaticResource MaterialDesignLinearProgressBar}" TargetType="{x:Type ProgressBar}">
+                <Setter Property="BorderThickness" Value="0" />
                 <Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
                 <Setter Property="Height" Value="2" />
-                <Setter Property="Minimum" Value="0" />
                 <Setter Property="Maximum" Value="1" />
-                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Minimum" Value="0" />
             </Style>
 
             <Style BasedOn="{StaticResource MaterialDesignTextBox}" TargetType="{x:Type TextBox}">
@@ -88,20 +88,20 @@
                             <Condition Property="IsEnabled" Value="True" />
                             <Condition Property="IsMouseOver" Value="True" />
                         </MultiTrigger.Conditions>
-                        <Setter Property="TextDecorations" Value="Underline" />
                         <Setter Property="Foreground" Value="{DynamicResource AccentTextBrush}" />
+                        <Setter Property="TextDecorations" Value="Underline" />
                     </MultiTrigger>
                 </Style.Triggers>
             </Style>
 
             <Style BasedOn="{StaticResource MaterialDesignDataGrid}" TargetType="{x:Type DataGrid}">
                 <Setter Property="AutoGenerateColumns" Value="False" />
-                <Setter Property="IsReadOnly" Value="True" />
                 <Setter Property="CanUserAddRows" Value="False" />
                 <Setter Property="CanUserDeleteRows" Value="False" />
                 <Setter Property="CanUserReorderColumns" Value="True" />
                 <Setter Property="CanUserResizeColumns" Value="True" />
                 <Setter Property="CanUserSortColumns" Value="True" />
+                <Setter Property="IsReadOnly" Value="True" />
                 <Setter Property="SelectionMode" Value="Single" />
                 <Setter Property="SelectionUnit" Value="FullRow" />
             </Style>
@@ -111,25 +111,25 @@
             </Style>
 
             <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="{x:Type DataGridCell}">
-                <Setter Property="Padding" Value="5" />
                 <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                <Setter Property="Padding" Value="5" />
             </Style>
 
             <Style
                 x:Key="MaterialDesignFlatDarkButton"
                 BasedOn="{StaticResource MaterialDesignRaisedButton}"
                 TargetType="{x:Type Button}">
-                <Setter Property="Padding" Value="4" />
-                <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidForegroundBrush}" />
                 <Setter Property="Background" Value="Transparent" />
-                <Setter Property="materialDesign:RippleAssist.Feedback" Value="{DynamicResource MaterialDesignFlatButtonRipple}" />
                 <Setter Property="BorderBrush" Value="Transparent" />
-                <Setter Property="materialDesign:ShadowAssist.ShadowDepth" Value="Depth0" />
                 <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidForegroundBrush}" />
+                <Setter Property="Padding" Value="4" />
+                <Setter Property="materialDesign:RippleAssist.Feedback" Value="{DynamicResource MaterialDesignFlatButtonRipple}" />
+                <Setter Property="materialDesign:ShadowAssist.ShadowDepth" Value="Depth0" />
             </Style>
 
             <!--  Converters  -->
-            <converters:EnabledModsToStringConverter x:Key="EnabledModsToStringConverter" />
+            <converters:ModsToStringConverter x:Key="ModsToStringConverter" />
             <converters:TimeSpanToShortStringConverter x:Key="TimeSpanToShortStringConverter" />
 
             <!--  Locator  -->

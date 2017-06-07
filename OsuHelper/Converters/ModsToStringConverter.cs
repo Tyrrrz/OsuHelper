@@ -6,7 +6,7 @@ using OsuHelper.Models;
 namespace OsuHelper.Converters
 {
     [ValueConversion(typeof(Mods), typeof(string))]
-    public class EnabledModsToStringConverter : IValueConverter
+    public class ModsToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

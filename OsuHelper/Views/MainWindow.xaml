@@ -159,7 +159,7 @@
                         Width="*"
                         Binding="{Binding Beatmap.FullName}"
                         Header="Name" />
-                    <DataGridTextColumn Binding="{Binding Mods, Converter={StaticResource EnabledModsToStringConverter}}" Header="Mods" />
+                    <DataGridTextColumn Binding="{Binding Mods, Converter={StaticResource ModsToStringConverter}}" Header="Mods" />
                     <DataGridTextColumn Binding="{Binding TraitsWithMods.StarRating, StringFormat=\{0:0.#\}}" Header="SR">
                         <DataGridTextColumn.CellStyle>
                             <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">

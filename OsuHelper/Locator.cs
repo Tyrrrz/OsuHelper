@@ -21,13 +21,14 @@ namespace OsuHelper
             SimpleIoc.Default.Register<IRecommendationService, RecommendationService>();
             SimpleIoc.Default.Register<ISettingsService, FileSettingsService>();
 
-            // View models
-            SimpleIoc.Default.Register<IBeatmapDetailsViewModel, BeatmapDetailsViewModel>();
-            SimpleIoc.Default.Register<IMainViewModel, MainViewModel>();
-            SimpleIoc.Default.Register<ISettingsViewModel, SettingsViewModel>();
-
             // Load settings
             ServiceLocator.Current.GetInstance<ISettingsService>().Load();
+
+            // View models
+            SimpleIoc.Default.Register<IBeatmapDetailsViewModel, BeatmapDetailsViewModel>(true);
+            SimpleIoc.Default.Register<IMainViewModel, MainViewModel>(true);
+            SimpleIoc.Default.Register<INotificationViewModel, NotificationViewModel>(true);
+            SimpleIoc.Default.Register<ISettingsViewModel, SettingsViewModel>(true);
         }
 
         public static void Cleanup()
@@ -46,12 +47,14 @@ namespace OsuHelper
 
             (ServiceLocator.Current.GetInstance<IBeatmapDetailsViewModel>() as IDisposable)?.Dispose();
             (ServiceLocator.Current.GetInstance<IMainViewModel>() as IDisposable)?.Dispose();
+            (ServiceLocator.Current.GetInstance<INotificationViewModel>() as IDisposable)?.Dispose();
             (ServiceLocator.Current.GetInstance<ISettingsViewModel>() as IDisposable)?.Dispose();
             // ReSharper restore SuspiciousTypeConversion.Global
         }
 
         public IBeatmapDetailsViewModel BeatmapDetailsViewModel => ServiceLocator.Current.GetInstance<IBeatmapDetailsViewModel>();
         public IMainViewModel MainViewModel => ServiceLocator.Current.GetInstance<IMainViewModel>();
+        public INotificationViewModel NotificationViewModel => ServiceLocator.Current.GetInstance<INotificationViewModel>();
         public ISettingsViewModel SettingsViewModel => ServiceLocator.Current.GetInstance<ISettingsViewModel>();
     }
 }

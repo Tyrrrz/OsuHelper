@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using OsuHelper.Messages;
 using OsuHelper.Models;
 using OsuHelper.Services;
 
@@ -18,7 +19,7 @@ namespace OsuHelper.ViewModels
         public Beatmap Beatmap
         {
             get => _beatmap;
-            set => Set(ref _beatmap, value);
+            private set => Set(ref _beatmap, value);
         }
 
         public bool IsPreviewPlaying
@@ -46,6 +47,11 @@ namespace OsuHelper.ViewModels
             DownloadBloodcatCommand = new RelayCommand(DownloadBloodcat);
             PlayPreviewCommand = new RelayCommand(PlayPreviewAsync);
             StopPreviewCommand = new RelayCommand(StopPreviewAsync);
+
+            MessengerInstance.Register<ShowBeatmapDetailsMessage>(this, m =>
+            {
+                Beatmap = m.Beatmap;
+            });
         }
 
         private void OpenPage()

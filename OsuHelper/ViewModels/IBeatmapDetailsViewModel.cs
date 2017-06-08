@@ -5,7 +5,7 @@ namespace OsuHelper.ViewModels
 {
     public interface IBeatmapDetailsViewModel
     {
-        Beatmap Beatmap { get; set; }
+        Beatmap Beatmap { get; }
         bool IsPreviewPlaying { get; }
 
         RelayCommand OpenPageCommand { get; }

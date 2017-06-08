@@ -101,11 +101,15 @@
     <Compile Include="Converters\ModsToStringConverter.cs" />
     <Compile Include="Converters\TimeSpanToShortStringConverter.cs" />
     <Compile Include="Locator.cs" />
+    <Compile Include="Messages\ShowBeatmapDetailsMessage.cs" />
+    <Compile Include="Messages\ShowNotificationMessage.cs" />
     <Compile Include="ViewModels\BeatmapDetailsViewModel.cs" />
     <Compile Include="ViewModels\IBeatmapDetailsViewModel.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />
+    <Compile Include="ViewModels\INotificationViewModel.cs" />
     <Compile Include="ViewModels\ISettingsViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\NotificationViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\BeatmapDetailsDialog.xaml.cs">
       <DependentUpon>BeatmapDetailsDialog.xaml</DependentUpon>
@@ -117,6 +121,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Views\NotificationDialog.xaml.cs">
+      <DependentUpon>NotificationDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingsDialog.xaml.cs">
       <DependentUpon>SettingsDialog.xaml</DependentUpon>
     </Compile>
@@ -127,6 +134,10 @@
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\NotificationDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingsDialog.xaml">
       <SubType>Designer</SubType>

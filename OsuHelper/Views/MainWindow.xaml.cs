@@ -2,7 +2,9 @@
 using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
+using GalaSoft.MvvmLight.Messaging;
 using MaterialDesignThemes.Wpf;
+using OsuHelper.Messages;
 using OsuHelper.Models;
 using Tyrrrz.Extensions;
 
@@ -10,14 +12,22 @@ namespace OsuHelper.Views
 {
     public partial class MainWindow
     {
-        private CollectionViewSource RecommendationsViewSource => (CollectionViewSource) Resources["RecommendationsView"];
-
         public MainWindow()
         {
             InitializeComponent();
 
             // Version in title
             Title = Title.Format(Assembly.GetEntryAssembly().GetName().Version);
+
+            // Dialogs
+            Messenger.Default.Register<ShowBeatmapDetailsMessage>(this, m =>
+            {
+                DialogHost.Show(Resources["BeatmapDetailsDialog"]).Forget();
+            });
+            Messenger.Default.Register<ShowNotificationMessage>(this, m =>
+            {
+                DialogHost.Show(Resources["NotificationDialog"]).Forget();
+            });
         }
 
         private void RecommendationsView_OnFilter(object sender, FilterEventArgs e)
@@ -40,50 +50,48 @@ namespace OsuHelper.Views
 
         private void NomodFilterCheckBox_OnChecked(object sender, RoutedEventArgs e)
         {
-            RecommendationsViewSource.View?.Refresh();
+            ((CollectionViewSource) Resources["RecommendationsView"]).View?.Refresh();
         }
 
         private void NomodFilterCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
         {
-            RecommendationsViewSource.View?.Refresh();
+            ((CollectionViewSource) Resources["RecommendationsView"]).View?.Refresh();
         }
 
         private void HiddenFilterCheckBox_OnChecked(object sender, RoutedEventArgs e)
         {
-            RecommendationsViewSource.View?.Refresh();
+            ((CollectionViewSource) Resources["RecommendationsView"]).View?.Refresh();
         }
 
         private void HiddenFilterCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
         {
-            RecommendationsViewSource.View?.Refresh();
+            ((CollectionViewSource) Resources["RecommendationsView"]).View?.Refresh();
         }
 
         private void HardrockFilterCheckBox_OnChecked(object sender, RoutedEventArgs e)
         {
-            RecommendationsViewSource.View?.Refresh();
+            ((CollectionViewSource) Resources["RecommendationsView"]).View?.Refresh();
         }
 
         private void HardrockFilterCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
         {
-            RecommendationsViewSource.View?.Refresh();
+            ((CollectionViewSource) Resources["RecommendationsView"]).View?.Refresh();
         }
 
         private void DoubletimeFilterCheckBox_OnChecked(object sender, RoutedEventArgs e)
         {
-            RecommendationsViewSource.View?.Refresh();
+            ((CollectionViewSource) Resources["RecommendationsView"]).View?.Refresh();
         }
 
         private void DoubletimeFilterCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
         {
-            RecommendationsViewSource.View?.Refresh();
+            ((CollectionViewSource) Resources["RecommendationsView"]).View?.Refresh();
         }
 
-        private async void RecommendationsDataGrid_OnMouseLeftButtonUp(object sender, EventArgs e)
+        private void RecommendationsDataGrid_OnMouseLeftButtonUp(object sender, EventArgs e)
         {
             var rec = (BeatmapRecommendation) RecommendationsDataGrid.SelectedItem;
-            new Locator().BeatmapDetailsViewModel.Beatmap = rec.Beatmap;
-            await DialogHost.Show(new BeatmapDetailsDialog());
-            new Locator().BeatmapDetailsViewModel.StopPreviewCommand.Execute(null);
+            Messenger.Default.Send(new ShowBeatmapDetailsMessage(rec.Beatmap));
         }
     }
 }

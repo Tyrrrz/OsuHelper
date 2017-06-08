@@ -19,6 +19,10 @@
     TextOptions.TextRenderingMode="Auto"
     WindowStartupLocation="CenterScreen">
     <Window.Resources>
+        <views:BeatmapDetailsDialog x:Key="BeatmapDetailsDialog" />
+        <views:NotificationDialog x:Key="NotificationDialog" />
+        <views:SettingsDialog x:Key="SettingsDialog" />
+
         <CollectionViewSource
             x:Key="RecommendationsView"
             Filter="RecommendationsView_OnFilter"
@@ -119,11 +123,9 @@
                         Margin="5,0,0,0"
                         VerticalAlignment="Center"
                         Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                        CommandParameter="{StaticResource SettingsDialog}"
                         Style="{DynamicResource MaterialDesignFlatDarkButton}"
                         ToolTip="Settings">
-                        <Button.CommandParameter>
-                            <views:SettingsDialog />
-                        </Button.CommandParameter>
                         <materialDesign:PackIcon
                             Width="24"
                             Height="24"

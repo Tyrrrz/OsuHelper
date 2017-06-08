@@ -28,6 +28,10 @@ namespace OsuHelper.Views
             {
                 DialogHost.Show(Resources["NotificationDialog"]).Forget();
             });
+            Messenger.Default.Register<ShowSettingsMessage>(this, m =>
+            {
+                DialogHost.Show(Resources["SettingsDialog"]).Forget();
+            });
         }
 
         private void RecommendationsView_OnFilter(object sender, FilterEventArgs e)
@@ -86,6 +90,11 @@ namespace OsuHelper.Views
         private void DoubletimeFilterCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
         {
             ((CollectionViewSource) Resources["RecommendationsView"]).View?.Refresh();
+        }
+
+        private void ShowSettingsButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            Messenger.Default.Send(new ShowSettingsMessage());
         }
 
         private void RecommendationsDataGrid_OnMouseLeftButtonUp(object sender, EventArgs e)

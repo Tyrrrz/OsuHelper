@@ -103,6 +103,7 @@
     <Compile Include="Locator.cs" />
     <Compile Include="Messages\ShowBeatmapDetailsMessage.cs" />
     <Compile Include="Messages\ShowNotificationMessage.cs" />
+    <Compile Include="Messages\ShowSettingsMessage.cs" />
     <Compile Include="ViewModels\BeatmapDetailsViewModel.cs" />
     <Compile Include="ViewModels\IBeatmapDetailsViewModel.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />

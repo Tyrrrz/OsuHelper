@@ -119,11 +119,10 @@
                             Kind="Sync" />
                     </Button>
                     <Button
-                        x:Name="ShowSettingsDialogButton"
+                        x:Name="ShowSettingsButton"
                         Margin="5,0,0,0"
                         VerticalAlignment="Center"
-                        Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
-                        CommandParameter="{StaticResource SettingsDialog}"
+                        Click="ShowSettingsButton_OnClick"
                         Style="{DynamicResource MaterialDesignFlatDarkButton}"
                         ToolTip="Settings">
                         <materialDesign:PackIcon

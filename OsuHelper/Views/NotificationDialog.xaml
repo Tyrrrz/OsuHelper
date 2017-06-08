@@ -19,7 +19,10 @@
             Foreground="{DynamicResource PrimaryTextBrush}"
             Text="{Binding Title}" />
 
-        <TextBlock Margin="5" Text="{Binding Content}" />
+        <TextBlock
+            Margin="5"
+            Text="{Binding Content}"
+            TextWrapping="WrapWithOverflow" />
 
         <Button
             Margin="5,10,5,5"

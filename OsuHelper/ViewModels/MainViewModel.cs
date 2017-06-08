@@ -2,6 +2,7 @@
 using System.Linq;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using OsuHelper.Messages;
 using OsuHelper.Models;
 using OsuHelper.Services;
 using Tyrrrz.Extensions;
@@ -54,6 +55,14 @@ namespace OsuHelper.ViewModels
 
         private async void GetRecommendationsAsync()
         {
+            // Validate settings
+            if (_settingsService.UserId.IsBlank() || _settingsService.OsuApiKey.IsBlank())
+            {
+                MessengerInstance.Send(new ShowNotificationMessage("Not configured",
+                    "User ID and/or API key are not set. Please specify them in settings."));
+                return;
+            }
+
             IsBusy = true;
 
             Recommendations = (await _recommendationService.GetRecommendationsAsync()).ToArray();

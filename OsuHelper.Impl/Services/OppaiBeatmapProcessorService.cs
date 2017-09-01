@@ -60,18 +60,18 @@ namespace OsuHelper.Services
                 return beatmap.Traits;
 
             // Get raw beatmap data
-            string beatmapRaw = await _dataService.GetBeatmapRawAsync(beatmap.Id);
+            var beatmapRaw = await _dataService.GetBeatmapRawAsync(beatmap.Id);
 
             // Run oppai
-            string oppaiOutput = await ExecuteOppaiAsync(beatmapRaw, mods);
+            var oppaiOutput = await ExecuteOppaiAsync(beatmapRaw, mods);
 
             // Parse
             var oppaiJson = JToken.Parse(oppaiOutput);
 
             // Populate result
-            int maxCombo = beatmap.Traits.MaxCombo;
+            var maxCombo = beatmap.Traits.MaxCombo;
             var duration = beatmap.Traits.Duration;
-            double bpm = beatmap.Traits.BeatsPerMinute;
+            var bpm = beatmap.Traits.BeatsPerMinute;
             if (mods.HasFlag(Mods.DoubleTime))
             {
                 duration = TimeSpan.FromSeconds(beatmap.Traits.Duration.TotalSeconds / 1.5);
@@ -82,11 +82,11 @@ namespace OsuHelper.Services
                 duration = TimeSpan.FromSeconds(beatmap.Traits.Duration.TotalSeconds / 0.75);
                 bpm = beatmap.Traits.BeatsPerMinute * 0.75;
             }
-            double sr = oppaiJson["stars"].Value<double>();
-            double ar = oppaiJson["ar"].Value<double>();
-            double od = oppaiJson["od"].Value<double>();
-            double cs = oppaiJson["cs"].Value<double>();
-            double hp = oppaiJson["hp"].Value<double>();
+            var sr = oppaiJson["stars"].Value<double>();
+            var ar = oppaiJson["ar"].Value<double>();
+            var od = oppaiJson["od"].Value<double>();
+            var cs = oppaiJson["cs"].Value<double>();
+            var hp = oppaiJson["hp"].Value<double>();
 
             return new BeatmapTraits(maxCombo, duration, bpm, sr, ar, od, cs, hp);
         }

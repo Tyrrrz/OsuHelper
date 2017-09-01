@@ -22,21 +22,21 @@ namespace OsuHelper.Services
         {
             if (typeof(T) == typeof(string))
             {
-                string id = "Text_" + key;
+                var id = "Text_" + key;
                 Directory.CreateDirectory(_cacheDirPath);
                 File.WriteAllText(GetCacheFilePath(id), obj as string);
             }
             else if (typeof(T) == typeof(Stream))
             {
-                string id = "Bin_" + key;
+                var id = "Bin_" + key;
                 Directory.CreateDirectory(_cacheDirPath);
                 using (var output = File.Create(GetCacheFilePath(id)))
                     (obj as Stream)?.CopyTo(output);
             }
             else
             {
-                string id = typeof(T).Name + "_" + key;
-                string serialized = JsonConvert.SerializeObject(obj);
+                var id = typeof(T).Name + "_" + key;
+                var serialized = JsonConvert.SerializeObject(obj);
                 Directory.CreateDirectory(_cacheDirPath);
                 File.WriteAllText(GetCacheFilePath(id), serialized);
             }
@@ -46,24 +46,24 @@ namespace OsuHelper.Services
         {
             if (typeof(T) == typeof(string))
             {
-                string id = "Text_" + key;
+                var id = "Text_" + key;
                 if (File.Exists(GetCacheFilePath(id)))
                     return File.ReadAllText(GetCacheFilePath(id)) as T ?? defaultValue;
                 return defaultValue;
             }
             if (typeof(T) == typeof(Stream))
             {
-                string id = "Bin_" + key;
+                var id = "Bin_" + key;
                 if (File.Exists(GetCacheFilePath(id)))
                     return File.OpenRead(GetCacheFilePath(id)) as T ?? defaultValue;
                 return defaultValue;
             }
             else
             {
-                string id = typeof(T).Name + "_" + key;
+                var id = typeof(T).Name + "_" + key;
                 if (File.Exists(GetCacheFilePath(id)))
                 {
-                    string serialized = File.ReadAllText(GetCacheFilePath(id));
+                    var serialized = File.ReadAllText(GetCacheFilePath(id));
                     return JsonConvert.DeserializeObject<T>(serialized);
                 }
                 return defaultValue;

@@ -40,8 +40,8 @@ namespace OsuHelper.Services
             if (!ownTopPlays.Any()) return Enumerable.Empty<BeatmapRecommendation>();
 
             // Set boundaries
-            double minPP = ownTopPlays.Take(15).Average(p => p.PerformancePoints);
-            double maxPP = ownTopPlays.Take(15).Average(p => p.PerformancePoints)*1.25;
+            var minPP = ownTopPlays.Take(15).Average(p => p.PerformancePoints);
+            var maxPP = ownTopPlays.Take(15).Average(p => p.PerformancePoints)*1.25;
 
             // Prepare buffer for recommendation bases
             var recommendationBases = new List<Play>();
@@ -86,7 +86,7 @@ namespace OsuHelper.Services
             var result = new List<BeatmapRecommendation>();
             await recommendationGroups.ParallelForEachAsync(async group =>
             {
-                int count = group.Count();
+                var count = group.Count();
 
                 // Get median play based on PP
                 var play = group.OrderBy(p => p.PerformancePoints).ElementAt(count/2);

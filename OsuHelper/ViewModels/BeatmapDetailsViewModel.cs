@@ -61,7 +61,7 @@ namespace OsuHelper.ViewModels
 
         private void Download()
         {
-            string url = $"https://osu.ppy.sh/d/{Beatmap.MapSetId}";
+            var url = $"https://osu.ppy.sh/d/{Beatmap.MapSetId}";
             if (_settingsService.DownloadWithoutVideo) url += 'n';
             Process.Start(url);
         }

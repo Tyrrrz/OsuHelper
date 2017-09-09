@@ -31,13 +31,14 @@ namespace OsuHelper.Services
                 .OrderByDescending(p => p.PerformancePoints)
                 .ToArray();
 
+            // If no top plays - return empty
+            if (!ownTopPlays.Any())
+                return Enumerable.Empty<BeatmapRecommendation>();
+
             // Get maps where they were made
-            var ownTopPlaysMaps = ownTopPlays
+            var ownTopMaps = ownTopPlays
                 .Select(p => p.BeatmapId)
                 .ToArray();
-
-            // If no top plays - return empty
-            if (!ownTopPlays.Any()) return Enumerable.Empty<BeatmapRecommendation>();
 
             // Set boundaries
             var minPP = ownTopPlays.Take(15).Average(p => p.PerformancePoints);
@@ -78,7 +79,7 @@ namespace OsuHelper.Services
             // Prepare recommendation groups
             var recommendationGroups = recommendationBases
                 .GroupBy(p => p.BeatmapId)
-                .Where(g => !g.Key.IsEither(ownTopPlaysMaps))
+                .Where(g => !g.Key.IsEither(ownTopMaps))
                 .OrderByDescending(g => g.Count())
                 .Take(100);
 

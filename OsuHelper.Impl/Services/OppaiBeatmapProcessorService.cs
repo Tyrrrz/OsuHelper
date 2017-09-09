@@ -66,7 +66,7 @@ namespace OsuHelper.Services
             var oppaiOutput = await ExecuteOppaiAsync(beatmapRaw, mods);
 
             // Parse
-            var oppaiJson = JToken.Parse(oppaiOutput);
+            var oppaiOutputJson = JToken.Parse(oppaiOutput);
 
             // Populate result
             var maxCombo = beatmap.Traits.MaxCombo;
@@ -82,11 +82,11 @@ namespace OsuHelper.Services
                 duration = TimeSpan.FromSeconds(beatmap.Traits.Duration.TotalSeconds / 0.75);
                 bpm = beatmap.Traits.BeatsPerMinute * 0.75;
             }
-            var sr = oppaiJson["stars"].Value<double>();
-            var ar = oppaiJson["ar"].Value<double>();
-            var od = oppaiJson["od"].Value<double>();
-            var cs = oppaiJson["cs"].Value<double>();
-            var hp = oppaiJson["hp"].Value<double>();
+            var sr = oppaiOutputJson["stars"].Value<double>();
+            var ar = oppaiOutputJson["ar"].Value<double>();
+            var od = oppaiOutputJson["od"].Value<double>();
+            var cs = oppaiOutputJson["cs"].Value<double>();
+            var hp = oppaiOutputJson["hp"].Value<double>();
 
             return new BeatmapTraits(maxCombo, duration, bpm, sr, ar, od, cs, hp);
         }

@@ -9,7 +9,7 @@ using OsuHelper.Models;
 
 namespace OsuHelper.Services
 {
-    public class OppaiBeatmapProcessorService : IBeatmapProcessorService
+    public class OppaiBeatmapProcessorService : IBeatmapProcessorService, IDisposable
     {
         private readonly IDataService _dataService;
 
@@ -89,6 +89,11 @@ namespace OsuHelper.Services
             var hp = oppaiOutputJson["hp"].Value<double>();
 
             return new BeatmapTraits(maxCombo, duration, bpm, sr, ar, od, cs, hp);
+        }
+
+        public void Dispose()
+        {
+            _cli.Dispose();
         }
     }
 }

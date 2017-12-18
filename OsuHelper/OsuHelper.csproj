@@ -42,6 +42,9 @@
     <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CliWrap, Version=1.7.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CliWrap.1.7.1\lib\net45\CliWrap.dll</HintPath>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.4.0.0, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.0-alpha\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
       <Private>True</Private>
@@ -65,6 +68,12 @@
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NAudio, Version=1.8.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.8.4\lib\net35\NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.IO.Compression" />
@@ -80,8 +89,11 @@
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Tyrrrz.Extensions, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tyrrrz.Extensions.1.4.0\lib\net45\Tyrrrz.Extensions.dll</HintPath>
+    <Reference Include="Tyrrrz.Extensions, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tyrrrz.Extensions.1.4.1\lib\net45\Tyrrrz.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Tyrrrz.Settings, Version=1.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tyrrrz.Settings.1.3.2\lib\net45\Tyrrrz.Settings.dll</HintPath>
     </Reference>
     <Reference Include="Tyrrrz.WpfExtensions, Version=1.0.6269.37170, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Tyrrrz.WpfExtensions.1.0.5\lib\net45\Tyrrrz.WpfExtensions.dll</HintPath>
@@ -102,6 +114,29 @@
     <Compile Include="Messages\ShowBeatmapDetailsMessage.cs" />
     <Compile Include="Messages\ShowNotificationMessage.cs" />
     <Compile Include="Messages\ShowSettingsMessage.cs" />
+    <Compile Include="Models\Beatmap.cs" />
+    <Compile Include="Models\BeatmapRankingStatus.cs" />
+    <Compile Include="Models\BeatmapRecommendation.cs" />
+    <Compile Include="Models\BeatmapTraits.cs" />
+    <Compile Include="Models\Extensions.cs" />
+    <Compile Include="Models\GameMode.cs" />
+    <Compile Include="Models\Mods.cs" />
+    <Compile Include="Models\Play.cs" />
+    <Compile Include="Models\PlayRank.cs" />
+    <Compile Include="Services\AudioService.cs" />
+    <Compile Include="Services\FileCacheService.cs" />
+    <Compile Include="Services\FileSettingsService.cs" />
+    <Compile Include="Services\HttpService.cs" />
+    <Compile Include="Services\IAudioService.cs" />
+    <Compile Include="Services\IBeatmapProcessorService.cs" />
+    <Compile Include="Services\ICacheService.cs" />
+    <Compile Include="Services\IDataService.cs" />
+    <Compile Include="Services\IHttpService.cs" />
+    <Compile Include="Services\IRecommendationService.cs" />
+    <Compile Include="Services\ISettingsService.cs" />
+    <Compile Include="Services\OppaiBeatmapProcessorService.cs" />
+    <Compile Include="Services\OsuWebDataService.cs" />
+    <Compile Include="Services\RecommendationService.cs" />
     <Compile Include="ViewModels\BeatmapDetailsViewModel.cs" />
     <Compile Include="ViewModels\IBeatmapDetailsViewModel.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />
@@ -168,16 +203,10 @@
     <Resource Include="favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OsuHelper.Core\OsuHelper.Core.csproj">
-      <Project>{a9ad3646-ec70-4af5-9d67-4c7e6c6e98cb}</Project>
-      <Name>OsuHelper.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OsuHelper.Impl\OsuHelper.Impl.csproj">
-      <Project>{3b6dd376-c749-460b-9239-be9cfd69f17f}</Project>
-      <Name>OsuHelper.Impl</Name>
-    </ProjectReference>
+    <Content Include="External\oppai.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

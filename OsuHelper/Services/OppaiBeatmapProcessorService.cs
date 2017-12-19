@@ -93,6 +93,7 @@ namespace OsuHelper.Services
 
         public void Dispose()
         {
+            _cli.CancelAll();
             _cli.Dispose();
         }
     }

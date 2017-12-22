@@ -28,11 +28,6 @@ namespace OsuHelper.Services
             _semaphoreSlim = new SemaphoreSlim(MaxConcurrentRequests);
         }
 
-        ~HttpService()
-        {
-            Dispose(false);
-        }
-
         public async Task<string> GetStringAsync(string url)
         {
             try

@@ -14,12 +14,12 @@ namespace OsuHelper
 
             // Services
             SimpleIoc.Default.Register<IAudioService, AudioService>();
-            SimpleIoc.Default.Register<IBeatmapProcessorService, OppaiBeatmapProcessorService>();
-            SimpleIoc.Default.Register<ICacheService, FileCacheService>();
-            SimpleIoc.Default.Register<IDataService, OsuWebDataService>();
+            SimpleIoc.Default.Register<IBeatmapProcessorService, BeatmapProcessorService>();
+            SimpleIoc.Default.Register<ICacheService, CacheService>();
+            SimpleIoc.Default.Register<IDataService, DataService>();
             SimpleIoc.Default.Register<IHttpService, HttpService>();
             SimpleIoc.Default.Register<IRecommendationService, RecommendationService>();
-            SimpleIoc.Default.Register<ISettingsService, FileSettingsService>();
+            SimpleIoc.Default.Register<ISettingsService, SettingsService>();
 
             // Load settings
             ServiceLocator.Current.GetInstance<ISettingsService>().Load();

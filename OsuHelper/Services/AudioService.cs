@@ -23,11 +23,6 @@ namespace OsuHelper.Services
             };
         }
 
-        ~AudioService()
-        {
-            Dispose(false);
-        }
-
         public async Task PlayAsync(Stream stream)
         {
             using (var reader = new Mp3FileReader(stream))

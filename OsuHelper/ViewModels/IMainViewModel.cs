@@ -12,6 +12,6 @@ namespace OsuHelper.ViewModels
 
         bool HasData { get; }
 
-        RelayCommand GetRecommendationsCommand { get; }
+        RelayCommand PopulateRecommendationsCommand { get; }
     }
 }

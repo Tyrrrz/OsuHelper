@@ -1,11 +1,17 @@
 ﻿using GalaSoft.MvvmLight.Command;
-using OsuHelper.Services;
+using OsuHelper.Models;
 
 namespace OsuHelper.ViewModels
 {
     public interface ISettingsViewModel
     {
-        ISettingsService SettingsService { get; }
+        string UserId { get; set; }
+
+        string ApiKey { get; set; }
+
+        GameMode GameMode { get; set; }
+
+        bool DownloadWithoutVideo { get; set; }
 
         RelayCommand GetApiKeyCommand { get; }
     }

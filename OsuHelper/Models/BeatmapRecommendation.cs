@@ -4,9 +4,9 @@ namespace OsuHelper.Models
 {
     public class BeatmapRecommendation
     {
-        public int Popularity { get; }
-
         public Beatmap Beatmap { get; }
+
+        public int Weight { get; }
 
         public Mods Mods { get; }
 
@@ -15,8 +15,8 @@ namespace OsuHelper.Models
         public bool IsDurationAffected
             => Math.Abs((Beatmap.Traits.Duration - TraitsWithMods.Duration).TotalSeconds) >= 0.01;
 
-        public bool IsBeatsPerMinuteAffected
-            => Math.Abs(Beatmap.Traits.BeatsPerMinute - TraitsWithMods.BeatsPerMinute) >= 0.01;
+        public bool IsTempoAffected
+            => Math.Abs(Beatmap.Traits.Tempo - TraitsWithMods.Tempo) >= 0.01;
 
         public bool IsStarRatingAffected
             => Math.Abs(Beatmap.Traits.StarRating - TraitsWithMods.StarRating) >= 0.01;
@@ -37,11 +37,11 @@ namespace OsuHelper.Models
 
         public double ExpectedPerformancePoints { get; }
 
-        public BeatmapRecommendation(int popularity, Beatmap beatmap, Mods mods, BeatmapTraits traitsWithMods,
+        public BeatmapRecommendation(Beatmap beatmap, int weight, Mods mods, BeatmapTraits traitsWithMods,
             double expectedAccuracy, double expectedPerformancePoints)
         {
-            Popularity = popularity;
             Beatmap = beatmap;
+            Weight = weight;
             Mods = mods;
             TraitsWithMods = traitsWithMods;
             ExpectedAccuracy = expectedAccuracy;

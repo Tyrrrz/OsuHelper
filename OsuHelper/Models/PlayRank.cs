@@ -10,9 +10,9 @@ namespace OsuHelper.Models
         A = 3,
         S = 4,
         SS = 5,
-        X = 5, // same as SS
+        X = SS,
         SH = 6,
         SSH = 7, 
-        XH = 7 // same as SSH
+        XH = SSH
     }
 }

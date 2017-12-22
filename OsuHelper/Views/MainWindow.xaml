@@ -110,7 +110,7 @@
                     <Button
                         Margin="5,0,0,0"
                         VerticalAlignment="Center"
-                        Command="{Binding GetRecommendationsCommand}"
+                        Command="{Binding PopulateRecommendationsCommand}"
                         Style="{DynamicResource MaterialDesignFlatDarkButton}"
                         ToolTip="Refresh recommendations">
                         <materialDesign:PackIcon
@@ -194,7 +194,7 @@
                             </Style>
                         </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding TraitsWithMods.BeatsPerMinute, StringFormat=\{0:N0\}}" Header="BPM">
+                    <DataGridTextColumn Binding="{Binding TraitsWithMods.Tempo, StringFormat=\{0:N0\}}" Header="BPM">
                         <DataGridTextColumn.CellStyle>
                             <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
                                 <Style.Triggers>

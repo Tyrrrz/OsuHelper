@@ -9,16 +9,16 @@ using OsuHelper.Models;
 
 namespace OsuHelper.Services
 {
-    public class OppaiBeatmapProcessorService : IBeatmapProcessorService, IDisposable
+    public class BeatmapProcessorService : IBeatmapProcessorService, IDisposable
     {
         private readonly IDataService _dataService;
 
-        private readonly Cli _cli;
+        private readonly Cli _oppaiCli;
 
-        public OppaiBeatmapProcessorService(IDataService dataService)
+        public BeatmapProcessorService(IDataService dataService)
         {
             _dataService = dataService;
-            _cli = new Cli(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "External\\", "oppai.exe"));
+            _oppaiCli = new Cli(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "External\\", "oppai.exe"));
         }
 
         private async Task<string> ExecuteOppaiAsync(string rawBeatmapData, Mods mods)
@@ -43,7 +43,7 @@ namespace OsuHelper.Services
 
             // Execute
             var input = new ExecutionInput(argsBuffer.ToString(), rawBeatmapData);
-            var output = await _cli.ExecuteAsync(input);
+            var output = await _oppaiCli.ExecuteAsync(input);
             output.ThrowIfError();
 
             return output.StandardOutput;
@@ -71,16 +71,16 @@ namespace OsuHelper.Services
             // Populate result
             var maxCombo = beatmap.Traits.MaxCombo;
             var duration = beatmap.Traits.Duration;
-            var bpm = beatmap.Traits.BeatsPerMinute;
+            var tempo = beatmap.Traits.Tempo;
             if (mods.HasFlag(Mods.DoubleTime))
             {
                 duration = TimeSpan.FromSeconds(beatmap.Traits.Duration.TotalSeconds / 1.5);
-                bpm = beatmap.Traits.BeatsPerMinute * 1.5;
+                tempo = beatmap.Traits.Tempo * 1.5;
             }
             else if (mods.HasFlag(Mods.HalfTime))
             {
                 duration = TimeSpan.FromSeconds(beatmap.Traits.Duration.TotalSeconds / 0.75);
-                bpm = beatmap.Traits.BeatsPerMinute * 0.75;
+                tempo = beatmap.Traits.Tempo * 0.75;
             }
             var sr = oppaiOutputJson["stars"].Value<double>();
             var ar = oppaiOutputJson["ar"].Value<double>();
@@ -88,13 +88,13 @@ namespace OsuHelper.Services
             var cs = oppaiOutputJson["cs"].Value<double>();
             var hp = oppaiOutputJson["hp"].Value<double>();
 
-            return new BeatmapTraits(maxCombo, duration, bpm, sr, ar, od, cs, hp);
+            return new BeatmapTraits(maxCombo, duration, tempo, sr, ar, od, cs, hp);
         }
 
         public void Dispose()
         {
-            _cli.CancelAll();
-            _cli.Dispose();
+            _oppaiCli.CancelAll();
+            _oppaiCli.Dispose();
         }
     }
 }

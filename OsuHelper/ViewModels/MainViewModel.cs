@@ -23,7 +23,7 @@ namespace OsuHelper.ViewModels
             private set
             {
                 Set(ref _isBusy, value);
-                GetRecommendationsCommand.RaiseCanExecuteChanged();
+                PopulateRecommendationsCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -39,7 +39,7 @@ namespace OsuHelper.ViewModels
 
         public bool HasData => Recommendations.NotNullAndAny();
 
-        public RelayCommand GetRecommendationsCommand { get; }
+        public RelayCommand PopulateRecommendationsCommand { get; }
 
         public MainViewModel(ISettingsService settingsService, IRecommendationService recommendationService)
         {
@@ -47,16 +47,16 @@ namespace OsuHelper.ViewModels
             _recommendationService = recommendationService;
 
             // Commands
-            GetRecommendationsCommand = new RelayCommand(GetRecommendationsAsync, () => !IsBusy);
+            PopulateRecommendationsCommand = new RelayCommand(PopulateRecommendations, () => !IsBusy);
 
             // Load stored recommendations
             _recommendations = _settingsService.LastRecommendations;
         }
 
-        private async void GetRecommendationsAsync()
+        private async void PopulateRecommendations()
         {
             // Validate settings
-            if (_settingsService.UserId.IsBlank() || _settingsService.OsuApiKey.IsBlank())
+            if (_settingsService.UserId.IsBlank() || _settingsService.ApiKey.IsBlank())
             {
                 MessengerInstance.Send(new ShowNotificationMessage("Not configured",
                     "User ID and/or API key are not set. Please specify them in settings."));

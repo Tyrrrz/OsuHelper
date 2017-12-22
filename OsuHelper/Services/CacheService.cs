@@ -4,11 +4,11 @@ using Newtonsoft.Json;
 
 namespace OsuHelper.Services
 {
-    public class FileCacheService : ICacheService
+    public class CacheService : ICacheService
     {
         private readonly string _cacheDirPath;
 
-        public FileCacheService()
+        public CacheService()
         {
             _cacheDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Cache\\");
         }

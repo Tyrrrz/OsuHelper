@@ -124,8 +124,8 @@
     <Compile Include="Models\Play.cs" />
     <Compile Include="Models\PlayRank.cs" />
     <Compile Include="Services\AudioService.cs" />
-    <Compile Include="Services\FileCacheService.cs" />
-    <Compile Include="Services\FileSettingsService.cs" />
+    <Compile Include="Services\CacheService.cs" />
+    <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\HttpService.cs" />
     <Compile Include="Services\IAudioService.cs" />
     <Compile Include="Services\IBeatmapProcessorService.cs" />
@@ -134,8 +134,8 @@
     <Compile Include="Services\IHttpService.cs" />
     <Compile Include="Services\IRecommendationService.cs" />
     <Compile Include="Services\ISettingsService.cs" />
-    <Compile Include="Services\OppaiBeatmapProcessorService.cs" />
-    <Compile Include="Services\OsuWebDataService.cs" />
+    <Compile Include="Services\BeatmapProcessorService.cs" />
+    <Compile Include="Services\DataService.cs" />
     <Compile Include="Services\RecommendationService.cs" />
     <Compile Include="ViewModels\BeatmapDetailsViewModel.cs" />
     <Compile Include="ViewModels\IBeatmapDetailsViewModel.cs" />

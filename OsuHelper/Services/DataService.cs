@@ -8,17 +8,15 @@ using Tyrrrz.Extensions;
 
 namespace OsuHelper.Services
 {
-    public class OsuWebDataService : IDataService
+    public class DataService : IDataService
     {
         private readonly ISettingsService _settingsService;
         private readonly IHttpService _httpService;
         private readonly ICacheService _cacheService;
 
-        private string OsuWebRoot => _settingsService.OsuWebRoot.Trim('/');
-        private string OsuArtifactsRoot => _settingsService.OsuArtifactsRoot.Trim('/');
-        private string OsuApiKey => _settingsService.OsuApiKey;
+        private string ApiKey => _settingsService.ApiKey;
 
-        public OsuWebDataService(ISettingsService settingsService, IHttpService httpService, ICacheService cacheService)
+        public DataService(ISettingsService settingsService, IHttpService httpService, ICacheService cacheService)
         {
             _settingsService = settingsService;
             _httpService = httpService;
@@ -32,7 +30,7 @@ namespace OsuHelper.Services
             if (cached != null) return cached;
 
             // Get
-            var url = OsuWebRoot + $"/api/get_beatmaps?k={OsuApiKey}&m={(int) gameMode}&b={beatmapId}&limit=1&a=1";
+            var url = $"https://osu.ppy.sh//api/get_beatmaps?k={ApiKey}&m={(int) gameMode}&b={beatmapId}&limit=1&a=1";
             var response = await _httpService.GetStringAsync(url);
 
             // Parse
@@ -71,7 +69,7 @@ namespace OsuHelper.Services
             if (cached != null) return cached;
 
             // Get
-            var url = OsuWebRoot + $"/osu/{beatmapId}";
+            var url = $"https://osu.ppy.sh/osu/{beatmapId}";
             var response = await _httpService.GetStringAsync(url);
 
             // Save to cache
@@ -87,7 +85,7 @@ namespace OsuHelper.Services
             if (cached != null) return cached;
 
             // Get
-            var url = OsuArtifactsRoot + $"/preview/{mapSetId}.mp3";
+            var url = $"https://b.ppy.sh//preview/{mapSetId}.mp3";
             var response = await _httpService.GetStreamAsync(url);
 
             // Save to cache
@@ -101,8 +99,8 @@ namespace OsuHelper.Services
             // Don't cache volatile data
 
             // Get
-            var url = OsuWebRoot +
-                         $"/api/get_user_best?k={OsuApiKey}&m={(int) gameMode}&u={userId.UrlEncode()}&limit=100";
+            var url =
+                $"https://osu.ppy.sh/api/get_user_best?k={ApiKey}&m={(int) gameMode}&u={userId.UrlEncode()}&limit=100";
             var response = await _httpService.GetStringAsync(url);
 
             // Parse
@@ -135,7 +133,7 @@ namespace OsuHelper.Services
             // Don't cache volatile data
 
             // Get
-            var url = OsuWebRoot + $"/api/get_scores?k={OsuApiKey}&m={(int) gameMode}&b={beatmapId}&limit=100";
+            var url = $"https://osu.ppy.sh/api/get_scores?k={ApiKey}&m={(int) gameMode}&b={beatmapId}&limit=100";
             var response = await _httpService.GetStringAsync(url);
 
             // Parse

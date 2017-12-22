@@ -45,8 +45,8 @@ namespace OsuHelper.ViewModels
             DownloadCommand = new RelayCommand(Download);
             DownloadDirectCommand = new RelayCommand(DownloadDirect);
             DownloadBloodcatCommand = new RelayCommand(DownloadBloodcat);
-            PlayPreviewCommand = new RelayCommand(PlayPreviewAsync);
-            StopPreviewCommand = new RelayCommand(StopPreviewAsync);
+            PlayPreviewCommand = new RelayCommand(PlayPreview);
+            StopPreviewCommand = new RelayCommand(StopPreview);
 
             MessengerInstance.Register<ShowBeatmapDetailsMessage>(this, m =>
             {
@@ -76,7 +76,7 @@ namespace OsuHelper.ViewModels
             Process.Start($"http://bloodcat.com/osu/s/{Beatmap.MapSetId}");
         }
 
-        private async void PlayPreviewAsync()
+        private async void PlayPreview()
         {
             IsPreviewPlaying = true;
             using (var stream = await _dataService.GetMapSetPreviewAsync(Beatmap.MapSetId))
@@ -84,7 +84,7 @@ namespace OsuHelper.ViewModels
             IsPreviewPlaying = false;
         }
 
-        private async void StopPreviewAsync()
+        private async void StopPreview()
         {
             await _audioService.StopAsync();
             IsPreviewPlaying = false;

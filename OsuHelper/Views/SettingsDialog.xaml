@@ -15,19 +15,19 @@
     TextOptions.TextRenderingMode="Auto">
     <StackPanel Margin="5" Orientation="Vertical">
         <TextBlock Margin="5" Text="Username or ID:" />
-        <TextBox Margin="5,0,5,5" Text="{Binding SettingsService.UserId}" />
+        <TextBox Margin="5,0,5,5" Text="{Binding UserId}" />
 
         <TextBlock Margin="5,10,5,5">
             <Run Text="API key:" />
             <Hyperlink Command="{Binding GetApiKeyCommand}">(click here to obtain one)</Hyperlink>
         </TextBlock>
-        <TextBox Margin="5,0,5,5" Text="{Binding SettingsService.OsuApiKey}" />
+        <TextBox Margin="5,0,5,5" Text="{Binding ApiKey}" />
 
         <TextBlock Margin="5,10,5,5" Text="Game mode:" />
         <ComboBox
             Margin="5,0,5,5"
             IsReadOnly="True"
-            SelectedItem="{Binding SettingsService.GameMode, Converter={StaticResource EnumToStringConverter}}">
+            SelectedItem="{Binding GameMode, Converter={StaticResource EnumToStringConverter}}">
             <system:String>Standard</system:String>
             <system:String>Taiko</system:String>
             <system:String>Catch The Beat</system:String>
@@ -37,7 +37,7 @@
         <CheckBox
             Margin="2,10,5,5"
             Content="Download maps without video"
-            IsChecked="{Binding SettingsService.DownloadWithoutVideo}" />
+            IsChecked="{Binding DownloadWithoutVideo}" />
 
         <Button
             Margin="5,10,5,5"

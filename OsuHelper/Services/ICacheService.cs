@@ -2,8 +2,8 @@
 {
     public interface ICacheService
     {
-        void Store<T>(string key, T obj) where T : class;
+        void Store(string key, object obj);
 
-        T RetrieveOrDefault<T>(string key, T defaultValue = default(T)) where T : class;
+        T RetrieveOrDefault<T>(string key, T defaultValue = default(T));
     }
 }

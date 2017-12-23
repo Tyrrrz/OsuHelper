@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using OsuHelper.Models;
+﻿using OsuHelper.Models;
 
 namespace OsuHelper.Services
 {
@@ -9,8 +8,6 @@ namespace OsuHelper.Services
         string ApiKey { get; set; }
         GameMode GameMode { get; set; }
         bool DownloadWithoutVideo { get; set; }
-
-        IReadOnlyList<BeatmapRecommendation> LastRecommendations { get; set; }
 
         void Load();
         void Save();

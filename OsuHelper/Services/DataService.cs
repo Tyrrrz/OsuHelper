@@ -26,11 +26,11 @@ namespace OsuHelper.Services
         public async Task<Beatmap> GetBeatmapAsync(string beatmapId, GameMode gameMode)
         {
             // Try to get from cache first
-            var cached = _cacheService.RetrieveOrDefault<Beatmap>(beatmapId);
+            var cached = _cacheService.RetrieveOrDefault<Beatmap>($"Beatmap-{beatmapId}");
             if (cached != null) return cached;
 
             // Get
-            var url = $"https://osu.ppy.sh//api/get_beatmaps?k={ApiKey}&m={(int) gameMode}&b={beatmapId}&limit=1&a=1";
+            var url = $"https://osu.ppy.sh/api/get_beatmaps?k={ApiKey}&m={(int) gameMode}&b={beatmapId}&limit=1&a=1";
             var response = await _httpService.GetStringAsync(url);
 
             // Parse
@@ -57,7 +57,7 @@ namespace OsuHelper.Services
             var result = new Beatmap(id, setId, gameMode, creator, lastUpdate, artist, title, version, traits);
 
             // Save to cache
-            _cacheService.Store(beatmapId, result);
+            _cacheService.Store($"Beatmap-{beatmapId}", result);
 
             return result;
         }
@@ -65,7 +65,7 @@ namespace OsuHelper.Services
         public async Task<string> GetBeatmapRawAsync(string beatmapId)
         {
             // Try get from cache first
-            var cached = _cacheService.RetrieveOrDefault<string>($"BeatmapRaw_{beatmapId}");
+            var cached = _cacheService.RetrieveOrDefault<string>($"BeatmapRaw-{beatmapId}");
             if (cached != null) return cached;
 
             // Get
@@ -73,7 +73,7 @@ namespace OsuHelper.Services
             var response = await _httpService.GetStringAsync(url);
 
             // Save to cache
-            _cacheService.Store($"BeatmapRaw_{beatmapId}", response);
+            _cacheService.Store($"BeatmapRaw-{beatmapId}", response);
 
             return response;
         }
@@ -81,20 +81,21 @@ namespace OsuHelper.Services
         public async Task<Stream> GetMapSetPreviewAsync(string mapSetId)
         {
             // Try get from cache first
-            var cached = _cacheService.RetrieveOrDefault<Stream>($"BeatmapPreview_{mapSetId}");
+            var cached = _cacheService.RetrieveOrDefault<Stream>($"BeatmapPreview-{mapSetId}");
             if (cached != null) return cached;
 
             // Get
-            var url = $"https://b.ppy.sh//preview/{mapSetId}.mp3";
+            var url = $"https://b.ppy.sh/preview/{mapSetId}.mp3";
             var response = await _httpService.GetStreamAsync(url);
 
             // Save to cache
-            _cacheService.Store($"BeatmapPreview_{mapSetId}", response);
+            _cacheService.Store($"BeatmapPreview-{mapSetId}", response);
 
-            return _cacheService.RetrieveOrDefault<Stream>($"BeatmapPreview_{mapSetId}");
+            // Load from cache because this stream cannot seek
+            return _cacheService.RetrieveOrDefault<Stream>($"BeatmapPreview-{mapSetId}");
         }
 
-        public async Task<IEnumerable<Play>> GetUserTopPlaysAsync(string userId, GameMode gameMode)
+        public async Task<IReadOnlyList<Play>> GetUserTopPlaysAsync(string userId, GameMode gameMode)
         {
             // Don't cache volatile data
 
@@ -128,7 +129,7 @@ namespace OsuHelper.Services
             return result;
         }
 
-        public async Task<IEnumerable<Play>> GetBeatmapTopPlaysAsync(string beatmapId, GameMode gameMode, Mods mods)
+        public async Task<IReadOnlyList<Play>> GetBeatmapTopPlaysAsync(string beatmapId, GameMode gameMode, Mods mods)
         {
             // Don't cache volatile data
 

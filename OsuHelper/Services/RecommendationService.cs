@@ -24,7 +24,7 @@ namespace OsuHelper.Services
             _beatmapProcessorService = beatmapProcessorService;
         }
 
-        public async Task<IEnumerable<BeatmapRecommendation>> GetRecommendationsAsync()
+        public async Task<IReadOnlyList<BeatmapRecommendation>> GetRecommendationsAsync()
         {
             // Get user's top plays
             var ownTopPlays = (await _dataService.GetUserTopPlaysAsync(UserId, GameMode))
@@ -33,7 +33,7 @@ namespace OsuHelper.Services
 
             // If no top plays - return empty
             if (!ownTopPlays.Any())
-                return Enumerable.Empty<BeatmapRecommendation>();
+                return new BeatmapRecommendation[0];
 
             // Get maps where they were made
             var ownTopMaps = ownTopPlays
@@ -51,10 +51,8 @@ namespace OsuHelper.Services
             await ownTopPlays.Take(15).ParallelForEachAsync(async ownTopPlay =>
             {
                 // Get the map's top plays
-                var mapTopPlays = await _dataService.GetBeatmapTopPlaysAsync(ownTopPlay.BeatmapId, GameMode, ownTopPlay.Mods);
-
-                // Filter by PP difference
-                mapTopPlays = mapTopPlays
+                var mapTopPlays =
+                    (await _dataService.GetBeatmapTopPlaysAsync(ownTopPlay.BeatmapId, GameMode, ownTopPlay.Mods))
                     .OrderBy(p => Math.Abs(p.PerformancePoints - ownTopPlay.PerformancePoints))
                     .Take(10);
 
@@ -62,10 +60,7 @@ namespace OsuHelper.Services
                 await mapTopPlays.ParallelForEachAsync(async mapTopPlay =>
                 {
                     // Get top plays of that user
-                    var otherUserTopPlays = await _dataService.GetUserTopPlaysAsync(mapTopPlay.PlayerId, GameMode);
-
-                    // Filter by PP difference and total PP
-                    otherUserTopPlays = otherUserTopPlays
+                    var otherUserTopPlays = (await _dataService.GetUserTopPlaysAsync(mapTopPlay.PlayerId, GameMode))
                         .Where(p => p.Rank >= PlayRank.S)
                         .Where(p => p.PerformancePoints >= minPP)
                         .Where(p => p.PerformancePoints <= maxPP)
@@ -103,7 +98,7 @@ namespace OsuHelper.Services
                 result.Add(recommendation);
             });
 
-            return result.OrderByDescending(r => r.Weight);
+            return result.OrderByDescending(r => r.Weight).ToArray();
         }
     }
 }

@@ -15,55 +15,50 @@ namespace OsuHelper.Services
 
         private string GetCacheFilePath(string id)
         {
+            Directory.CreateDirectory(_cacheDirPath);
             return Path.Combine(_cacheDirPath, id + ".ch");
         }
 
-        public void Store<T>(string key, T obj) where T : class
+        public void Store(string key, object obj)
         {
-            if (typeof(T) == typeof(string))
+            if (obj is string objStr)
             {
-                var id = "Text_" + key;
                 Directory.CreateDirectory(_cacheDirPath);
-                File.WriteAllText(GetCacheFilePath(id), obj as string);
+                File.WriteAllText(GetCacheFilePath(key), objStr);
             }
-            else if (typeof(T) == typeof(Stream))
+            else if (obj is Stream objStream)
             {
-                var id = "Bin_" + key;
                 Directory.CreateDirectory(_cacheDirPath);
-                using (var output = File.Create(GetCacheFilePath(id)))
-                    (obj as Stream)?.CopyTo(output);
+                using (var output = File.Create(GetCacheFilePath(key)))
+                    objStream.CopyTo(output);
             }
             else
             {
-                var id = typeof(T).Name + "_" + key;
                 var serialized = JsonConvert.SerializeObject(obj);
                 Directory.CreateDirectory(_cacheDirPath);
-                File.WriteAllText(GetCacheFilePath(id), serialized);
+                File.WriteAllText(GetCacheFilePath(key), serialized);
             }
         }
 
-        public T RetrieveOrDefault<T>(string key, T defaultValue = default(T)) where T : class
+        public T RetrieveOrDefault<T>(string key, T defaultValue = default(T))
         {
             if (typeof(T) == typeof(string))
             {
-                var id = "Text_" + key;
-                if (File.Exists(GetCacheFilePath(id)))
-                    return File.ReadAllText(GetCacheFilePath(id)) as T ?? defaultValue;
+                if (File.Exists(GetCacheFilePath(key)))
+                    return (T) (object) File.ReadAllText(GetCacheFilePath(key));
                 return defaultValue;
             }
             if (typeof(T) == typeof(Stream))
             {
-                var id = "Bin_" + key;
-                if (File.Exists(GetCacheFilePath(id)))
-                    return File.OpenRead(GetCacheFilePath(id)) as T ?? defaultValue;
+                if (File.Exists(GetCacheFilePath(key)))
+                    return (T) (object) File.OpenRead(GetCacheFilePath(key));
                 return defaultValue;
             }
             else
             {
-                var id = typeof(T).Name + "_" + key;
-                if (File.Exists(GetCacheFilePath(id)))
+                if (File.Exists(GetCacheFilePath(key)))
                 {
-                    var serialized = File.ReadAllText(GetCacheFilePath(id));
+                    var serialized = File.ReadAllText(GetCacheFilePath(key));
                     return JsonConvert.DeserializeObject<T>(serialized);
                 }
                 return defaultValue;

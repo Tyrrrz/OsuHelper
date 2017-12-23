@@ -12,6 +12,7 @@ namespace OsuHelper.ViewModels
     public class MainViewModel : ViewModelBase, IMainViewModel
     {
         private readonly ISettingsService _settingsService;
+        private readonly ICacheService _cacheService;
         private readonly IRecommendationService _recommendationService;
 
         private bool _isBusy;
@@ -41,16 +42,19 @@ namespace OsuHelper.ViewModels
 
         public RelayCommand PopulateRecommendationsCommand { get; }
 
-        public MainViewModel(ISettingsService settingsService, IRecommendationService recommendationService)
+        public MainViewModel(ISettingsService settingsService, ICacheService cacheService,
+            IRecommendationService recommendationService)
         {
             _settingsService = settingsService;
+            _cacheService = cacheService;
             _recommendationService = recommendationService;
 
             // Commands
             PopulateRecommendationsCommand = new RelayCommand(PopulateRecommendations, () => !IsBusy);
 
-            // Load stored recommendations
-            _recommendations = _settingsService.LastRecommendations;
+            // Load last recommendations
+            _recommendations =
+                _cacheService.RetrieveOrDefault<IReadOnlyList<BeatmapRecommendation>>("LastRecommendations");
         }
 
         private async void PopulateRecommendations()
@@ -65,8 +69,8 @@ namespace OsuHelper.ViewModels
 
             IsBusy = true;
 
-            Recommendations = (await _recommendationService.GetRecommendationsAsync()).ToArray();
-            _settingsService.LastRecommendations = Recommendations;
+            Recommendations = await _recommendationService.GetRecommendationsAsync();
+            _cacheService.Store("LastRecommendations", Recommendations);
 
             IsBusy = false;
         }

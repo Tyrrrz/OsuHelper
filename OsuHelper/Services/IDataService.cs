@@ -13,8 +13,8 @@ namespace OsuHelper.Services
 
         Task<Stream> GetMapSetPreviewAsync(string mapSetId);
 
-        Task<IEnumerable<Play>> GetUserTopPlaysAsync(string userId, GameMode gameMode);
+        Task<IReadOnlyList<Play>> GetUserTopPlaysAsync(string userId, GameMode gameMode);
 
-        Task<IEnumerable<Play>> GetBeatmapTopPlaysAsync(string beatmapId, GameMode gameMode, Mods mods);
+        Task<IReadOnlyList<Play>> GetBeatmapTopPlaysAsync(string beatmapId, GameMode gameMode, Mods mods);
     }
 }

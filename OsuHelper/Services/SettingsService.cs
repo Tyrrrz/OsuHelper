@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using OsuHelper.Models;
+﻿using OsuHelper.Models;
 using Tyrrrz.Settings;
 
 namespace OsuHelper.Services
@@ -13,8 +12,6 @@ namespace OsuHelper.Services
         public GameMode GameMode { get; set; } = GameMode.Standard;
 
         public bool DownloadWithoutVideo { get; set; }
-
-        public IReadOnlyList<BeatmapRecommendation> LastRecommendations { get; set; }
 
         public SettingsService()
         {

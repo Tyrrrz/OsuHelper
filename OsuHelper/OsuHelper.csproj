@@ -42,9 +42,6 @@
     <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CliWrap, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CliWrap.1.7.3\lib\net45\CliWrap.dll</HintPath>
-    </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.4.0.0, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.0-alpha\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
       <Private>True</Private>
@@ -89,8 +86,8 @@
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Tyrrrz.Extensions, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tyrrrz.Extensions.1.4.1\lib\net45\Tyrrrz.Extensions.dll</HintPath>
+    <Reference Include="Tyrrrz.Extensions, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tyrrrz.Extensions.1.5.0\lib\net45\Tyrrrz.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Tyrrrz.Settings, Version=1.3.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Tyrrrz.Settings.1.3.2\lib\net45\Tyrrrz.Settings.dll</HintPath>
@@ -110,6 +107,7 @@
     </ApplicationDefinition>
     <Compile Include="Converters\ModsToStringConverter.cs" />
     <Compile Include="Converters\TimeSpanToShortStringConverter.cs" />
+    <Compile Include="Exceptions\HttpErrorStatusCodeException.cs" />
     <Compile Include="Locator.cs" />
     <Compile Include="Messages\ShowBeatmapDetailsMessage.cs" />
     <Compile Include="Messages\ShowNotificationMessage.cs" />
@@ -126,12 +124,10 @@
     <Compile Include="Services\AudioService.cs" />
     <Compile Include="Services\CacheService.cs" />
     <Compile Include="Services\SettingsService.cs" />
-    <Compile Include="Services\HttpService.cs" />
     <Compile Include="Services\IAudioService.cs" />
     <Compile Include="Services\IBeatmapProcessorService.cs" />
     <Compile Include="Services\ICacheService.cs" />
     <Compile Include="Services\IDataService.cs" />
-    <Compile Include="Services\IHttpService.cs" />
     <Compile Include="Services\IRecommendationService.cs" />
     <Compile Include="Services\ISettingsService.cs" />
     <Compile Include="Services\BeatmapProcessorService.cs" />
@@ -201,11 +197,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="favicon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="External\oppai.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

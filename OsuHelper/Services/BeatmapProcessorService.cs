@@ -1,100 +1,104 @@
 ﻿using System;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using CliWrap;
-using CliWrap.Models;
-using Newtonsoft.Json.Linq;
 using OsuHelper.Models;
+using Tyrrrz.Extensions;
 
 namespace OsuHelper.Services
 {
-    public class BeatmapProcessorService : IBeatmapProcessorService, IDisposable
+    public class BeatmapProcessorService : IBeatmapProcessorService
     {
-        private readonly IDataService _dataService;
-
-        private readonly Cli _oppaiCli;
-
-        public BeatmapProcessorService(IDataService dataService)
+        private TimeSpan ApproachRateToTime(double ar)
         {
-            _dataService = dataService;
-            _oppaiCli = new Cli(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "External\\", "oppai.exe"));
+            return ar <= 5
+                ? TimeSpan.FromMilliseconds(1800 - ar * 120)
+                : TimeSpan.FromMilliseconds(1050 - (ar - 6) * 150);
         }
 
-        private async Task<string> ExecuteOppaiAsync(string rawBeatmapData, Mods mods)
+        private double TimeToApproachRate(TimeSpan time)
         {
-            // Assemble arguments
-            var argsBuffer = new StringBuilder();
-
-            // -- beatmap
-            argsBuffer.Append('-');
-            argsBuffer.Append(' ');
-
-            // -- mods
-            if (mods != Mods.None)
-            {
-                argsBuffer.Append('+');
-                argsBuffer.Append(mods.FormatToString());
-                argsBuffer.Append(' ');
-            }
-
-            // -- output type
-            argsBuffer.Append("-ojson");
-
-            // Execute
-            var input = new ExecutionInput(argsBuffer.ToString(), rawBeatmapData);
-            var output = await _oppaiCli.ExecuteAsync(input);
-            output.ThrowIfError();
-
-            return output.StandardOutput;
+            var ms = time.TotalMilliseconds;
+            return ms > 1200
+                ? (1800 - ms) / 120
+                : (1050 - ms) / 150 + 6;
         }
 
-        public async Task<BeatmapTraits> CalculateTraitsWithModsAsync(Beatmap beatmap, Mods mods)
+        private TimeSpan OverallDifficultyToTime(double od)
+        {
+            return TimeSpan.FromMilliseconds(78 - od * 6);
+        }
+
+        private double TimeToOverallDifficulty(TimeSpan time)
+        {
+            var ms = time.TotalMilliseconds;
+            return (78 - ms) / 6;
+        }
+
+        public BeatmapTraits CalculateTraitsWithMods(Beatmap beatmap, Mods mods)
         {
             // No mods - just return base traits
             if (mods == Mods.None)
                 return beatmap.Traits;
 
-            // Not standard - return base traits (oppai doesn't support other modes)
+            // Not standard - return base traits (no idea how those mods work)
             if (beatmap.GameMode != GameMode.Standard)
                 return beatmap.Traits;
 
-            // Get raw beatmap data
-            var beatmapRaw = await _dataService.GetBeatmapRawAsync(beatmap.Id);
-
-            // Run oppai
-            var oppaiOutput = await ExecuteOppaiAsync(beatmapRaw, mods);
-
-            // Parse
-            var oppaiOutputJson = JToken.Parse(oppaiOutput);
-
-            // Populate result
+            // Carry over unchanged traits
             var maxCombo = beatmap.Traits.MaxCombo;
             var duration = beatmap.Traits.Duration;
             var tempo = beatmap.Traits.Tempo;
+            var sr = beatmap.Traits.StarRating; // can't calculate this
+
+            // Calculate duration and tempo
             if (mods.HasFlag(Mods.DoubleTime))
             {
-                duration = TimeSpan.FromSeconds(beatmap.Traits.Duration.TotalSeconds / 1.5);
+                duration = beatmap.Traits.Duration.Multiply(1 / 1.5);
                 tempo = beatmap.Traits.Tempo * 1.5;
             }
             else if (mods.HasFlag(Mods.HalfTime))
             {
-                duration = TimeSpan.FromSeconds(beatmap.Traits.Duration.TotalSeconds / 0.75);
+                duration = beatmap.Traits.Duration.Multiply(1 / 0.75);
                 tempo = beatmap.Traits.Tempo * 0.75;
             }
-            var sr = oppaiOutputJson["stars"].Value<double>();
-            var ar = oppaiOutputJson["ar"].Value<double>();
-            var od = oppaiOutputJson["od"].Value<double>();
-            var cs = oppaiOutputJson["cs"].Value<double>();
-            var hp = oppaiOutputJson["hp"].Value<double>();
+
+            // Calculate AR and OD
+            var ar = beatmap.Traits.ApproachRate;
+            var od = beatmap.Traits.OverallDifficulty;
+            if (mods.HasFlag(Mods.HardRock))
+            {
+                ar = (ar * 1.4).ClampMax(10);
+                od = (od * 1.4).ClampMax(10);
+            }
+            else if (mods.HasFlag(Mods.Easy))
+            {
+                ar = ar / 2;
+                od = od / 2;
+            }
+            if (mods.HasFlag(Mods.DoubleTime))
+            {
+                ar = TimeToApproachRate(ApproachRateToTime(ar).Multiply(1 / 1.5));
+                od = TimeToOverallDifficulty(OverallDifficultyToTime(od).Multiply(1 / 1.5));
+            }
+            else if (mods.HasFlag(Mods.HalfTime))
+            {
+                ar = TimeToApproachRate(ApproachRateToTime(ar).Multiply(1 / 0.75));
+                od = TimeToOverallDifficulty(OverallDifficultyToTime(od).Multiply(1 / 0.75));
+            }
+
+            // Calculate CS and HP
+            var cs = beatmap.Traits.CircleSize;
+            var hp = beatmap.Traits.Drain;
+            if (mods.HasFlag(Mods.HardRock))
+            {
+                cs = (cs * 1.4).ClampMax(10);
+                hp = (hp * 1.4).ClampMax(10);
+            }
+            else if (mods.HasFlag(Mods.Easy))
+            {
+                cs = cs / 2;
+                hp = hp / 2;
+            }
 
             return new BeatmapTraits(maxCombo, duration, tempo, sr, ar, od, cs, hp);
-        }
-
-        public void Dispose()
-        {
-            _oppaiCli.CancelAll();
-            _oppaiCli.Dispose();
         }
     }
 }

@@ -1,10 +1,9 @@
-﻿using System.Threading.Tasks;
-using OsuHelper.Models;
+﻿using OsuHelper.Models;
 
 namespace OsuHelper.Services
 {
     public interface IBeatmapProcessorService
     {
-        Task<BeatmapTraits> CalculateTraitsWithModsAsync(Beatmap beatmap, Mods mods);
+        BeatmapTraits CalculateTraitsWithMods(Beatmap beatmap, Mods mods);
     }
 }

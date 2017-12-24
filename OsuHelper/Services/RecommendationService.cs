@@ -91,7 +91,7 @@ namespace OsuHelper.Services
                 var beatmap = await _dataService.GetBeatmapAsync(play.BeatmapId, GameMode);
 
                 // Calculate traits with mods
-                var traitsWithMods = await _beatmapProcessorService.CalculateTraitsWithModsAsync(beatmap, play.Mods);
+                var traitsWithMods = _beatmapProcessorService.CalculateTraitsWithMods(beatmap, play.Mods);
 
                 // Add recommendation
                 var recommendation = new BeatmapRecommendation(beatmap, count, play.Mods, traitsWithMods, play.Accuracy, play.PerformancePoints);

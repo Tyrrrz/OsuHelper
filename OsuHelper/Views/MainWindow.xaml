@@ -198,7 +198,7 @@
                         <DataGridTextColumn.CellStyle>
                             <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsBeatsPerMinuteAffected}" Value="True">
+                                    <DataTrigger Binding="{Binding IsTempoAffected}" Value="True">
                                         <Setter Property="Foreground" Value="OrangeRed" />
                                     </DataTrigger>
                                 </Style.Triggers>

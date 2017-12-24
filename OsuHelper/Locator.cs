@@ -17,7 +17,6 @@ namespace OsuHelper
             SimpleIoc.Default.Register<IBeatmapProcessorService, BeatmapProcessorService>();
             SimpleIoc.Default.Register<ICacheService, CacheService>();
             SimpleIoc.Default.Register<IDataService, DataService>();
-            SimpleIoc.Default.Register<IHttpService, HttpService>();
             SimpleIoc.Default.Register<IRecommendationService, RecommendationService>();
             SimpleIoc.Default.Register<ISettingsService, SettingsService>();
 
@@ -41,7 +40,6 @@ namespace OsuHelper
             (ServiceLocator.Current.GetInstance<IBeatmapProcessorService>() as IDisposable)?.Dispose();
             (ServiceLocator.Current.GetInstance<ICacheService>() as IDisposable)?.Dispose();
             (ServiceLocator.Current.GetInstance<IDataService>() as IDisposable)?.Dispose();
-            (ServiceLocator.Current.GetInstance<IHttpService>() as IDisposable)?.Dispose();
             (ServiceLocator.Current.GetInstance<IRecommendationService>() as IDisposable)?.Dispose();
             (ServiceLocator.Current.GetInstance<ISettingsService>() as IDisposable)?.Dispose();
 

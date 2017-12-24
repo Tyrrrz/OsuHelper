@@ -1,26 +1,83 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using OsuHelper.Exceptions;
 using OsuHelper.Models;
 using Tyrrrz.Extensions;
 
 namespace OsuHelper.Services
 {
-    public class DataService : IDataService
+    public class DataService : IDataService, IDisposable
     {
         private readonly ISettingsService _settingsService;
-        private readonly IHttpService _httpService;
         private readonly ICacheService _cacheService;
+
+        private readonly HttpClient _httpClient;
+        private readonly SemaphoreSlim _requestRateSemaphore;
+
+        private DateTime _lastRequestDateTime;
 
         private string ApiKey => _settingsService.ApiKey;
 
-        public DataService(ISettingsService settingsService, IHttpService httpService, ICacheService cacheService)
+        public DataService(ISettingsService settingsService, ICacheService cacheService)
         {
             _settingsService = settingsService;
-            _httpService = httpService;
             _cacheService = cacheService;
+
+            _httpClient = new HttpClient();
+            _httpClient.DefaultRequestHeaders.Add("User-Agent", "osu!helper (github.com/Tyrrrz/OsuHelper)");
+
+            _requestRateSemaphore = new SemaphoreSlim(1, 1);
+            _lastRequestDateTime = DateTime.MinValue;
+        }
+
+        private async Task MaintainRateLimitAsync(TimeSpan interval)
+        {
+            await _requestRateSemaphore.WaitAsync();
+            var timePassedSinceLastRequest = DateTime.Now - _lastRequestDateTime;
+            var remainingTime = interval - timePassedSinceLastRequest;
+            if (remainingTime > TimeSpan.Zero)
+                await Task.Delay(remainingTime);
+            _lastRequestDateTime = DateTime.Now;
+            _requestRateSemaphore.Release();
+        }
+
+        private async Task<HttpResponseMessage> InternalSendRequestAsync(HttpRequestMessage request)
+        {
+            // Get response
+            var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+
+            // Check status code
+            // We throw our own exception here because default one doesn't have status code
+            if (!response.IsSuccessStatusCode)
+                throw new HttpErrorStatusCodeException(response.StatusCode);
+
+            // Get content
+            return response;
+        }
+
+        private async Task<string> GetStringAsync(string url)
+        {
+            await MaintainRateLimitAsync(TimeSpan.FromMinutes(1.0 / 1200));
+            using (var request = new HttpRequestMessage(HttpMethod.Get, url))
+            using (var response = await InternalSendRequestAsync(request))
+            {
+                return await response.Content.ReadAsStringAsync();
+            }
+        }
+
+        private async Task<Stream> GetStreamAsync(string url)
+        {
+            await MaintainRateLimitAsync(TimeSpan.FromMinutes(1.0 / 1200));
+            using (var request = new HttpRequestMessage(HttpMethod.Get, url))
+            {
+                var response = await InternalSendRequestAsync(request);
+                return await response.Content.ReadAsStreamAsync();
+            }
         }
 
         public async Task<Beatmap> GetBeatmapAsync(string beatmapId, GameMode gameMode)
@@ -31,7 +88,7 @@ namespace OsuHelper.Services
 
             // Get
             var url = $"https://osu.ppy.sh/api/get_beatmaps?k={ApiKey}&m={(int) gameMode}&b={beatmapId}&limit=1&a=1";
-            var response = await _httpService.GetStringAsync(url);
+            var response = await GetStringAsync(url);
 
             // Parse
             var beatmapJson = JToken.Parse(response).First;
@@ -70,7 +127,7 @@ namespace OsuHelper.Services
 
             // Get
             var url = $"https://osu.ppy.sh/osu/{beatmapId}";
-            var response = await _httpService.GetStringAsync(url);
+            var response = await GetStringAsync(url);
 
             // Save to cache
             _cacheService.Store($"BeatmapRaw-{beatmapId}", response);
@@ -86,7 +143,7 @@ namespace OsuHelper.Services
 
             // Get
             var url = $"https://b.ppy.sh/preview/{mapSetId}.mp3";
-            var response = await _httpService.GetStreamAsync(url);
+            var response = await GetStreamAsync(url);
 
             // Save to cache
             _cacheService.Store($"BeatmapPreview-{mapSetId}", response);
@@ -102,7 +159,7 @@ namespace OsuHelper.Services
             // Get
             var url =
                 $"https://osu.ppy.sh/api/get_user_best?k={ApiKey}&m={(int) gameMode}&u={userId.UrlEncode()}&limit=100";
-            var response = await _httpService.GetStringAsync(url);
+            var response = await GetStringAsync(url);
 
             // Parse
             var playsJson = JToken.Parse(response);
@@ -135,7 +192,7 @@ namespace OsuHelper.Services
 
             // Get
             var url = $"https://osu.ppy.sh/api/get_scores?k={ApiKey}&m={(int) gameMode}&b={beatmapId}&limit=100";
-            var response = await _httpService.GetStringAsync(url);
+            var response = await GetStringAsync(url);
 
             // Parse
             var playsJson = JToken.Parse(response);
@@ -158,6 +215,12 @@ namespace OsuHelper.Services
             }
 
             return result;
+        }
+
+        public void Dispose()
+        {
+            _httpClient.Dispose();
+            _requestRateSemaphore.Dispose();
         }
     }
 }

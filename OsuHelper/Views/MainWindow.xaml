@@ -218,6 +218,7 @@
                     </DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding ExpectedAccuracy, StringFormat=\{0:P2\}}" Header="Accuracy" />
                     <DataGridTextColumn Binding="{Binding ExpectedPerformancePoints, StringFormat=\{0:N0\} pp}" Header="Gain" />
+                    <DataGridTextColumn Binding="{Binding Weight}" Header="Weight" />
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

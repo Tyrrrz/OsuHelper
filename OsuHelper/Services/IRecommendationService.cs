@@ -6,6 +6,6 @@ namespace OsuHelper.Services
 {
     public interface IRecommendationService
     {
-        Task<IReadOnlyList<BeatmapRecommendation>> GetRecommendationsAsync();
+        Task<IReadOnlyList<Recommendation>> GetRecommendationsAsync();
     }
 }

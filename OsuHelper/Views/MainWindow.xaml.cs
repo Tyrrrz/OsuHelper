@@ -22,15 +22,15 @@ namespace OsuHelper.Views
             // Dialogs
             Messenger.Default.Register<ShowBeatmapDetailsMessage>(this, m =>
             {
-                DialogHost.Show(Resources["BeatmapDetailsDialog"]).Forget();
+                DialogHost.Show(new BeatmapDetailsDialog()).Forget();
             });
             Messenger.Default.Register<ShowNotificationMessage>(this, m =>
             {
-                DialogHost.Show(Resources["NotificationDialog"]).Forget();
+                DialogHost.Show(new NotificationDialog()).Forget();
             });
             Messenger.Default.Register<ShowSettingsMessage>(this, m =>
             {
-                DialogHost.Show(Resources["SettingsDialog"]).Forget();
+                DialogHost.Show(new SettingsDialog()).Forget();
             });
         }
 
@@ -38,7 +38,7 @@ namespace OsuHelper.Views
         {
             if (!IsInitialized) return;
 
-            var rec = (BeatmapRecommendation) e.Item;
+            var rec = (Recommendation) e.Item;
 
             if (NomodFilterCheckBox.IsChecked == false && rec.Mods == Mods.None)
                 e.Accepted = false;
@@ -90,17 +90,6 @@ namespace OsuHelper.Views
         private void DoubletimeFilterCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
         {
             ((CollectionViewSource) Resources["RecommendationsView"]).View?.Refresh();
-        }
-
-        private void ShowSettingsButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            Messenger.Default.Send(new ShowSettingsMessage());
-        }
-
-        private void RecommendationsDataGrid_OnMouseLeftButtonUp(object sender, EventArgs e)
-        {
-            var rec = (BeatmapRecommendation) RecommendationsDataGrid.SelectedItem;
-            Messenger.Default.Send(new ShowBeatmapDetailsMessage(rec.Beatmap));
         }
     }
 }

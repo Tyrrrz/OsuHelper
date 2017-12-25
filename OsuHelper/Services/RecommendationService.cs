@@ -24,7 +24,7 @@ namespace OsuHelper.Services
             _beatmapProcessorService = beatmapProcessorService;
         }
 
-        public async Task<IReadOnlyList<BeatmapRecommendation>> GetRecommendationsAsync()
+        public async Task<IReadOnlyList<Recommendation>> GetRecommendationsAsync()
         {
             // Get user's top plays
             var ownTopPlays = (await _dataService.GetUserTopPlaysAsync(UserId, GameMode))
@@ -33,7 +33,7 @@ namespace OsuHelper.Services
 
             // If no top plays - return empty
             if (!ownTopPlays.Any())
-                return new BeatmapRecommendation[0];
+                return new Recommendation[0];
 
             // Get maps where they were made
             var ownTopMaps = ownTopPlays
@@ -79,7 +79,7 @@ namespace OsuHelper.Services
                 .Take(100);
 
             // Assemble recommendations
-            var result = new List<BeatmapRecommendation>();
+            var result = new List<Recommendation>();
             await recommendationGroups.ParallelForEachAsync(async group =>
             {
                 var count = group.Count();
@@ -94,7 +94,7 @@ namespace OsuHelper.Services
                 var traitsWithMods = _beatmapProcessorService.CalculateTraitsWithMods(beatmap, play.Mods);
 
                 // Add recommendation
-                var recommendation = new BeatmapRecommendation(beatmap, count, play.Mods, traitsWithMods, play.Accuracy, play.PerformancePoints);
+                var recommendation = new Recommendation(beatmap, count, play.Mods, traitsWithMods, play.Accuracy, play.PerformancePoints);
                 result.Add(recommendation);
             });
 

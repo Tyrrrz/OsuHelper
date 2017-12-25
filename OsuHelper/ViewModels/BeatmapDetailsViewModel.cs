@@ -25,7 +25,12 @@ namespace OsuHelper.ViewModels
         public bool IsPreviewPlaying
         {
             get => _isPreviewPlaying;
-            private set => Set(ref _isPreviewPlaying, value);
+            private set
+            {
+                Set(ref _isPreviewPlaying, value);
+                PlayPreviewCommand.RaiseCanExecuteChanged();
+                StopPreviewCommand.RaiseCanExecuteChanged();
+            }
         }
 
         public RelayCommand OpenPageCommand { get; }

@@ -114,7 +114,7 @@
     <Compile Include="Messages\ShowSettingsMessage.cs" />
     <Compile Include="Models\Beatmap.cs" />
     <Compile Include="Models\BeatmapRankingStatus.cs" />
-    <Compile Include="Models\BeatmapRecommendation.cs" />
+    <Compile Include="Models\Recommendation.cs" />
     <Compile Include="Models\BeatmapTraits.cs" />
     <Compile Include="Models\Extensions.cs" />
     <Compile Include="Models\GameMode.cs" />

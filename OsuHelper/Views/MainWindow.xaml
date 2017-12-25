@@ -2,8 +2,9 @@
     x:Class="OsuHelper.Views.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:command="http://www.galasoft.ch/mvvmlight"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    xmlns:views="clr-namespace:OsuHelper.Views"
     Title="osu!helper v{0}"
     Width="850"
     Height="625"
@@ -19,17 +20,13 @@
     TextOptions.TextRenderingMode="Auto"
     WindowStartupLocation="CenterScreen">
     <Window.Resources>
-        <views:BeatmapDetailsDialog x:Key="BeatmapDetailsDialog" />
-        <views:NotificationDialog x:Key="NotificationDialog" />
-        <views:SettingsDialog x:Key="SettingsDialog" />
-
         <CollectionViewSource
             x:Key="RecommendationsView"
             Filter="RecommendationsView_OnFilter"
             Source="{Binding Recommendations}" />
     </Window.Resources>
 
-    <materialDesign:DialogHost CloseOnClickAway="True">
+    <materialDesign:DialogHost>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -109,7 +106,6 @@
                     VerticalAlignment="Center"
                     Orientation="Horizontal">
                     <Button
-                        x:Name="ShowAboutButton"
                         Margin="4,0,0,0"
                         VerticalAlignment="Center"
                         Command="{Binding ShowAboutCommand}"
@@ -121,10 +117,9 @@
                             Kind="InformationOutline" />
                     </Button>
                     <Button
-                        x:Name="ShowSettingsButton"
                         Margin="4,0,0,0"
                         VerticalAlignment="Center"
-                        Click="ShowSettingsButton_OnClick"
+                        Command="{Binding ShowSettingsCommand}"
                         Style="{DynamicResource MaterialDesignFlatDarkButton}"
                         ToolTip="Settings">
                         <materialDesign:PackIcon
@@ -161,19 +156,26 @@
             <Grid Grid.Row="2">
                 <!--  Recommendations  -->
                 <DataGrid
-                    x:Name="RecommendationsDataGrid"
                     Background="{DynamicResource MaterialDesignCardBackground}"
                     HorizontalScrollBarVisibility="Disabled"
                     IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"
                     ItemsSource="{Binding Source={StaticResource RecommendationsView}}"
-                    MouseLeftButtonUp="RecommendationsDataGrid_OnMouseLeftButtonUp"
+                    SelectedItem="{Binding SelectedRecommendation}"
                     VerticalScrollBarVisibility="Auto"
                     Visibility="{Binding HasData, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <!--  Show beatmap details when clicked  -->
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                            <command:EventToCommand Command="{Binding ShowBeatmapDetailsCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <!--  Hand cursor  -->
                     <DataGrid.RowStyle>
                         <Style BasedOn="{StaticResource {x:Type DataGridRow}}" TargetType="{x:Type DataGridRow}">
                             <Setter Property="Cursor" Value="Hand" />
                         </Style>
                     </DataGrid.RowStyle>
+                    <!--  Columns  -->
                     <DataGrid.Columns>
                         <DataGridTextColumn
                             Width="*"
@@ -185,7 +187,7 @@
                                 <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsStarRatingAffected}" Value="True">
-                                            <Setter Property="Foreground" Value="OrangeRed" />
+                                            <Setter Property="Foreground" Value="{DynamicResource AccentDarkTextBrush}" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -196,7 +198,7 @@
                                 <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsApproachRateAffected}" Value="True">
-                                            <Setter Property="Foreground" Value="OrangeRed" />
+                                            <Setter Property="Foreground" Value="{DynamicResource AccentDarkTextBrush}" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -207,7 +209,7 @@
                                 <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsOverallDifficultyAffected}" Value="True">
-                                            <Setter Property="Foreground" Value="OrangeRed" />
+                                            <Setter Property="Foreground" Value="{DynamicResource AccentDarkTextBrush}" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -218,7 +220,7 @@
                                 <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsTempoAffected}" Value="True">
-                                            <Setter Property="Foreground" Value="OrangeRed" />
+                                            <Setter Property="Foreground" Value="{DynamicResource AccentDarkTextBrush}" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -229,7 +231,7 @@
                                 <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsDurationAffected}" Value="True">
-                                            <Setter Property="Foreground" Value="OrangeRed" />
+                                            <Setter Property="Foreground" Value="{DynamicResource AccentDarkTextBrush}" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>

@@ -2,7 +2,7 @@
 
 namespace OsuHelper.Models
 {
-    public class BeatmapRecommendation
+    public class Recommendation
     {
         public Beatmap Beatmap { get; }
 
@@ -37,7 +37,7 @@ namespace OsuHelper.Models
 
         public double ExpectedPerformancePoints { get; }
 
-        public BeatmapRecommendation(Beatmap beatmap, int weight, Mods mods, BeatmapTraits traitsWithMods,
+        public Recommendation(Beatmap beatmap, int weight, Mods mods, BeatmapTraits traitsWithMods,
             double expectedAccuracy, double expectedPerformancePoints)
         {
             Beatmap = beatmap;

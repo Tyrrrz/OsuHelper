@@ -20,11 +20,11 @@ namespace OsuHelper.Models
 
         public string Version { get; }
 
-        public BeatmapTraits Traits { get; }
-
         public string FullName => $"{Artist} — {Title} [{Version}]";
 
         public string MapSetFullName => $"{Artist} — {Title}";
+
+        public BeatmapTraits Traits { get; }
 
         public string ThumbnailUrl => $"https://b.ppy.sh/thumb/{MapSetId}l.jpg";
 

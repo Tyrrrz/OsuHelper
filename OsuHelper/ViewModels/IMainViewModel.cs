@@ -7,12 +7,14 @@ namespace OsuHelper.ViewModels
     public interface IMainViewModel
     {
         bool IsBusy { get; }
-
-        IReadOnlyList<BeatmapRecommendation> Recommendations { get; }
-
         bool HasData { get; }
 
+        IReadOnlyList<Recommendation> Recommendations { get; }
+        Recommendation SelectedRecommendation { get; }
+
         RelayCommand ShowAboutCommand { get; }
+        RelayCommand ShowSettingsCommand { get; }
+        RelayCommand ShowBeatmapDetailsCommand { get; }
         RelayCommand PopulateRecommendationsCommand { get; }
     }
 }

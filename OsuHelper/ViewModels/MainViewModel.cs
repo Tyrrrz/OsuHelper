@@ -16,7 +16,8 @@ namespace OsuHelper.ViewModels
         private readonly IRecommendationService _recommendationService;
 
         private bool _isBusy;
-        private IReadOnlyList<BeatmapRecommendation> _recommendations;
+        private IReadOnlyList<Recommendation> _recommendations;
+        private Recommendation _selectedRecommendation;
 
         public bool IsBusy
         {
@@ -28,7 +29,9 @@ namespace OsuHelper.ViewModels
             }
         }
 
-        public IReadOnlyList<BeatmapRecommendation> Recommendations
+        public bool HasData => Recommendations.NotNullAndAny();
+
+        public IReadOnlyList<Recommendation> Recommendations
         {
             get => _recommendations;
             private set
@@ -38,9 +41,15 @@ namespace OsuHelper.ViewModels
             }
         }
 
-        public bool HasData => Recommendations.NotNullAndAny();
+        public Recommendation SelectedRecommendation
+        {
+            get => _selectedRecommendation;
+            set => Set(ref _selectedRecommendation, value);
+        }
 
         public RelayCommand ShowAboutCommand { get; }
+        public RelayCommand ShowSettingsCommand { get; }
+        public RelayCommand ShowBeatmapDetailsCommand { get; }
         public RelayCommand PopulateRecommendationsCommand { get; }
 
         public MainViewModel(ISettingsService settingsService, ICacheService cacheService,
@@ -52,11 +61,26 @@ namespace OsuHelper.ViewModels
 
             // Commands
             ShowAboutCommand = new RelayCommand(ShowAbout);
+            ShowSettingsCommand = new RelayCommand(ShowSettings);
+            ShowBeatmapDetailsCommand = new RelayCommand(ShowBeatmapDetails);
             PopulateRecommendationsCommand = new RelayCommand(PopulateRecommendations, () => !IsBusy);
 
             // Load last recommendations
             _recommendations =
-                _cacheService.RetrieveOrDefault<IReadOnlyList<BeatmapRecommendation>>("LastRecommendations");
+                _cacheService.RetrieveOrDefault<IReadOnlyList<Recommendation>>("LastRecommendations");
+        }
+
+        private void ShowSettings()
+        {
+            MessengerInstance.Send(new ShowSettingsMessage());
+        }
+
+        private void ShowBeatmapDetails()
+        {
+            var beatmap = SelectedRecommendation?.Beatmap;
+            if (beatmap == null) return;
+
+            MessengerInstance.Send(new ShowBeatmapDetailsMessage(beatmap));
         }
 
         private void ShowAbout()

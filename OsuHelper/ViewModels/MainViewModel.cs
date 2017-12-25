@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using OsuHelper.Messages;
@@ -40,6 +40,7 @@ namespace OsuHelper.ViewModels
 
         public bool HasData => Recommendations.NotNullAndAny();
 
+        public RelayCommand ShowAboutCommand { get; }
         public RelayCommand PopulateRecommendationsCommand { get; }
 
         public MainViewModel(ISettingsService settingsService, ICacheService cacheService,
@@ -50,11 +51,17 @@ namespace OsuHelper.ViewModels
             _recommendationService = recommendationService;
 
             // Commands
+            ShowAboutCommand = new RelayCommand(ShowAbout);
             PopulateRecommendationsCommand = new RelayCommand(PopulateRecommendations, () => !IsBusy);
 
             // Load last recommendations
             _recommendations =
                 _cacheService.RetrieveOrDefault<IReadOnlyList<BeatmapRecommendation>>("LastRecommendations");
+        }
+
+        private void ShowAbout()
+        {
+            Process.Start("https://github.com/Tyrrrz/OsuHelper");
         }
 
         private async void PopulateRecommendations()

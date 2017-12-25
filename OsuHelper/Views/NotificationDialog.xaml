@@ -11,21 +11,21 @@
     TextElement.Foreground="{DynamicResource SecondaryTextBrush}"
     TextOptions.TextFormattingMode="Ideal"
     TextOptions.TextRenderingMode="Auto">
-    <StackPanel Margin="5" Orientation="Vertical">
+    <StackPanel Orientation="Vertical">
         <TextBlock
-            Margin="5"
+            Margin="16"
             FontSize="18"
             FontWeight="SemiBold"
             Foreground="{DynamicResource PrimaryTextBrush}"
             Text="{Binding Title}" />
 
         <TextBlock
-            Margin="5"
+            Margin="16,0,16,8"
             Text="{Binding Content}"
             TextWrapping="WrapWithOverflow" />
 
         <Button
-            Margin="5,10,5,5"
+            Margin="8"
             HorizontalAlignment="Right"
             Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
             Content="OK"

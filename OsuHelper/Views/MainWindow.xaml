@@ -53,15 +53,16 @@
                     Grid.Column="0"
                     Margin="5"
                     VerticalAlignment="Center"
-                    Orientation="Horizontal">
+                    Orientation="Horizontal"
+                    Visibility="{Binding HasData, Converter={StaticResource BoolToVisibilityConverter}}">
                     <TextBlock
-                        Margin="5,0,0,0"
+                        Margin="4,0,0,0"
                         VerticalAlignment="Center"
                         Text="Filters:" />
 
                     <CheckBox
                         x:Name="NomodFilterCheckBox"
-                        Margin="5,0,0,0"
+                        Margin="4,0,0,0"
                         VerticalAlignment="Center"
                         Checked="NomodFilterCheckBox_OnChecked"
                         Content="NM"
@@ -71,7 +72,7 @@
                         Unchecked="NomodFilterCheckBox_OnUnchecked" />
                     <CheckBox
                         x:Name="HiddenFilterCheckBox"
-                        Margin="5,0,0,0"
+                        Margin="4,0,0,0"
                         VerticalAlignment="Center"
                         Checked="HiddenFilterCheckBox_OnChecked"
                         Content="HD"
@@ -81,7 +82,7 @@
                         Unchecked="HiddenFilterCheckBox_OnUnchecked" />
                     <CheckBox
                         x:Name="HardrockFilterCheckBox"
-                        Margin="5,0,0,0"
+                        Margin="4,0,0,0"
                         VerticalAlignment="Center"
                         Checked="HardrockFilterCheckBox_OnChecked"
                         Content="HR"
@@ -91,7 +92,7 @@
                         Unchecked="HardrockFilterCheckBox_OnUnchecked" />
                     <CheckBox
                         x:Name="DoubletimeFilterCheckBox"
-                        Margin="5,0,0,0"
+                        Margin="4,0,0,0"
                         VerticalAlignment="Center"
                         Checked="DoubletimeFilterCheckBox_OnChecked"
                         Content="DT"
@@ -104,23 +105,24 @@
                 <!--  Buttons  -->
                 <StackPanel
                     Grid.Column="1"
-                    Margin="5"
+                    Margin="6"
                     VerticalAlignment="Center"
                     Orientation="Horizontal">
                     <Button
-                        Margin="5,0,0,0"
+                        x:Name="ShowAboutButton"
+                        Margin="4,0,0,0"
                         VerticalAlignment="Center"
-                        Command="{Binding PopulateRecommendationsCommand}"
+                        Command="{Binding ShowAboutCommand}"
                         Style="{DynamicResource MaterialDesignFlatDarkButton}"
-                        ToolTip="Refresh recommendations">
+                        ToolTip="About osu!helper">
                         <materialDesign:PackIcon
                             Width="24"
                             Height="24"
-                            Kind="Sync" />
+                            Kind="InformationOutline" />
                     </Button>
                     <Button
                         x:Name="ShowSettingsButton"
-                        Margin="5,0,0,0"
+                        Margin="4,0,0,0"
                         VerticalAlignment="Center"
                         Click="ShowSettingsButton_OnClick"
                         Style="{DynamicResource MaterialDesignFlatDarkButton}"
@@ -129,6 +131,23 @@
                             Width="24"
                             Height="24"
                             Kind="Settings" />
+                    </Button>
+                    <Button
+                        Margin="4,0,0,0"
+                        VerticalAlignment="Center"
+                        Command="{Binding PopulateRecommendationsCommand}"
+                        Style="{DynamicResource MaterialDesignRaisedAccentButton}"
+                        ToolTip="Update recommendations">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                Width="24"
+                                Height="24"
+                                Kind="Sync" />
+                            <TextBlock
+                                Margin="4,2,0,0"
+                                VerticalAlignment="Center"
+                                Text="UPDATE" />
+                        </StackPanel>
                     </Button>
                 </StackPanel>
             </Grid>
@@ -139,88 +158,102 @@
                 Background="{DynamicResource PrimaryHueMidBrush}"
                 IsIndeterminate="{Binding IsBusy}" />
 
-            <!--  Recommendations  -->
-            <DataGrid
-                x:Name="RecommendationsDataGrid"
-                Grid.Row="2"
-                Background="{DynamicResource MaterialDesignCardBackground}"
-                HorizontalScrollBarVisibility="Disabled"
-                IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"
-                ItemsSource="{Binding Source={StaticResource RecommendationsView}}"
-                MouseLeftButtonUp="RecommendationsDataGrid_OnMouseLeftButtonUp"
-                VerticalScrollBarVisibility="Auto"
-                Visibility="{Binding HasData, Converter={StaticResource BoolToVisibilityConverter}}">
-                <DataGrid.RowStyle>
-                    <Style BasedOn="{StaticResource {x:Type DataGridRow}}" TargetType="{x:Type DataGridRow}">
-                        <Setter Property="Cursor" Value="Hand" />
-                    </Style>
-                </DataGrid.RowStyle>
-                <DataGrid.Columns>
-                    <DataGridTextColumn
-                        Width="*"
-                        Binding="{Binding Beatmap.FullName}"
-                        Header="Name" />
-                    <DataGridTextColumn Binding="{Binding Mods, Converter={StaticResource ModsToStringConverter}}" Header="Mods" />
-                    <DataGridTextColumn Binding="{Binding TraitsWithMods.StarRating, StringFormat=\{0:0.#\}}" Header="SR">
-                        <DataGridTextColumn.CellStyle>
-                            <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsStarRatingAffected}" Value="True">
-                                        <Setter Property="Foreground" Value="OrangeRed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGridTextColumn.CellStyle>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding TraitsWithMods.ApproachRate, StringFormat=\{0:0.#\}}" Header="AR">
-                        <DataGridTextColumn.CellStyle>
-                            <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsApproachRateAffected}" Value="True">
-                                        <Setter Property="Foreground" Value="OrangeRed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGridTextColumn.CellStyle>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding TraitsWithMods.OverallDifficulty, StringFormat=\{0:0.#\}}" Header="OD">
-                        <DataGridTextColumn.CellStyle>
-                            <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsOverallDifficultyAffected}" Value="True">
-                                        <Setter Property="Foreground" Value="OrangeRed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGridTextColumn.CellStyle>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding TraitsWithMods.Tempo, StringFormat=\{0:N0\}}" Header="BPM">
-                        <DataGridTextColumn.CellStyle>
-                            <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsTempoAffected}" Value="True">
-                                        <Setter Property="Foreground" Value="OrangeRed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGridTextColumn.CellStyle>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding TraitsWithMods.Duration, Converter={StaticResource TimeSpanToShortStringConverter}}" Header="Length">
-                        <DataGridTextColumn.CellStyle>
-                            <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsDurationAffected}" Value="True">
-                                        <Setter Property="Foreground" Value="OrangeRed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGridTextColumn.CellStyle>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding ExpectedAccuracy, StringFormat=\{0:P2\}}" Header="Accuracy" />
-                    <DataGridTextColumn Binding="{Binding ExpectedPerformancePoints, StringFormat=\{0:N0\} pp}" Header="Gain" />
-                    <DataGridTextColumn Binding="{Binding Weight}" Header="Weight" />
-                </DataGrid.Columns>
-            </DataGrid>
+            <Grid Grid.Row="2">
+                <!--  Recommendations  -->
+                <DataGrid
+                    x:Name="RecommendationsDataGrid"
+                    Background="{DynamicResource MaterialDesignCardBackground}"
+                    HorizontalScrollBarVisibility="Disabled"
+                    IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"
+                    ItemsSource="{Binding Source={StaticResource RecommendationsView}}"
+                    MouseLeftButtonUp="RecommendationsDataGrid_OnMouseLeftButtonUp"
+                    VerticalScrollBarVisibility="Auto"
+                    Visibility="{Binding HasData, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <DataGrid.RowStyle>
+                        <Style BasedOn="{StaticResource {x:Type DataGridRow}}" TargetType="{x:Type DataGridRow}">
+                            <Setter Property="Cursor" Value="Hand" />
+                        </Style>
+                    </DataGrid.RowStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding Beatmap.FullName}"
+                            Header="Name" />
+                        <DataGridTextColumn Binding="{Binding Mods, Converter={StaticResource ModsToStringConverter}}" Header="Mods" />
+                        <DataGridTextColumn Binding="{Binding TraitsWithMods.StarRating, StringFormat=\{0:0.#\}}" Header="SR">
+                            <DataGridTextColumn.CellStyle>
+                                <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsStarRatingAffected}" Value="True">
+                                            <Setter Property="Foreground" Value="OrangeRed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding TraitsWithMods.ApproachRate, StringFormat=\{0:0.#\}}" Header="AR">
+                            <DataGridTextColumn.CellStyle>
+                                <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsApproachRateAffected}" Value="True">
+                                            <Setter Property="Foreground" Value="OrangeRed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding TraitsWithMods.OverallDifficulty, StringFormat=\{0:0.#\}}" Header="OD">
+                            <DataGridTextColumn.CellStyle>
+                                <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsOverallDifficultyAffected}" Value="True">
+                                            <Setter Property="Foreground" Value="OrangeRed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding TraitsWithMods.Tempo, StringFormat=\{0:N0\}}" Header="BPM">
+                            <DataGridTextColumn.CellStyle>
+                                <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsTempoAffected}" Value="True">
+                                            <Setter Property="Foreground" Value="OrangeRed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding TraitsWithMods.Duration, Converter={StaticResource TimeSpanToShortStringConverter}}" Header="Length">
+                            <DataGridTextColumn.CellStyle>
+                                <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsDurationAffected}" Value="True">
+                                            <Setter Property="Foreground" Value="OrangeRed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding ExpectedAccuracy, StringFormat=\{0:P2\}}" Header="Accuracy" />
+                        <DataGridTextColumn Binding="{Binding ExpectedPerformancePoints, StringFormat=\{0:N0\} pp}" Header="Gain" />
+                        <DataGridTextColumn Binding="{Binding Weight}" Header="Weight" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!--  Placeholder  -->
+                <TextBlock
+                    Margin="8,0,8,32"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="18"
+                    TextWrapping="WrapWithOverflow"
+                    Visibility="{Binding HasData, Converter={StaticResource InvertBoolToVisibilityConverter}}">
+                    <Run Text="Press the" />
+                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="Update" />
+                    <Run Text="button to analyze your plays and generate recommendations" />
+                </TextBlock>
+            </Grid>
         </Grid>
     </materialDesign:DialogHost>
 </Window>

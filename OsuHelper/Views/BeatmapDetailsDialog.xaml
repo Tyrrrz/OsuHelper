@@ -13,7 +13,7 @@
     TextOptions.TextRenderingMode="Auto">
     <StackPanel Orientation="Vertical">
         <TextBlock
-            Margin="5,5,5,0"
+            Margin="6,6,6,0"
             Background="Transparent"
             FontSize="18"
             TextTrimming="CharacterEllipsis"
@@ -28,7 +28,7 @@
                 Foreground="{DynamicResource PrimaryTextBrush}"
                 Text="{Binding Beatmap.Title, Mode=OneWay}" />
         </TextBlock>
-        <TextBlock Margin="5,0,5,5" Foreground="{DynamicResource DimTextBrush}">
+        <TextBlock Margin="6,0,6,6" Foreground="{DynamicResource DimTextBrush}">
             <Run Text="Mapset by" />
             <Run FontWeight="SemiBold" Text="{Binding Beatmap.Creator, Mode=OneWay}" />
             <Run Text="  " />
@@ -43,7 +43,7 @@
                 Text="Loading..." />
             <Image Source="{Binding Beatmap.CoverUrl}" />
         </Grid>
-        <Grid Margin="5">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -51,7 +51,7 @@
 
             <StackPanel Grid.Column="0" Orientation="Horizontal">
                 <Button
-                    Margin="5"
+                    Margin="8,0,0,0"
                     Padding="4"
                     Command="{Binding PlayPreviewCommand}"
                     Style="{DynamicResource MaterialDesignFlatButton}"
@@ -63,7 +63,7 @@
                         Kind="PlayCircle" />
                 </Button>
                 <Button
-                    Margin="5"
+                    Margin="4,0,0,0"
                     Padding="4"
                     Command="{Binding StopPreviewCommand}"
                     Style="{DynamicResource MaterialDesignFlatButton}"
@@ -75,7 +75,7 @@
                         Kind="StopCircle" />
                 </Button>
                 <Button
-                    Margin="5"
+                    Margin="4,0,0,0"
                     Padding="4"
                     Command="{Binding OpenPageCommand}"
                     Style="{DynamicResource MaterialDesignFlatButton}"
@@ -86,7 +86,7 @@
                         Kind="Web" />
                 </Button>
                 <Button
-                    Margin="5"
+                    Margin="4,0,0,0"
                     Padding="4"
                     Command="{Binding DownloadCommand}"
                     Style="{DynamicResource MaterialDesignFlatButton}"
@@ -97,7 +97,7 @@
                         Kind="Download" />
                 </Button>
                 <Button
-                    Margin="5"
+                    Margin="4,0,0,0"
                     Padding="4"
                     Command="{Binding DownloadBloodcatCommand}"
                     Style="{DynamicResource MaterialDesignFlatButton}"
@@ -108,7 +108,7 @@
                         Kind="CloudDownload" />
                 </Button>
                 <Button
-                    Margin="5"
+                    Margin="4,0,0,0"
                     Padding="4"
                     Command="{Binding DownloadDirectCommand}"
                     Style="{DynamicResource MaterialDesignFlatButton}"
@@ -122,7 +122,7 @@
 
             <Button
                 Grid.Column="1"
-                Margin="5"
+                Margin="8,8,8,8"
                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                 Content="CLOSE"
                 Style="{DynamicResource MaterialDesignFlatButton}" />

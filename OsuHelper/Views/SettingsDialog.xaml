@@ -13,19 +13,23 @@
     TextElement.Foreground="{DynamicResource SecondaryTextBrush}"
     TextOptions.TextFormattingMode="Ideal"
     TextOptions.TextRenderingMode="Auto">
-    <StackPanel Margin="5" Orientation="Vertical">
-        <TextBlock Margin="5" Text="Username or ID:" />
-        <TextBox Margin="5,0,5,5" Text="{Binding UserId}" />
+    <StackPanel Orientation="Vertical">
+        <TextBox
+            Margin="16,16,16,8"
+            materialDesign:HintAssist.Hint="Username or ID"
+            materialDesign:HintAssist.IsFloating="True"
+            Text="{Binding UserId}" />
 
-        <TextBlock Margin="5,10,5,5">
-            <Run Text="API key:" />
-            <Hyperlink Command="{Binding GetApiKeyCommand}">(click here to obtain one)</Hyperlink>
-        </TextBlock>
-        <TextBox Margin="5,0,5,5" Text="{Binding ApiKey}" />
+        <TextBox
+            Margin="16,8,16,8"
+            materialDesign:HintAssist.Hint="API key"
+            materialDesign:HintAssist.IsFloating="True"
+            Text="{Binding ApiKey}" />
 
-        <TextBlock Margin="5,10,5,5" Text="Game mode:" />
         <ComboBox
-            Margin="5,0,5,5"
+            Margin="16,8,16,8"
+            materialDesign:HintAssist.Hint="Game mode"
+            materialDesign:HintAssist.IsFloating="True"
             IsReadOnly="True"
             SelectedItem="{Binding GameMode, Converter={StaticResource EnumToStringConverter}}">
             <system:String>Standard</system:String>
@@ -35,15 +39,28 @@
         </ComboBox>
 
         <CheckBox
-            Margin="2,10,5,5"
+            Margin="16,8,16,8"
             Content="Download maps without video"
             IsChecked="{Binding DownloadWithoutVideo}" />
 
-        <Button
-            Margin="5,10,5,5"
-            HorizontalAlignment="Right"
-            Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-            Content="SAVE"
-            Style="{DynamicResource MaterialDesignFlatButton}" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Margin="16">
+                <Hyperlink Command="{Binding GetApiKeyCommand}">Generate API key</Hyperlink>
+            </TextBlock>
+
+            <Button
+                Grid.Column="2"
+                Margin="8"
+                HorizontalAlignment="Right"
+                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                Content="SAVE"
+                Style="{DynamicResource MaterialDesignFlatButton}" />
+        </Grid>
     </StackPanel>
 </UserControl>

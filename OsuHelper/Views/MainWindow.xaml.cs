@@ -17,7 +17,7 @@ namespace OsuHelper.Views
             InitializeComponent();
 
             // Version in title
-            Title = Title.Format(Assembly.GetEntryAssembly().GetName().Version);
+            Title = string.Format(Title, Assembly.GetEntryAssembly().GetName().Version.ToString(3));
 
             // Dialogs
             Messenger.Default.Register<ShowBeatmapDetailsMessage>(this, m =>

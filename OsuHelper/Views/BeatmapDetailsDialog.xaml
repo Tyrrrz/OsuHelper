@@ -12,7 +12,12 @@
     TextOptions.TextFormattingMode="Ideal"
     TextOptions.TextRenderingMode="Auto">
     <StackPanel Orientation="Vertical">
-        <TextBlock Margin="5,5,5,0" FontSize="18">
+        <TextBlock
+            Margin="5,5,5,0"
+            Background="Transparent"
+            FontSize="18"
+            TextTrimming="CharacterEllipsis"
+            ToolTip="{Binding Beatmap.MapSetFullName}">
             <Run
                 FontWeight="SemiBold"
                 Foreground="{DynamicResource PrimaryTextBrush}"
@@ -28,7 +33,7 @@
             <Run FontWeight="SemiBold" Text="{Binding Beatmap.Creator, Mode=OneWay}" />
             <Run Text="  " />
             <Run Text="Updated on" />
-            <Run FontWeight="SemiBold" Text="{Binding Beatmap.LastUpdate, Mode=OneWay}" />
+            <Run FontWeight="SemiBold" Text="{Binding Beatmap.LastUpdate, StringFormat=\{0:MMM d\, yyyy\}, Mode=OneWay}" />
         </TextBlock>
         <Grid Height="125">
             <TextBlock

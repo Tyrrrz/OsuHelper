@@ -9,50 +9,40 @@ namespace OsuHelper.Services
     {
         private readonly WaveOut _player;
 
-        private TaskCompletionSource<object> _tcs;
+        private TaskCompletionSource<object> _playbackTcs;
 
         public bool IsPlaying => _player.PlaybackState == PlaybackState.Playing;
 
         public AudioService()
         {
             _player = new WaveOut();
-            _player.PlaybackStopped += (sender, args) =>
-            {
-                if (_tcs == null) return;
-                _tcs.TrySetResult(null);
-            };
+            _player.PlaybackStopped += (sender, args) => _playbackTcs?.TrySetResult(null);
         }
 
         public async Task PlayAsync(Stream stream)
         {
+            await StopAsync();
+
             using (var reader = new Mp3FileReader(stream))
             {
-                _tcs = new TaskCompletionSource<object>();
+                _playbackTcs = new TaskCompletionSource<object>();
                 _player.Init(reader);
                 _player.Play();
-                await _tcs.Task;
+                await _playbackTcs.Task;
             }
         }
 
         public async Task StopAsync()
         {
-            if (_tcs == null || _tcs.Task.IsCompleted) return;
-            _player.Stop();
-            await _tcs.Task;
-        }
+            if (_playbackTcs == null) return;
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _player.Dispose();
-            }
+            _player.Stop();
+            await _playbackTcs.Task;
         }
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            _player.Dispose();
         }
     }
 }

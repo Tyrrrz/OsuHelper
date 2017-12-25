@@ -63,7 +63,7 @@
                         Kind="PlayCircle" />
                 </Button>
                 <Button
-                    Margin="4,0,0,0"
+                    Margin="8,0,0,0"
                     Padding="4"
                     Command="{Binding StopPreviewCommand}"
                     Style="{DynamicResource MaterialDesignFlatButton}"
@@ -121,8 +121,10 @@
             </StackPanel>
 
             <Button
+                x:Name="CloseButton"
                 Grid.Column="1"
                 Margin="8,8,8,8"
+                Click="CloseButton_OnClick"
                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                 Content="CLOSE"
                 Style="{DynamicResource MaterialDesignFlatButton}" />

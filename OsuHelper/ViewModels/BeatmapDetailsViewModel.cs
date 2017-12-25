@@ -45,8 +45,8 @@ namespace OsuHelper.ViewModels
             DownloadCommand = new RelayCommand(Download);
             DownloadDirectCommand = new RelayCommand(DownloadDirect);
             DownloadBloodcatCommand = new RelayCommand(DownloadBloodcat);
-            PlayPreviewCommand = new RelayCommand(PlayPreview);
-            StopPreviewCommand = new RelayCommand(StopPreview);
+            PlayPreviewCommand = new RelayCommand(PlayPreview, () => !IsPreviewPlaying);
+            StopPreviewCommand = new RelayCommand(StopPreview, () => IsPreviewPlaying);
 
             MessengerInstance.Register<ShowBeatmapDetailsMessage>(this, m =>
             {

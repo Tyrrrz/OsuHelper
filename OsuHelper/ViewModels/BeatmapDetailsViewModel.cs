@@ -39,6 +39,7 @@ namespace OsuHelper.ViewModels
         public RelayCommand DownloadBloodcatCommand { get; }
         public RelayCommand PlayPreviewCommand { get; }
         public RelayCommand StopPreviewCommand { get; }
+        public RelayCommand TogglePreviewCommand { get; }
 
         public BeatmapDetailsViewModel(ISettingsService settingsService, IDataService dataService, IAudioService audioService)
         {
@@ -52,6 +53,7 @@ namespace OsuHelper.ViewModels
             DownloadBloodcatCommand = new RelayCommand(DownloadBloodcat);
             PlayPreviewCommand = new RelayCommand(PlayPreview, () => !IsPreviewPlaying);
             StopPreviewCommand = new RelayCommand(StopPreview, () => IsPreviewPlaying);
+            TogglePreviewCommand = new RelayCommand(TogglePreview);
 
             MessengerInstance.Register<ShowBeatmapDetailsMessage>(this, m =>
             {
@@ -93,6 +95,14 @@ namespace OsuHelper.ViewModels
         {
             await _audioService.StopAsync();
             IsPreviewPlaying = false;
+        }
+
+        private void TogglePreview()
+        {
+            if (IsPreviewPlaying)
+                StopPreview();
+            else
+                PlayPreview();
         }
     }
 }

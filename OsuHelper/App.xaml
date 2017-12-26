@@ -66,6 +66,14 @@
                 x:Key="AccentDarkTextBrush"
                 Opacity="1"
                 Color="{DynamicResource AccentDarkColor}" />
+            <SolidColorBrush
+                x:Key="DividerBrush"
+                Opacity="0.12"
+                Color="{DynamicResource TextColor}" />
+            <SolidColorBrush
+                x:Key="InverseDividerBrush"
+                Opacity="0.12"
+                Color="{DynamicResource InverseTextColor}" />
 
             <!--  Styles  -->
             <Style BasedOn="{StaticResource MaterialDesignLinearProgressBar}" TargetType="{x:Type ProgressBar}">

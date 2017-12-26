@@ -12,23 +12,29 @@
     TextOptions.TextFormattingMode="Ideal"
     TextOptions.TextRenderingMode="Auto">
     <StackPanel Orientation="Vertical">
+        <!--  Title  -->
         <TextBlock
             Margin="16"
             FontSize="18"
             FontWeight="SemiBold"
             Foreground="{DynamicResource PrimaryTextBrush}"
-            Text="{Binding Title}" />
+            Text="{Binding Title}"
+            TextTrimming="CharacterEllipsis" />
 
+        <!--  Content  -->
         <TextBlock
             Margin="16,0,16,8"
             Text="{Binding Content}"
             TextWrapping="WrapWithOverflow" />
 
+        <!--  OK button  -->
         <Button
             Margin="8"
             HorizontalAlignment="Right"
             Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
             Content="OK"
+            IsCancel="True"
+            IsDefault="True"
             Style="{DynamicResource MaterialDesignFlatButton}" />
     </StackPanel>
 </UserControl>

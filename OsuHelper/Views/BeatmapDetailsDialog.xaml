@@ -2,6 +2,8 @@
     x:Class="OsuHelper.Views.BeatmapDetailsDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:command="http://www.galasoft.ch/mvvmlight"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     Width="450"
     DataContext="{Binding BeatmapDetailsViewModel, Source={StaticResource Locator}}"
@@ -12,6 +14,7 @@
     TextOptions.TextFormattingMode="Ideal"
     TextOptions.TextRenderingMode="Auto">
     <StackPanel Orientation="Vertical">
+        <!--  Beatmap set title  -->
         <TextBlock
             Margin="6,6,6,0"
             Background="Transparent"
@@ -28,105 +31,94 @@
                 Foreground="{DynamicResource PrimaryTextBrush}"
                 Text="{Binding Beatmap.Title, Mode=OneWay}" />
         </TextBlock>
+        <!--  Creator info  -->
         <TextBlock Margin="6,0,6,6" Foreground="{DynamicResource DimTextBrush}">
             <Run Text="Mapset by" />
             <Run FontWeight="SemiBold" Text="{Binding Beatmap.Creator, Mode=OneWay}" />
             <Run Text="  " />
-            <Run Text="Updated on" />
+            <Run Text="Last changed on" />
             <Run FontWeight="SemiBold" Text="{Binding Beatmap.LastUpdate, StringFormat=\{0:MMM d\, yyyy\}, Mode=OneWay}" />
         </TextBlock>
         <Grid Height="125">
+            <!--  Placeholder  -->
             <TextBlock
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 FontSize="18"
                 Text="Loading..." />
-            <Image Source="{Binding Beatmap.CoverUrl}" />
+            <!--  Beatmap image  -->
+            <Image Cursor="Hand" Source="{Binding Beatmap.CoverUrl}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseLeftButtonUp">
+                        <command:EventToCommand Command="{Binding TogglePreviewCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Image>
         </Grid>
         <Grid>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Column="0" Orientation="Horizontal">
-                <Button
-                    Margin="8,0,0,0"
-                    Padding="4"
-                    Command="{Binding PlayPreviewCommand}"
-                    Style="{DynamicResource MaterialDesignFlatButton}"
-                    ToolTip="Play preview"
-                    Visibility="{Binding IsPreviewPlaying, Converter={StaticResource InvertBoolToVisibilityConverter}, ConverterParameter={x:Static Visibility.Collapsed}}">
-                    <materialDesign:PackIcon
-                        Width="24"
-                        Height="24"
-                        Kind="PlayCircle" />
-                </Button>
-                <Button
-                    Margin="8,0,0,0"
-                    Padding="4"
-                    Command="{Binding StopPreviewCommand}"
-                    Style="{DynamicResource MaterialDesignFlatButton}"
-                    ToolTip="Stop preview"
-                    Visibility="{Binding IsPreviewPlaying, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={x:Static Visibility.Collapsed}}">
-                    <materialDesign:PackIcon
-                        Width="24"
-                        Height="24"
-                        Kind="StopCircle" />
-                </Button>
-                <Button
-                    Margin="4,0,0,0"
-                    Padding="4"
-                    Command="{Binding OpenPageCommand}"
-                    Style="{DynamicResource MaterialDesignFlatButton}"
-                    ToolTip="Open beatmap web page">
-                    <materialDesign:PackIcon
-                        Width="24"
-                        Height="24"
-                        Kind="Web" />
-                </Button>
-                <Button
-                    Margin="4,0,0,0"
-                    Padding="4"
-                    Command="{Binding DownloadCommand}"
-                    Style="{DynamicResource MaterialDesignFlatButton}"
-                    ToolTip="Download beatmap">
+            <!--  Web page button  -->
+            <Button
+                Grid.Column="0"
+                Margin="8,8,0,8"
+                Padding="4"
+                Command="{Binding OpenPageCommand}"
+                Style="{DynamicResource MaterialDesignFlatButton}"
+                ToolTip="Open beatmap page">
+                <materialDesign:PackIcon
+                    Width="24"
+                    Height="24"
+                    Kind="Web" />
+            </Button>
+
+            <!--  Download button  -->
+            <Button
+                Grid.Column="1"
+                Margin="4,8,0,8"
+                Command="{Binding DownloadCommand}"
+                Style="{DynamicResource MaterialDesignFlatButton}"
+                ToolTip="Download beatmap (right click for more options)">
+                <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon
                         Width="24"
                         Height="24"
                         Kind="Download" />
-                </Button>
-                <Button
-                    Margin="4,0,0,0"
-                    Padding="4"
-                    Command="{Binding DownloadBloodcatCommand}"
-                    Style="{DynamicResource MaterialDesignFlatButton}"
-                    ToolTip="Download beatmap from Bloodcat">
-                    <materialDesign:PackIcon
-                        Width="24"
-                        Height="24"
-                        Kind="CloudDownload" />
-                </Button>
-                <Button
-                    Margin="4,0,0,0"
-                    Padding="4"
-                    Command="{Binding DownloadDirectCommand}"
-                    Style="{DynamicResource MaterialDesignFlatButton}"
-                    ToolTip="Download beatmap via osu!direct">
-                    <materialDesign:PackIcon
-                        Width="24"
-                        Height="24"
-                        Kind="BriefcaseDownload" />
-                </Button>
-            </StackPanel>
+                    <TextBlock
+                        Margin="4,0,0,0"
+                        VerticalAlignment="Center"
+                        Text="DOWNLOAD" />
+                </StackPanel>
+                <Button.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Command="{Binding DownloadDirectCommand}" Header="via osu!direct">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="CloudDownload" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Command="{Binding DownloadBloodcatCommand}" Header="via Bloodcat">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="Cat" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </Button.ContextMenu>
+            </Button>
 
+            <!--  Close button  -->
             <Button
                 x:Name="CloseButton"
-                Grid.Column="1"
-                Margin="8,8,8,8"
+                Grid.Column="3"
+                Margin="8"
                 Click="CloseButton_OnClick"
                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                 Content="CLOSE"
+                IsCancel="True"
                 Style="{DynamicResource MaterialDesignFlatButton}" />
         </Grid>
     </StackPanel>

@@ -6,7 +6,6 @@
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     Width="350"
     DataContext="{Binding SettingsViewModel, Source={StaticResource Locator}}"
-    KeyDown="SettingsDialog_OnKeyDown"
     SnapsToDevicePixels="True"
     TextElement.FontSize="13"
     TextElement.FontWeight="Regular"
@@ -14,18 +13,21 @@
     TextOptions.TextFormattingMode="Ideal"
     TextOptions.TextRenderingMode="Auto">
     <StackPanel Orientation="Vertical">
+        <!--  User id  -->
         <TextBox
             Margin="16,16,16,8"
             materialDesign:HintAssist.Hint="Username or ID"
             materialDesign:HintAssist.IsFloating="True"
             Text="{Binding UserId}" />
 
+        <!--  API key  -->
         <TextBox
             Margin="16,8,16,8"
             materialDesign:HintAssist.Hint="API key"
             materialDesign:HintAssist.IsFloating="True"
             Text="{Binding ApiKey}" />
 
+        <!--  Game mode  -->
         <ComboBox
             Margin="16,8,16,8"
             materialDesign:HintAssist.Hint="Game mode"
@@ -38,6 +40,7 @@
             <system:String>Mania</system:String>
         </ComboBox>
 
+        <!--  Download maps without video  -->
         <CheckBox
             Margin="16,8,16,8"
             Content="Download maps without video"
@@ -50,16 +53,19 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
+            <!--  API key link  -->
             <TextBlock Grid.Column="0" Margin="16">
                 <Hyperlink Command="{Binding GetApiKeyCommand}">Generate API key</Hyperlink>
             </TextBlock>
 
+            <!--  Save button  -->
             <Button
                 Grid.Column="2"
                 Margin="8"
                 HorizontalAlignment="Right"
                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                 Content="SAVE"
+                IsDefault="True"
                 Style="{DynamicResource MaterialDesignFlatButton}" />
         </Grid>
     </StackPanel>

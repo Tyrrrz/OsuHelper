@@ -14,5 +14,6 @@ namespace OsuHelper.ViewModels
         RelayCommand DownloadBloodcatCommand { get; }
         RelayCommand PlayPreviewCommand { get; }
         RelayCommand StopPreviewCommand { get; }
+        RelayCommand TogglePreviewCommand { get; }
     }
 }

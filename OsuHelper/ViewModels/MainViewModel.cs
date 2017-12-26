@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using OsuHelper.Exceptions;
 using OsuHelper.Messages;
 using OsuHelper.Models;
 using OsuHelper.Services;
@@ -100,8 +102,20 @@ namespace OsuHelper.ViewModels
 
             IsBusy = true;
 
-            Recommendations = await _recommendationService.GetRecommendationsAsync();
-            _cacheService.Store("LastRecommendations", Recommendations);
+            try
+            {
+                Recommendations = await _recommendationService.GetRecommendationsAsync();
+                _cacheService.Store("LastRecommendations", Recommendations);
+            }
+            catch (RecommendationsUnavailableException ex)
+            {
+                MessengerInstance.Send(new ShowNotificationMessage("Recommendations unavailable", ex.Reason));
+            }
+            catch (HttpErrorStatusCodeException ex) when (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                MessengerInstance.Send(new ShowNotificationMessage("Unauthorized",
+                    "Please make sure your API key is valid."));
+            }
 
             IsBusy = false;
         }

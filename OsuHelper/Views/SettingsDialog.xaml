@@ -46,6 +46,21 @@
             Content="Download maps without video"
             IsChecked="{Binding DownloadWithoutVideo}" />
 
+        <!--  Map preview volume  -->
+        <DockPanel>
+            <TextBlock
+                Margin="16,8,16,8"
+                DockPanel.Dock="Left"
+                Text="Map preview volume" />
+            <Slider
+                Margin="16,8,16,8"
+                IsSnapToTickEnabled="True"
+                Maximum="1"
+                Minimum="0"
+                TickFrequency="0.1"
+                Value="{Binding PreviewVolume}" />
+        </DockPanel>
+
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />

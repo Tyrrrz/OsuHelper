@@ -7,14 +7,19 @@ namespace OsuHelper.Services
 {
     public class AudioService : IAudioService, IDisposable
     {
+        private readonly ISettingsService _settingsService;
+
         private readonly WaveOut _player;
 
         private TaskCompletionSource<object> _playbackTcs;
 
         public bool IsPlaying => _player.PlaybackState == PlaybackState.Playing;
 
-        public AudioService()
+        public AudioService(ISettingsService settingsService)
         {
+            _settingsService = settingsService;
+
+            // Configure player
             _player = new WaveOut();
             _player.PlaybackStopped += (sender, args) => _playbackTcs?.TrySetResult(null);
         }
@@ -27,6 +32,7 @@ namespace OsuHelper.Services
             {
                 _playbackTcs = new TaskCompletionSource<object>();
                 _player.Init(reader);
+                _player.Volume = (float) _settingsService.PreviewVolume;
                 _player.Play();
                 await _playbackTcs.Task;
             }

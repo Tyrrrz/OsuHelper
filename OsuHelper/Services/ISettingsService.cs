@@ -8,6 +8,7 @@ namespace OsuHelper.Services
         string ApiKey { get; set; }
         GameMode GameMode { get; set; }
         bool DownloadWithoutVideo { get; set; }
+        double PreviewVolume { get; set; }
 
         void Load();
         void Save();

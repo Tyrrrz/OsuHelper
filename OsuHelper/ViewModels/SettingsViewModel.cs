@@ -47,6 +47,12 @@ namespace OsuHelper.ViewModels
             set => _settingsService.DownloadWithoutVideo = value;
         }
 
+        public double PreviewVolume
+        {
+            get => _settingsService.PreviewVolume;
+            set => _settingsService.PreviewVolume = value.Clamp(0, 1);
+        }
+
         public RelayCommand GetApiKeyCommand { get; }
 
         public SettingsViewModel(ISettingsService settingsService)

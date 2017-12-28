@@ -13,6 +13,8 @@ namespace OsuHelper.Services
 
         public bool DownloadWithoutVideo { get; set; }
 
+        public double PreviewVolume { get; set; } = 0.75;
+
         public SettingsService()
         {
             Configuration.FileName = "Config.dat";

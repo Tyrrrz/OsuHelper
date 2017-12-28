@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
 using GalaSoft.MvvmLight.Messaging;
@@ -12,6 +11,8 @@ namespace OsuHelper.Views
 {
     public partial class MainWindow
     {
+        private CollectionViewSource RecommendationsView => (CollectionViewSource) Resources["RecommendationsView"];
+
         public MainWindow()
         {
             InitializeComponent();
@@ -34,6 +35,11 @@ namespace OsuHelper.Views
             });
         }
 
+        private void UpdateRecommendationsView()
+        {
+            RecommendationsView.View?.Refresh();
+        }
+
         private void RecommendationsView_OnFilter(object sender, FilterEventArgs e)
         {
             if (!IsInitialized) return;
@@ -44,9 +50,9 @@ namespace OsuHelper.Views
                 e.Accepted = false;
             else if (HiddenFilterCheckBox.IsChecked == false && rec.Mods.HasFlag(Mods.Hidden))
                 e.Accepted = false;
-            else if (HardrockFilterCheckBox.IsChecked == false && rec.Mods.HasFlag(Mods.HardRock))
+            else if (HardRockFilterCheckBox.IsChecked == false && rec.Mods.HasFlag(Mods.HardRock))
                 e.Accepted = false;
-            else if (DoubletimeFilterCheckBox.IsChecked == false && rec.Mods.HasFlag(Mods.DoubleTime))
+            else if (DoubleTimeFilterCheckBox.IsChecked == false && rec.Mods.HasFlag(Mods.DoubleTime))
                 e.Accepted = false;
             else
                 e.Accepted = true;
@@ -54,42 +60,42 @@ namespace OsuHelper.Views
 
         private void NomodFilterCheckBox_OnChecked(object sender, RoutedEventArgs e)
         {
-            ((CollectionViewSource) Resources["RecommendationsView"]).View?.Refresh();
+            UpdateRecommendationsView();
         }
 
         private void NomodFilterCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
         {
-            ((CollectionViewSource) Resources["RecommendationsView"]).View?.Refresh();
+            UpdateRecommendationsView();
         }
 
         private void HiddenFilterCheckBox_OnChecked(object sender, RoutedEventArgs e)
         {
-            ((CollectionViewSource) Resources["RecommendationsView"]).View?.Refresh();
+            UpdateRecommendationsView();
         }
 
         private void HiddenFilterCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
         {
-            ((CollectionViewSource) Resources["RecommendationsView"]).View?.Refresh();
+            UpdateRecommendationsView();
         }
 
-        private void HardrockFilterCheckBox_OnChecked(object sender, RoutedEventArgs e)
+        private void HardRockFilterCheckBox_OnChecked(object sender, RoutedEventArgs e)
         {
-            ((CollectionViewSource) Resources["RecommendationsView"]).View?.Refresh();
+            UpdateRecommendationsView();
         }
 
-        private void HardrockFilterCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
+        private void HardRockFilterCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
         {
-            ((CollectionViewSource) Resources["RecommendationsView"]).View?.Refresh();
+            UpdateRecommendationsView();
         }
 
-        private void DoubletimeFilterCheckBox_OnChecked(object sender, RoutedEventArgs e)
+        private void DoubleTimeFilterCheckBox_OnChecked(object sender, RoutedEventArgs e)
         {
-            ((CollectionViewSource) Resources["RecommendationsView"]).View?.Refresh();
+            UpdateRecommendationsView();
         }
 
-        private void DoubletimeFilterCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
+        private void DoubleTimeFilterCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
         {
-            ((CollectionViewSource) Resources["RecommendationsView"]).View?.Refresh();
+            UpdateRecommendationsView();
         }
     }
 }

@@ -78,25 +78,25 @@
                         Style="{DynamicResource MaterialDesignUserForegroundCheckBox}"
                         Unchecked="HiddenFilterCheckBox_OnUnchecked" />
                     <CheckBox
-                        x:Name="HardrockFilterCheckBox"
+                        x:Name="HardRockFilterCheckBox"
                         Margin="4,0,0,0"
                         VerticalAlignment="Center"
-                        Checked="HardrockFilterCheckBox_OnChecked"
+                        Checked="HardRockFilterCheckBox_OnChecked"
                         Content="HR"
                         Foreground="{DynamicResource PrimaryInverseTextBrush}"
                         IsChecked="True"
                         Style="{DynamicResource MaterialDesignUserForegroundCheckBox}"
-                        Unchecked="HardrockFilterCheckBox_OnUnchecked" />
+                        Unchecked="HardRockFilterCheckBox_OnUnchecked" />
                     <CheckBox
-                        x:Name="DoubletimeFilterCheckBox"
+                        x:Name="DoubleTimeFilterCheckBox"
                         Margin="4,0,0,0"
                         VerticalAlignment="Center"
-                        Checked="DoubletimeFilterCheckBox_OnChecked"
+                        Checked="DoubleTimeFilterCheckBox_OnChecked"
                         Content="DT"
                         Foreground="{DynamicResource PrimaryInverseTextBrush}"
                         IsChecked="True"
                         Style="{DynamicResource MaterialDesignUserForegroundCheckBox}"
-                        Unchecked="DoubletimeFilterCheckBox_OnUnchecked" />
+                        Unchecked="DoubleTimeFilterCheckBox_OnUnchecked" />
                 </StackPanel>
 
                 <!--  Buttons  -->

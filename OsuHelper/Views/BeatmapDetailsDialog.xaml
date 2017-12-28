@@ -55,20 +55,13 @@
                 </i:Interaction.Triggers>
             </Image>
         </Grid>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
+        <DockPanel LastChildFill="False">
             <!--  Web page button  -->
             <Button
-                Grid.Column="0"
                 Margin="8,8,0,8"
                 Padding="4"
                 Command="{Binding OpenPageCommand}"
+                DockPanel.Dock="Left"
                 Style="{DynamicResource MaterialDesignFlatButton}"
                 ToolTip="Open beatmap page">
                 <materialDesign:PackIcon
@@ -79,9 +72,9 @@
 
             <!--  Download button  -->
             <Button
-                Grid.Column="1"
                 Margin="4,8,0,8"
                 Command="{Binding DownloadCommand}"
+                DockPanel.Dock="Left"
                 Style="{DynamicResource MaterialDesignFlatButton}"
                 ToolTip="Download beatmap (right click for more options)">
                 <StackPanel Orientation="Horizontal">
@@ -113,13 +106,13 @@
             <!--  Close button  -->
             <Button
                 x:Name="CloseButton"
-                Grid.Column="3"
                 Margin="8"
                 Click="CloseButton_OnClick"
                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                 Content="CLOSE"
+                DockPanel.Dock="Right"
                 IsCancel="True"
                 Style="{DynamicResource MaterialDesignFlatButton}" />
-        </Grid>
+        </DockPanel>
     </StackPanel>
 </UserControl>

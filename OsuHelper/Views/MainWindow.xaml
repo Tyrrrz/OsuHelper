@@ -62,7 +62,7 @@
                         Margin="4,0,0,0"
                         VerticalAlignment="Center"
                         Checked="NomodFilterCheckBox_OnChecked"
-                        Content="NM"
+                        Content="Nomod"
                         Foreground="{DynamicResource PrimaryInverseTextBrush}"
                         IsChecked="True"
                         Style="{DynamicResource MaterialDesignUserForegroundCheckBox}"
@@ -97,6 +97,16 @@
                         IsChecked="True"
                         Style="{DynamicResource MaterialDesignUserForegroundCheckBox}"
                         Unchecked="DoubleTimeFilterCheckBox_OnUnchecked" />
+                    <CheckBox
+                        x:Name="OtherFilterCheckBox"
+                        Margin="4,0,0,0"
+                        VerticalAlignment="Center"
+                        Checked="OtherFilterCheckBox_OnChecked"
+                        Content="Other"
+                        Foreground="{DynamicResource PrimaryInverseTextBrush}"
+                        IsChecked="True"
+                        Style="{DynamicResource MaterialDesignUserForegroundCheckBox}"
+                        Unchecked="OtherFilterCheckBox_OnUnchecked" />
                 </StackPanel>
 
                 <!--  Buttons  -->

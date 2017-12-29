@@ -46,16 +46,23 @@ namespace OsuHelper.Views
 
             var rec = (Recommendation) e.Item;
 
-            if (NomodFilterCheckBox.IsChecked == false && rec.Mods == Mods.None)
-                e.Accepted = false;
-            else if (HiddenFilterCheckBox.IsChecked == false && rec.Mods.HasFlag(Mods.Hidden))
-                e.Accepted = false;
-            else if (HardRockFilterCheckBox.IsChecked == false && rec.Mods.HasFlag(Mods.HardRock))
-                e.Accepted = false;
-            else if (DoubleTimeFilterCheckBox.IsChecked == false && rec.Mods.HasFlag(Mods.DoubleTime))
-                e.Accepted = false;
-            else
-                e.Accepted = true;
+            e.Accepted = true;
+
+            if (rec.Mods == Mods.None)
+                e.Accepted &= NomodFilterCheckBox.IsChecked == true;
+
+            if (rec.Mods.HasFlag(Mods.Hidden))
+                e.Accepted &= HiddenFilterCheckBox.IsChecked == true;
+
+            if (rec.Mods.HasFlag(Mods.HardRock))
+                e.Accepted &= HardRockFilterCheckBox.IsChecked == true;
+
+            if (rec.Mods.HasFlag(Mods.DoubleTime))
+                e.Accepted &= DoubleTimeFilterCheckBox.IsChecked == true;
+
+            var modsOther = rec.Mods & ~Mods.Hidden & ~Mods.HardRock & ~Mods.DoubleTime;
+            if (modsOther != Mods.None)
+                e.Accepted &= OtherFilterCheckBox.IsChecked == true;
         }
 
         private void NomodFilterCheckBox_OnChecked(object sender, RoutedEventArgs e)
@@ -94,6 +101,16 @@ namespace OsuHelper.Views
         }
 
         private void DoubleTimeFilterCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            UpdateRecommendationsView();
+        }
+
+        private void OtherFilterCheckBox_OnChecked(object sender, RoutedEventArgs e)
+        {
+            UpdateRecommendationsView();
+        }
+
+        private void OtherFilterCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
         {
             UpdateRecommendationsView();
         }

@@ -31,8 +31,14 @@ namespace OsuHelper.Services
             _settingsService = settingsService;
             _cacheService = cacheService;
 
+            // Connection limit
+            ServicePointManager.DefaultConnectionLimit = 9999;
+
             // Client
-            _httpClient = new HttpClient();
+            var handler = new HttpClientHandler();
+            if (handler.SupportsAutomaticDecompression)
+                handler.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            _httpClient = new HttpClient(handler, true);
             _httpClient.DefaultRequestHeaders.Add("User-Agent", "osu!helper (github.com/Tyrrrz/OsuHelper)");
 
             // Rate limiting
@@ -63,7 +69,7 @@ namespace OsuHelper.Services
             await MaintainRateLimitAsync(TimeSpan.FromMinutes(1.0 / 1200));
 
             // Get response
-            var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead);
+            var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
 
             // Check status code
             // We throw our own exception here because default one doesn't have status code

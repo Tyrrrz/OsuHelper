@@ -1,49 +1,31 @@
-osu!helper
-===================
+# osu!helper
 
+osu!helper is an application that recommends beatmaps in osu! based on your current performance. It searches for players who did similarly well on maps you've played in the past and uses their top plays as basis for recommendation. The recommended maps are then displayed in a grid where users are able to see the map's attributes adjusted by the suggested mods, as well as some other useful information. Maps can also be previewed and downloaded straight from the application.
 
-Stand-alone application that recommends osu! beatmaps, based on user's top plays and calculates expected PP gain using [Oppai](https://github.com/Francesco149/oppai).
+## Screenshots
 
-_Note: This project is no longer maintained. The last release version still remains functional, but new updates are not expected. You are welcome to fork, but pull requests and issues are likely to be ignored._
+![](http://www.tyrrrz.me/Projects/OsuHelper/Images/1.png)
+![](http://www.tyrrrz.me/Projects/OsuHelper/Images/2.png)
 
-**Download:**
-Last version can be downloaded from the [releases](https://github.com/Tyrrrz/OsuHelper/releases) page.
+## Download
 
-**Recommendation Algorithm:**
+- [Stable releases](https://github.com/Tyrrrz/OsuHelper/releases)
 
-1. Gets the user's top plays
-2. For each top play, looks at others' scores on the same map that have similar performance (based on PP gained)
-3. For each of the similar scores, visit player's who did them and look at their top plays. Take plays that are similar in PP gain to the original one.
-4. Compose a list of plays that are similar by PP gained to the user's top plays. Remove plays that give less PP than the user's lowest top play. Remove plays on maps that the user already has a top play on.
-5. Group the results by beatmap
-6. For each group, get the median play, based on PP gained
-7. Get beatmap data for each result
-8. Return a list of recommendations
+## Features
 
-**User settings:**
+- Get recommendations in large batches
+- Filter results by mods
+- Beatmap stats at a glance, adjusted by mods
+- Recommendations are weighted by beatmap's statistical difficulty
+- Download or preview beatmaps straight from application
 
-- *(Required)* Username or UserID - self explanatory
-- *(Required)* API Provider - the server you're playing on (currently either osu.ppy.sh or ripple.moe)
-- *(Required if osu)* APIKey - get it [here](https://osu.ppy.sh/p/api)
-- Prefer map download without video - if checked, osu!helper will only download beatmaps without video
-- Don't suggest based on plays that are not at least S ranks - ignores lower ranked plays from suggestions (sorry, no way to determine FC atm)
-- Difficulty preference - from easy to hard, what difficulty you prefer to see in recommended beatmaps
-- Maximum recommendation count - up to how many results to return (less = faster)
+## Libraries used
 
-**Dependencies:**
-
- - [Oppai](https://github.com/Francesco149/oppai) - performance point calculation
- - [GalaSoft.MVVMLight](http://www.mvvmlight.net/) - MVVM rapid development
- - [Json.NET](http://www.newtonsoft.com/json) - for deserialization of API responses
- - [MaterialDesignXAML](https://github.com/ButchersBoy/MaterialDesignInXamlToolkit) - MaterialDesign UI
- - [Dragablz](https://github.com/ButchersBoy/Dragablz) - MaterialDesign tab control
- - [NLExtensions](https://www.nuget.org/packages/NLExtensions/) - my set of various extensions for rapid development
- - [NLWPFExtensions](https://www.nuget.org/packages/NLWPFExtensions) - my set of various WPF extensions for rapid development
- - [NLSettings](https://www.nuget.org/packages/NLSettings) - my settings manager
-
-**Screenshots:**
-
-![](http://www.tyrrrz.me/projects/images/osuhelper_1.png)
-![](http://www.tyrrrz.me/projects/images/osuhelper_2.png)
-![](http://www.tyrrrz.me/projects/images/osuhelper_3.png)
-![](http://www.tyrrrz.me/projects/images/osuhelper_4.png)
+- [GalaSoft.MVVMLight](http://www.mvvmlight.net)
+- [MaterialDesignInXamlToolkit](https://github.com/ButchersBoy/MaterialDesignInXamlToolkit)
+- [Newtonsoft.Json](http://www.newtonsoft.com/json)
+- [NAudio](https://github.com/naudio/NAudio)
+- [Polly](https://github.com/App-vNext/Polly)
+- [Tyrrrz.Extensions](https://github.com/Tyrrrz/Extensions)
+- [Tyrrrz.WpfExtensions](https://github.com/Tyrrrz/WpfExtensions)
+- [Tyrrrz.Settings](https://github.com/Tyrrrz/Settings)

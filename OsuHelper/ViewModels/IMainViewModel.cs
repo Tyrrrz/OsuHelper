@@ -9,6 +9,8 @@ namespace OsuHelper.ViewModels
         bool IsBusy { get; }
         bool HasData { get; }
 
+        double Progress { get; }
+
         IReadOnlyList<Recommendation> Recommendations { get; }
         Recommendation SelectedRecommendation { get; }
 

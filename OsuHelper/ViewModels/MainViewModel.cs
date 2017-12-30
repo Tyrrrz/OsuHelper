@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using GalaSoft.MvvmLight;
@@ -18,6 +19,7 @@ namespace OsuHelper.ViewModels
         private readonly IRecommendationService _recommendationService;
 
         private bool _isBusy;
+        private double _progress;
         private IReadOnlyList<Recommendation> _recommendations;
         private Recommendation _selectedRecommendation;
 
@@ -32,6 +34,12 @@ namespace OsuHelper.ViewModels
         }
 
         public bool HasData => Recommendations.NotNullAndAny();
+
+        public double Progress
+        {
+            get => _progress;
+            private set => Set(ref _progress, value);
+        }
 
         public IReadOnlyList<Recommendation> Recommendations
         {
@@ -101,10 +109,12 @@ namespace OsuHelper.ViewModels
             }
 
             IsBusy = true;
+            Progress = 0;
 
             try
             {
-                Recommendations = await _recommendationService.GetRecommendationsAsync();
+                var progressHandler = new Progress<double>(p => Progress = p);
+                Recommendations = await _recommendationService.GetRecommendationsAsync(progressHandler);
                 _cacheService.Store("LastRecommendations", Recommendations);
             }
             catch (RecommendationsUnavailableException ex)
@@ -118,6 +128,7 @@ namespace OsuHelper.ViewModels
             }
 
             IsBusy = false;
+            Progress = 0;
         }
     }
 }

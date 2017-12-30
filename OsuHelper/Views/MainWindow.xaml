@@ -160,7 +160,7 @@
             <ProgressBar
                 Grid.Row="1"
                 Background="{DynamicResource PrimaryHueMidBrush}"
-                IsIndeterminate="{Binding IsBusy}" />
+                Value="{Binding Progress, Mode=OneWay}" />
 
             <Grid Grid.Row="2">
                 <!--  Recommendations  -->

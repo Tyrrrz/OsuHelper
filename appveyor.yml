@@ -1,0 +1,27 @@
+version: '{build}'
+
+image: Visual Studio 2017
+configuration: Release
+
+before_build:
+- ps: nuget restore
+
+build:
+  verbosity: minimal
+
+after_build:
+- ps: Deploy\Prepare.ps1
+
+artifacts:
+- path: Deploy\bin\osu!helper.zip
+  name: osu!helper.zip
+
+deploy:
+- provider: GitHub
+  auth_token:
+    secure: sjQHWRw29AMiVMn3MtidtWnAzAf1mJ+mkJ/7h1B9TIAHhkFrqwMK7LtXV+uNJ9AO
+  artifact: osu!helper.zip
+  draft: true
+  on:
+    branch: master
+    appveyor_repo_tag: true

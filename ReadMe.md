@@ -23,6 +23,7 @@ osu!helper is an application that recommends beatmaps in osu! based on your curr
 - Beatmap stats at a glance, adjusted by mods
 - Recommendations are weighted by beatmap's statistical difficulty
 - Download or preview beatmaps straight from application
+- Supports all game modes
 
 ## Libraries used
 

@@ -1,57 +1,118 @@
-﻿// ------------------------------------------------------------------ 
-//  Solution: <OsuHelper>
-//  Project: <OsuHelper>
-//  File: <MainWindow.xaml.cs>
-//  Created By: Alexey Golub
-//  Date: 20/08/2016
-// ------------------------------------------------------------------ 
-
-using System;
-using System.Diagnostics;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Windows;
-using System.Windows.Navigation;
-using NegativeLayer.Extensions;
+using System.Windows.Data;
+using GalaSoft.MvvmLight.Messaging;
+using MaterialDesignThemes.Wpf;
+using OsuHelper.Messages;
+using OsuHelper.Models;
+using Tyrrrz.Extensions;
 
 namespace OsuHelper.Views
 {
     public partial class MainWindow
     {
+        private CollectionViewSource RecommendationsView => (CollectionViewSource) Resources["RecommendationsView"];
+
         public MainWindow()
         {
             InitializeComponent();
 
-            // Load window settings
-            if (Persistence.Default.MainWindowRect != Rect.Empty)
-            {
-                WindowStartupLocation = WindowStartupLocation.Manual;
-                Left = Persistence.Default.MainWindowRect.X;
-                Top = Persistence.Default.MainWindowRect.Y;
-                Width = Persistence.Default.MainWindowRect.Width;
-                Height = Persistence.Default.MainWindowRect.Height;
-            }
-
-            // Open second tab if the user completed setup
-            if (Settings.Stager.Current.UserID.IsNotBlank() && Settings.Stager.Current.APIKey.IsNotBlank())
-                TabControl.SelectedIndex = 1;
-
             // Version in title
-            Title = Title.Format(Assembly.GetExecutingAssembly().GetName().Version);
+            Title = string.Format(Title, Assembly.GetEntryAssembly().GetName().Version.ToString(3));
+
+            // Dialogs
+            Messenger.Default.Register<ShowBeatmapDetailsMessage>(this, m =>
+            {
+                DialogHost.Show(new BeatmapDetailsDialog()).Forget();
+            });
+            Messenger.Default.Register<ShowNotificationMessage>(this, m =>
+            {
+                DialogHost.Show(new NotificationDialog()).Forget();
+            });
+            Messenger.Default.Register<ShowSettingsMessage>(this, m =>
+            {
+                DialogHost.Show(new SettingsDialog()).Forget();
+            });
         }
 
-        private void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        private void UpdateRecommendationsView()
         {
-            Persistence.Default.MainWindowRect = new Rect(Left, Top, Width, Height);
+            RecommendationsView.View?.Refresh();
         }
 
-        private void MainWindow_OnLocationChanged(object sender, EventArgs e)
+        private void RecommendationsView_OnFilter(object sender, FilterEventArgs e)
         {
-            Persistence.Default.MainWindowRect = new Rect(Left, Top, Width, Height);
+            if (!IsInitialized) return;
+
+            var rec = (Recommendation) e.Item;
+
+            e.Accepted = true;
+
+            if (rec.Mods == Mods.None)
+                e.Accepted &= NomodFilterCheckBox.IsChecked == true;
+
+            if (rec.Mods.HasFlag(Mods.Hidden))
+                e.Accepted &= HiddenFilterCheckBox.IsChecked == true;
+
+            if (rec.Mods.HasFlag(Mods.HardRock))
+                e.Accepted &= HardRockFilterCheckBox.IsChecked == true;
+
+            if (rec.Mods.HasFlag(Mods.DoubleTime))
+                e.Accepted &= DoubleTimeFilterCheckBox.IsChecked == true;
+
+            var modsOther = rec.Mods & ~Mods.Hidden & ~Mods.HardRock & ~Mods.DoubleTime;
+            if (modsOther != Mods.None)
+                e.Accepted &= OtherFilterCheckBox.IsChecked == true;
         }
 
-        private void Hyperlink_OnRequestNavigate(object sender, RequestNavigateEventArgs e)
+        private void NomodFilterCheckBox_OnChecked(object sender, RoutedEventArgs e)
         {
-            Process.Start(e.Uri.ToString());
+            UpdateRecommendationsView();
+        }
+
+        private void NomodFilterCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            UpdateRecommendationsView();
+        }
+
+        private void HiddenFilterCheckBox_OnChecked(object sender, RoutedEventArgs e)
+        {
+            UpdateRecommendationsView();
+        }
+
+        private void HiddenFilterCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            UpdateRecommendationsView();
+        }
+
+        private void HardRockFilterCheckBox_OnChecked(object sender, RoutedEventArgs e)
+        {
+            UpdateRecommendationsView();
+        }
+
+        private void HardRockFilterCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            UpdateRecommendationsView();
+        }
+
+        private void DoubleTimeFilterCheckBox_OnChecked(object sender, RoutedEventArgs e)
+        {
+            UpdateRecommendationsView();
+        }
+
+        private void DoubleTimeFilterCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            UpdateRecommendationsView();
+        }
+
+        private void OtherFilterCheckBox_OnChecked(object sender, RoutedEventArgs e)
+        {
+            UpdateRecommendationsView();
+        }
+
+        private void OtherFilterCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            UpdateRecommendationsView();
         }
     }
 }

@@ -19,18 +19,11 @@
             Margin="6,6,6,0"
             Background="Transparent"
             FontSize="18"
+            FontWeight="SemiBold"
+            Foreground="{DynamicResource PrimaryTextBrush}"
+            Text="{Binding Beatmap.MapSetFullName}"
             TextTrimming="CharacterEllipsis"
-            ToolTip="{Binding Beatmap.MapSetFullName}">
-            <Run
-                FontWeight="SemiBold"
-                Foreground="{DynamicResource PrimaryTextBrush}"
-                Text="{Binding Beatmap.Artist, Mode=OneWay}" />
-            <Run Text="—" />
-            <Run
-                FontWeight="SemiBold"
-                Foreground="{DynamicResource PrimaryTextBrush}"
-                Text="{Binding Beatmap.Title, Mode=OneWay}" />
-        </TextBlock>
+            ToolTip="{Binding Beatmap.MapSetFullName}" />
         <!--  Creator info  -->
         <TextBlock Margin="6,0,6,6" Foreground="{DynamicResource DimTextBrush}">
             <Run Text="Mapset by" />

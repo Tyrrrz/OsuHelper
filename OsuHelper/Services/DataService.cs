@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using OsuHelper.Exceptions;
 using OsuHelper.Models;
+using Polly;
 using Tyrrrz.Extensions;
 
 namespace OsuHelper.Services
@@ -18,6 +20,7 @@ namespace OsuHelper.Services
 
         private readonly HttpClient _httpClient;
         private readonly SemaphoreSlim _requestRateSemaphore;
+        private readonly Policy _requestPolicy;
 
         private DateTime _lastRequestDateTime;
 
@@ -28,11 +31,19 @@ namespace OsuHelper.Services
             _settingsService = settingsService;
             _cacheService = cacheService;
 
+            // Client
             _httpClient = new HttpClient();
             _httpClient.DefaultRequestHeaders.Add("User-Agent", "osu!helper (github.com/Tyrrrz/OsuHelper)");
 
+            // Rate limiting
             _requestRateSemaphore = new SemaphoreSlim(1, 1);
             _lastRequestDateTime = DateTime.MinValue;
+
+            // Request policy
+            _requestPolicy = Policy
+                .Handle<HttpErrorStatusCodeException>(ex => ex.StatusCode == HttpStatusCode.InternalServerError)
+                .Or<HttpRequestException>(ex => ex.InnerException is IOException) // sometimes osu web server closes connection randomly
+                .WaitAndRetryAsync(5, _ => TimeSpan.FromSeconds(1));
         }
 
         private async Task MaintainRateLimitAsync(TimeSpan interval)
@@ -48,8 +59,11 @@ namespace OsuHelper.Services
 
         private async Task<HttpResponseMessage> InternalSendRequestAsync(HttpRequestMessage request)
         {
+            // Rate limiting
+            await MaintainRateLimitAsync(TimeSpan.FromMinutes(1.0 / 1200));
+
             // Get response
-            var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+            var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead);
 
             // Check status code
             // We throw our own exception here because default one doesn't have status code
@@ -62,22 +76,24 @@ namespace OsuHelper.Services
 
         private async Task<string> GetStringAsync(string url)
         {
-            await MaintainRateLimitAsync(TimeSpan.FromMinutes(1.0 / 1200));
-            using (var request = new HttpRequestMessage(HttpMethod.Get, url))
-            using (var response = await InternalSendRequestAsync(request))
+            return await _requestPolicy.ExecuteAsync(async () =>
             {
-                return await response.Content.ReadAsStringAsync();
-            }
+                using (var request = new HttpRequestMessage(HttpMethod.Get, url))
+                using (var response = await InternalSendRequestAsync(request))
+                    return await response.Content.ReadAsStringAsync();
+            });
         }
 
         private async Task<Stream> GetStreamAsync(string url)
         {
-            await MaintainRateLimitAsync(TimeSpan.FromMinutes(1.0 / 1200));
-            using (var request = new HttpRequestMessage(HttpMethod.Get, url))
+            return await _requestPolicy.ExecuteAsync(async () =>
             {
-                var response = await InternalSendRequestAsync(request);
-                return await response.Content.ReadAsStreamAsync();
-            }
+                using (var request = new HttpRequestMessage(HttpMethod.Get, url))
+                {
+                    var response = await InternalSendRequestAsync(request);
+                    return await response.Content.ReadAsStreamAsync();
+                }
+            });
         }
 
         public async Task<Beatmap> GetBeatmapAsync(string beatmapId, GameMode gameMode)

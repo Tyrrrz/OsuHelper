@@ -37,20 +37,20 @@ namespace OsuHelper.Services
                 throw new RecommendationsUnavailableException("User hasn't set any scores in given game mode.");
 
             // Set boundaries for recommendations based on PP
-            var minPP = ownTopPlays.Take(20).Average(p => p.PerformancePoints);
+            var minPP = ownTopPlays.Take(30).Average(p => p.PerformancePoints);
             var maxPP = minPP*1.25;
 
             // Prepare buffer for plays which will serve as base for recommendations
             var candidatePlays = new List<Play>();
 
-            // Go through user's top 20 plays
-            await ownTopPlays.Take(20).ParallelForEachAsync(async ownTopPlay =>
+            // Go through user's top 30 plays
+            await ownTopPlays.Take(30).ParallelForEachAsync(async ownTopPlay =>
             {
                 // Get the map's top plays
                 var mapTopPlays =
                     (await _dataService.GetBeatmapTopPlaysAsync(ownTopPlay.BeatmapId, GameMode, ownTopPlay.Mods))
                     .OrderBy(p => Math.Abs(p.PerformancePoints - ownTopPlay.PerformancePoints)) // order by PP similarity
-                    .Take(10); // only take top 10
+                    .Take(20); // only take top 20
 
                 // Go through those top plays
                 await mapTopPlays.ParallelForEachAsync(async mapTopPlay =>
@@ -61,7 +61,7 @@ namespace OsuHelper.Services
                         .Where(p => p.PerformancePoints >= minPP) // limit by minPP
                         .Where(p => p.PerformancePoints <= maxPP) // limit by maxPP
                         .OrderBy(p => Math.Abs(p.PerformancePoints - ownTopPlay.PerformancePoints)) // order by PP similarity
-                        .Take(10);
+                        .Take(20); // only take top 20
 
                     // Add these plays to candidates
                     candidatePlays.AddRange(otherUserTopPlays);
@@ -73,7 +73,7 @@ namespace OsuHelper.Services
                 .GroupBy(p => p.BeatmapId) // group
                 .Where(g => !ownTopPlays.Select(p => p.BeatmapId).Contains(g.Key)) // filter out maps that the user has top plays on
                 .OrderByDescending(g => g.Count()) // sort by number of times the map appears in candidate plays
-                .Take(100); // only take top 100
+                .Take(200); // only take top 200
 
             // Assemble recommendations
             var result = new List<Recommendation>();

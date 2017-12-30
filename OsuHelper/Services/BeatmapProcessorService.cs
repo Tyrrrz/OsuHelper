@@ -32,7 +32,7 @@ namespace OsuHelper.Services
             return (78 - ms) / 6;
         }
 
-        public BeatmapTraits CalculateTraitsWithMods(Beatmap beatmap, Mods mods)
+        public BeatmapTraits CalculateBeatmapTraitsWithMods(Beatmap beatmap, Mods mods)
         {
             // No mods - just return base traits
             if (mods == Mods.None)
@@ -44,19 +44,19 @@ namespace OsuHelper.Services
 
             // Carry over unchanged traits
             var maxCombo = beatmap.Traits.MaxCombo;
-            var duration = beatmap.Traits.Duration;
-            var tempo = beatmap.Traits.Tempo;
             var sr = beatmap.Traits.StarRating; // can't calculate this
 
             // Calculate duration and tempo
+            var duration = beatmap.Traits.Duration;
+            var tempo = beatmap.Traits.Tempo;
             if (mods.HasFlag(Mods.DoubleTime))
             {
-                duration = beatmap.Traits.Duration.Multiply(1 / 1.5);
+                duration = beatmap.Traits.Duration.Divide(1.5);
                 tempo = beatmap.Traits.Tempo * 1.5;
             }
             else if (mods.HasFlag(Mods.HalfTime))
             {
-                duration = beatmap.Traits.Duration.Multiply(1 / 0.75);
+                duration = beatmap.Traits.Duration.Divide(0.75);
                 tempo = beatmap.Traits.Tempo * 0.75;
             }
 
@@ -75,13 +75,13 @@ namespace OsuHelper.Services
             }
             if (mods.HasFlag(Mods.DoubleTime))
             {
-                ar = TimeToApproachRate(ApproachRateToTime(ar).Multiply(1 / 1.5));
-                od = TimeToOverallDifficulty(OverallDifficultyToTime(od).Multiply(1 / 1.5));
+                ar = TimeToApproachRate(ApproachRateToTime(ar).Divide(1.5));
+                od = TimeToOverallDifficulty(OverallDifficultyToTime(od).Divide(1.5));
             }
             else if (mods.HasFlag(Mods.HalfTime))
             {
-                ar = TimeToApproachRate(ApproachRateToTime(ar).Multiply(1 / 0.75));
-                od = TimeToOverallDifficulty(OverallDifficultyToTime(od).Multiply(1 / 0.75));
+                ar = TimeToApproachRate(ApproachRateToTime(ar).Divide(0.75));
+                od = TimeToOverallDifficulty(OverallDifficultyToTime(od).Divide(0.75));
             }
 
             // Calculate CS and HP

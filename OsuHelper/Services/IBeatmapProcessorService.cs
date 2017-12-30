@@ -4,6 +4,6 @@ namespace OsuHelper.Services
 {
     public interface IBeatmapProcessorService
     {
-        BeatmapTraits CalculateTraitsWithMods(Beatmap beatmap, Mods mods);
+        BeatmapTraits CalculateBeatmapTraitsWithMods(Beatmap beatmap, Mods mods);
     }
 }

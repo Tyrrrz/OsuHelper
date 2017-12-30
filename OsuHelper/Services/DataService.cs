@@ -159,7 +159,7 @@ namespace OsuHelper.Services
             return response;
         }
 
-        public async Task<Stream> GetMapSetPreviewAsync(string mapSetId)
+        public async Task<Stream> GetBeatmapSetPreviewAsync(string mapSetId)
         {
             // Try get from cache first
             var cached = _cacheService.RetrieveOrDefault<Stream>($"BeatmapPreview-{mapSetId}");

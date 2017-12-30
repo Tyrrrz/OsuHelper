@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Net;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -50,6 +49,7 @@ namespace OsuHelper.ViewModels
             _dataService = dataService;
             _audioService = audioService;
 
+            // Commands
             OpenPageCommand = new RelayCommand(OpenPage);
             DownloadCommand = new RelayCommand(Download);
             DownloadDirectCommand = new RelayCommand(DownloadDirect);
@@ -58,6 +58,7 @@ namespace OsuHelper.ViewModels
             StopPreviewCommand = new RelayCommand(StopPreview, () => IsPreviewPlaying);
             TogglePreviewCommand = new RelayCommand(TogglePreview);
 
+            // Messages
             MessengerInstance.Register<ShowBeatmapDetailsMessage>(this, m =>
             {
                 Beatmap = m.Beatmap;
@@ -92,7 +93,7 @@ namespace OsuHelper.ViewModels
 
             try
             {
-                using (var stream = await _dataService.GetMapSetPreviewAsync(Beatmap.MapSetId))
+                using (var stream = await _dataService.GetBeatmapSetPreviewAsync(Beatmap.MapSetId))
                     await _audioService.PlayAsync(stream);
             }
             catch (HttpErrorStatusCodeException ex) when (ex.StatusCode == HttpStatusCode.Forbidden)

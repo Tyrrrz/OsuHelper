@@ -11,7 +11,7 @@ namespace OsuHelper.Services
 
         Task<string> GetBeatmapRawAsync(string beatmapId);
 
-        Task<Stream> GetMapSetPreviewAsync(string mapSetId);
+        Task<Stream> GetBeatmapSetPreviewAsync(string mapSetId);
 
         Task<IReadOnlyList<Play>> GetUserTopPlaysAsync(string userId, GameMode gameMode);
 

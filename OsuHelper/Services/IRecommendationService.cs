@@ -7,6 +7,6 @@ namespace OsuHelper.Services
 {
     public interface IRecommendationService
     {
-        Task<IReadOnlyList<Recommendation>> GetRecommendationsAsync(IProgress<double> progress);
+        Task<IReadOnlyList<Recommendation>> GetRecommendationsAsync(IProgress<double> progressHandler);
     }
 }

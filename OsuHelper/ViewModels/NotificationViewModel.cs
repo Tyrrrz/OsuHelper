@@ -22,6 +22,7 @@ namespace OsuHelper.ViewModels
 
         public NotificationViewModel()
         {
+            // Messages
             MessengerInstance.Register<ShowNotificationMessage>(this, m =>
             {
                 Title = m.Title;

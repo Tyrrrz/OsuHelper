@@ -32,12 +32,13 @@ namespace OsuHelper.Services
             _cacheService = cacheService;
 
             // Connection limit
-            ServicePointManager.DefaultConnectionLimit = 9999;
+            ServicePointManager.DefaultConnectionLimit = 999;
 
             // Client
             var handler = new HttpClientHandler();
             if (handler.SupportsAutomaticDecompression)
                 handler.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            handler.UseCookies = false;
             _httpClient = new HttpClient(handler, true);
             _httpClient.DefaultRequestHeaders.Add("User-Agent", "osu!helper (github.com/Tyrrrz/OsuHelper)");
 
@@ -46,10 +47,11 @@ namespace OsuHelper.Services
             _lastRequestDateTime = DateTime.MinValue;
 
             // Request policy
+            // (osu web server is inconsistent)
             _requestPolicy = Policy
-                .Handle<HttpErrorStatusCodeException>(ex => ex.StatusCode == HttpStatusCode.InternalServerError)
-                .Or<HttpRequestException>(ex => ex.InnerException is IOException) // sometimes osu web server closes connection randomly
-                .WaitAndRetryAsync(5, _ => TimeSpan.FromSeconds(1));
+                .Handle<HttpErrorStatusCodeException>(ex => (int) ex.StatusCode >= 500)
+                .Or<HttpRequestException>(ex => ex.InnerException is IOException)
+                .RetryAsync(20);
         }
 
         private async Task MaintainRateLimitAsync(TimeSpan interval)
@@ -66,7 +68,7 @@ namespace OsuHelper.Services
         private async Task<HttpResponseMessage> InternalSendRequestAsync(HttpRequestMessage request)
         {
             // Rate limiting
-            await MaintainRateLimitAsync(TimeSpan.FromMinutes(1.0 / 1200));
+            await MaintainRateLimitAsync(TimeSpan.FromMinutes(1.0 / 500));
 
             // Get response
             var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);

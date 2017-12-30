@@ -40,7 +40,10 @@
                 FontSize="18"
                 Text="Loading..." />
             <!--  Beatmap image  -->
-            <Image Cursor="Hand" Source="{Binding Beatmap.CoverUrl}">
+            <Image
+                Cursor="Hand"
+                Source="{Binding Beatmap.CoverUrl}"
+                ToolTip="(left click for sound preview)">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonUp">
                         <command:EventToCommand Command="{Binding TogglePreviewCommand}" />

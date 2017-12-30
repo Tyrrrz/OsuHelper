@@ -1,6 +1,9 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.Net;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using OsuHelper.Exceptions;
 using OsuHelper.Messages;
 using OsuHelper.Models;
 using OsuHelper.Services;
@@ -86,8 +89,17 @@ namespace OsuHelper.ViewModels
         private async void PlayPreview()
         {
             IsPreviewPlaying = true;
-            using (var stream = await _dataService.GetMapSetPreviewAsync(Beatmap.MapSetId))
-                await _audioService.PlayAsync(stream);
+
+            try
+            {
+                using (var stream = await _dataService.GetMapSetPreviewAsync(Beatmap.MapSetId))
+                    await _audioService.PlayAsync(stream);
+            }
+            catch (HttpErrorStatusCodeException ex) when (ex.StatusCode == HttpStatusCode.Forbidden)
+            {
+                // Preview not available
+            }
+
             IsPreviewPlaying = false;
         }
 

@@ -32,6 +32,7 @@ osu!helper is an application that recommends beatmaps in osu! based on your curr
 - [Newtonsoft.Json](http://www.newtonsoft.com/json)
 - [NAudio](https://github.com/naudio/NAudio)
 - [Polly](https://github.com/App-vNext/Polly)
+- [Costura.Fody](https://github.com/Fody/Costura)
 - [Tyrrrz.Extensions](https://github.com/Tyrrrz/Extensions)
 - [Tyrrrz.WpfExtensions](https://github.com/Tyrrrz/WpfExtensions)
 - [Tyrrrz.Settings](https://github.com/Tyrrrz/Settings)

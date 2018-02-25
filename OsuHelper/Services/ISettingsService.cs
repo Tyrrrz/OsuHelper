@@ -9,6 +9,7 @@ namespace OsuHelper.Services
         GameMode GameMode { get; set; }
         bool DownloadWithoutVideo { get; set; }
         double PreviewVolume { get; set; }
+        bool IsAutoUpdateEnabled { get; set; }
 
         void Load();
         void Save();

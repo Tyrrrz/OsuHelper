@@ -15,6 +15,8 @@ namespace OsuHelper.Services
 
         public double PreviewVolume { get; set; } = 0.75;
 
+        public bool IsAutoUpdateEnabled { get; set; } = true;
+
         public SettingsService()
         {
             Configuration.FileName = "Config.dat";

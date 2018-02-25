@@ -68,6 +68,18 @@
                 Value="{Binding PreviewVolume}" />
         </DockPanel>
 
+        <!--  Auto-updates  -->
+        <DockPanel LastChildFill="False">
+            <TextBlock
+                Margin="16,8,16,8"
+                DockPanel.Dock="Left"
+                Text="Auto-updates" />
+            <ToggleButton
+                Margin="16,8,16,8"
+                DockPanel.Dock="Right"
+                IsChecked="{Binding IsAutoUpdateEnabled}" />
+        </DockPanel>
+
         <DockPanel LastChildFill="False">
             <!--  API key link  -->
             <TextBlock Margin="16" DockPanel.Dock="Left">

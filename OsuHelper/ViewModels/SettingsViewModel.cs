@@ -53,6 +53,12 @@ namespace OsuHelper.ViewModels
             set => _settingsService.PreviewVolume = value.Clamp(0, 1);
         }
 
+        public bool IsAutoUpdateEnabled
+        {
+            get => _settingsService.IsAutoUpdateEnabled;
+            set => _settingsService.IsAutoUpdateEnabled = value;
+        }
+
         public RelayCommand GetApiKeyCommand { get; }
 
         public SettingsViewModel(ISettingsService settingsService)

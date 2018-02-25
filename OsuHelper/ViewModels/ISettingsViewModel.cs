@@ -10,6 +10,7 @@ namespace OsuHelper.ViewModels
         GameMode GameMode { get; set; }
         bool DownloadWithoutVideo { get; set; }
         double PreviewVolume { get; set; }
+        bool IsAutoUpdateEnabled { get; set; }
 
         RelayCommand GetApiKeyCommand { get; }
     }

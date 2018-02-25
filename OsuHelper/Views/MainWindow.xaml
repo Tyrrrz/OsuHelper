@@ -5,7 +5,7 @@
     xmlns:command="http://www.galasoft.ch/mvvmlight"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    Title="osu!helper v{0}"
+    Title="osu!helper"
     Width="850"
     Height="625"
     Background="{DynamicResource MaterialDesignPaper}"
@@ -25,8 +25,16 @@
             Filter="RecommendationsView_OnFilter"
             Source="{Binding Recommendations}" />
     </Window.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding ViewLoadedCommand}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Closed">
+            <i:InvokeCommandAction Command="{Binding ViewClosedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
-    <materialDesign:DialogHost>
+    <materialDesign:DialogHost SnackbarMessageQueue="{Binding MessageQueue, ElementName=Snackbar}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -162,6 +170,7 @@
                 Background="{DynamicResource PrimaryHueMidBrush}"
                 Value="{Binding Progress, Mode=OneWay}" />
 
+            <!--  Content  -->
             <Grid Grid.Row="2">
                 <!--  Recommendations  -->
                 <DataGrid
@@ -265,6 +274,9 @@
                     <Run Text="button to analyze your plays and generate recommendations" />
                 </TextBlock>
             </Grid>
+
+            <!--  Snackbar  -->
+            <materialDesign:Snackbar x:Name="Snackbar" Grid.Row="2" />
         </Grid>
     </materialDesign:DialogHost>
 </Window>

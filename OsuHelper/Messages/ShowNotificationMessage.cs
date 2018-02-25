@@ -1,15 +1,25 @@
-﻿namespace OsuHelper.Messages
+﻿using System;
+
+namespace OsuHelper.Messages
 {
     public class ShowNotificationMessage
     {
-        public string Title { get; }
+        public string Message { get; }
 
-        public string Content { get; }
+        public string CallbackCaption { get; }
 
-        public ShowNotificationMessage(string title, string content)
+        public Action Callback { get; }
+
+        public ShowNotificationMessage(string message)
         {
-            Title = title;
-            Content = content;
+            Message = message;
+        }
+
+        public ShowNotificationMessage(string message, string callbackCaption, Action callback)
+            : this(message)
+        {
+            CallbackCaption = callbackCaption;
+            Callback = callback;
         }
     }
 }

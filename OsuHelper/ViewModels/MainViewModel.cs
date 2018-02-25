@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
+using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Threading;
 using OsuHelper.Exceptions;
 using OsuHelper.Messages;
 using OsuHelper.Models;
@@ -15,6 +17,7 @@ namespace OsuHelper.ViewModels
     public class MainViewModel : ViewModelBase, IMainViewModel
     {
         private readonly ISettingsService _settingsService;
+        private readonly IUpdateService _updateService;
         private readonly ICacheService _cacheService;
         private readonly IRecommendationService _recommendationService;
 
@@ -57,27 +60,65 @@ namespace OsuHelper.ViewModels
             set => Set(ref _selectedRecommendation, value);
         }
 
+        public RelayCommand ViewLoadedCommand { get; }
+        public RelayCommand ViewClosedCommand { get; }
         public RelayCommand ShowAboutCommand { get; }
         public RelayCommand ShowSettingsCommand { get; }
         public RelayCommand ShowBeatmapDetailsCommand { get; }
         public RelayCommand PopulateRecommendationsCommand { get; }
 
-        public MainViewModel(ISettingsService settingsService, ICacheService cacheService,
-            IRecommendationService recommendationService)
+        public MainViewModel(ISettingsService settingsService, IUpdateService updateService,
+            ICacheService cacheService, IRecommendationService recommendationService)
         {
             _settingsService = settingsService;
+            _updateService = updateService;
             _cacheService = cacheService;
             _recommendationService = recommendationService;
 
             // Commands
+            ViewLoadedCommand = new RelayCommand(ViewLoaded);
+            ViewClosedCommand = new RelayCommand(ViewClosed);
             ShowAboutCommand = new RelayCommand(ShowAbout);
             ShowSettingsCommand = new RelayCommand(ShowSettings);
             ShowBeatmapDetailsCommand = new RelayCommand(ShowBeatmapDetails);
             PopulateRecommendationsCommand = new RelayCommand(PopulateRecommendations, () => !IsBusy);
+        }
+
+        private async void ViewLoaded()
+        {
+            // Load settings
+            _settingsService.Load();
 
             // Load last recommendations
-            _recommendations =
-                _cacheService.RetrieveOrDefault<IReadOnlyList<Recommendation>>("LastRecommendations");
+            Recommendations = _cacheService.RetrieveOrDefault<IReadOnlyList<Recommendation>>("LastRecommendations");
+
+            // Check for updates
+            var lastVersion = await _updateService.CheckForUpdatesAsync();
+            if (lastVersion != null)
+            {
+                // Download updates
+                await _updateService.PrepareUpdateAsync();
+
+                // Notify user
+                MessengerInstance.Send(
+                    new ShowNotificationMessage(
+                        $"osu!helper v{lastVersion} has been downloaded – it will be installed when you exit",
+                        "INSTALL NOW",
+                        async () =>
+                        {
+                            await _updateService.ApplyUpdateAsync();
+                            Application.Current.Shutdown();
+                        }));
+            }
+        }
+
+        private async void ViewClosed()
+        {
+            // Save settings
+            _settingsService.Save();
+
+            // Apply updates if available
+            await _updateService.ApplyUpdateAsync(false);
         }
 
         private void ShowSettings()
@@ -103,8 +144,10 @@ namespace OsuHelper.ViewModels
             // Validate settings
             if (_settingsService.UserId.IsBlank() || _settingsService.ApiKey.IsBlank())
             {
-                MessengerInstance.Send(new ShowNotificationMessage("Not configured",
-                    "User ID and/or API key are not set. Please specify them in settings."));
+                MessengerInstance.Send(new ShowNotificationMessage(
+                    "Not configured – set username and API key in settings",
+                    "OPEN",
+                    ShowSettings));
                 return;
             }
 
@@ -119,12 +162,11 @@ namespace OsuHelper.ViewModels
             }
             catch (RecommendationsUnavailableException ex)
             {
-                MessengerInstance.Send(new ShowNotificationMessage("Recommendations unavailable", ex.Reason));
+                MessengerInstance.Send(new ShowNotificationMessage($"Recommendations unavailable – {ex.Reason}"));
             }
             catch (HttpErrorStatusCodeException ex) when (ex.StatusCode == HttpStatusCode.Unauthorized)
             {
-                MessengerInstance.Send(new ShowNotificationMessage("Unauthorized",
-                    "Please make sure your API key is valid."));
+                MessengerInstance.Send(new ShowNotificationMessage("Unauthorized – make sure API key is valid"));
             }
 
             IsBusy = false;

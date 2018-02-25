@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
 using GalaSoft.MvvmLight.Messaging;
@@ -16,18 +17,18 @@ namespace OsuHelper.Views
         public MainWindow()
         {
             InitializeComponent();
+            Title += $" v{Assembly.GetExecutingAssembly().GetName().Version}";
 
-            // Version in title
-            Title = string.Format(Title, Assembly.GetEntryAssembly().GetName().Version.ToString(3));
+            Snackbar.MessageQueue = new SnackbarMessageQueue(TimeSpan.FromSeconds(5));
 
-            // Dialogs
+            // Notification messages
+            Messenger.Default.Register<ShowNotificationMessage>(this,
+                m => Snackbar.MessageQueue.Enqueue(m.Message, m.CallbackCaption, m.Callback));
+
+            // Dialog messages
             Messenger.Default.Register<ShowBeatmapDetailsMessage>(this, m =>
             {
                 DialogHost.Show(new BeatmapDetailsDialog()).Forget();
-            });
-            Messenger.Default.Register<ShowNotificationMessage>(this, m =>
-            {
-                DialogHost.Show(new NotificationDialog()).Forget();
             });
             Messenger.Default.Register<ShowSettingsMessage>(this, m =>
             {

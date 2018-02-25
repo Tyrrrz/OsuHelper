@@ -146,8 +146,8 @@
             <converters:ModsToStringConverter x:Key="ModsToStringConverter" />
             <converters:TimeSpanToShortStringConverter x:Key="TimeSpanToShortStringConverter" />
 
-            <!--  Locator  -->
-            <local:Locator x:Key="Locator" />
+            <!--  Container  -->
+            <local:Container x:Key="Locator" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

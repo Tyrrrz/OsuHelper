@@ -14,6 +14,8 @@ namespace OsuHelper.ViewModels
         IReadOnlyList<Recommendation> Recommendations { get; }
         Recommendation SelectedRecommendation { get; }
 
+        RelayCommand ViewLoadedCommand { get; }
+        RelayCommand ViewClosedCommand { get; }
         RelayCommand ShowAboutCommand { get; }
         RelayCommand ShowSettingsCommand { get; }
         RelayCommand ShowBeatmapDetailsCommand { get; }

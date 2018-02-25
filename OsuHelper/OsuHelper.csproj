@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OsuHelper</RootNamespace>
     <AssemblyName>osu!helper</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -68,8 +68,11 @@
     <Reference Include="NAudio, Version=1.8.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.1.8.4\lib\net35\NAudio.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Onova, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Onova.1.0.0\lib\net46\Onova.dll</HintPath>
     </Reference>
     <Reference Include="Polly, Version=5.8.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Polly.5.8.0\lib\net45\Polly.dll</HintPath>
@@ -112,7 +115,7 @@
     <Compile Include="Converters\TimeSpanToShortStringConverter.cs" />
     <Compile Include="Exceptions\HttpErrorStatusCodeException.cs" />
     <Compile Include="Exceptions\RecommendationsUnavailableException.cs" />
-    <Compile Include="Locator.cs" />
+    <Compile Include="Container.cs" />
     <Compile Include="Messages\ShowBeatmapDetailsMessage.cs" />
     <Compile Include="Messages\ShowNotificationMessage.cs" />
     <Compile Include="Messages\ShowSettingsMessage.cs" />
@@ -127,6 +130,7 @@
     <Compile Include="Models\PlayRank.cs" />
     <Compile Include="Services\AudioService.cs" />
     <Compile Include="Services\CacheService.cs" />
+    <Compile Include="Services\IUpdateService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\IAudioService.cs" />
     <Compile Include="Services\IBeatmapProcessorService.cs" />
@@ -137,13 +141,12 @@
     <Compile Include="Services\BeatmapProcessorService.cs" />
     <Compile Include="Services\DataService.cs" />
     <Compile Include="Services\RecommendationService.cs" />
+    <Compile Include="Services\UpdateService.cs" />
     <Compile Include="ViewModels\BeatmapDetailsViewModel.cs" />
     <Compile Include="ViewModels\IBeatmapDetailsViewModel.cs" />
     <Compile Include="ViewModels\IMainViewModel.cs" />
-    <Compile Include="ViewModels\INotificationViewModel.cs" />
     <Compile Include="ViewModels\ISettingsViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\NotificationViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\BeatmapDetailsDialog.xaml.cs">
       <DependentUpon>BeatmapDetailsDialog.xaml</DependentUpon>
@@ -155,9 +158,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Views\NotificationDialog.xaml.cs">
-      <DependentUpon>NotificationDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SettingsDialog.xaml.cs">
       <DependentUpon>SettingsDialog.xaml</DependentUpon>
     </Compile>
@@ -168,10 +168,6 @@
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\NotificationDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingsDialog.xaml">
       <SubType>Designer</SubType>
@@ -197,7 +193,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="favicon.ico" />

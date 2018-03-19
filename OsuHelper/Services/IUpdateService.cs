@@ -5,10 +5,10 @@ namespace OsuHelper.Services
 {
     public interface IUpdateService
     {
-        Task<Version> CheckForUpdatesAsync();
+        bool NeedRestart { get; set; }
 
-        Task PrepareUpdateAsync();
+        Task<Version> CheckPrepareUpdateAsync();
 
-        Task ApplyUpdateAsync(bool restart = true);
+        Task FinalizeUpdateAsync();
     }
 }

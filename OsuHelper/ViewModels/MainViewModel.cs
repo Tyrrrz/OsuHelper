@@ -5,7 +5,6 @@ using System.Net;
 using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Threading;
 using OsuHelper.Exceptions;
 using OsuHelper.Messages;
 using OsuHelper.Models;
@@ -92,23 +91,24 @@ namespace OsuHelper.ViewModels
             // Load last recommendations
             Recommendations = _cacheService.RetrieveOrDefault<IReadOnlyList<Recommendation>>("LastRecommendations");
 
-            // Check for updates
-            var lastVersion = await _updateService.CheckForUpdatesAsync();
-            if (lastVersion != null)
+            // Check and prepare update
+            try
             {
-                // Download updates
-                await _updateService.PrepareUpdateAsync();
-
-                // Notify user
-                MessengerInstance.Send(
-                    new ShowNotificationMessage(
-                        $"osu!helper v{lastVersion} has been downloaded – it will be installed when you exit",
-                        "INSTALL NOW",
-                        async () =>
+                var updateVersion = await _updateService.CheckPrepareUpdateAsync();
+                if (updateVersion != null)
+                {
+                    MessengerInstance.Send(new ShowNotificationMessage(
+                        $"Update to osu!helper v{updateVersion} will be installed when you exit",
+                        "INSTALL NOW", () =>
                         {
-                            await _updateService.ApplyUpdateAsync();
+                            _updateService.NeedRestart = true;
                             Application.Current.Shutdown();
                         }));
+                }
+            }
+            catch
+            {
+                MessengerInstance.Send(new ShowNotificationMessage("Failed to perform application auto-update"));
             }
         }
 
@@ -117,8 +117,8 @@ namespace OsuHelper.ViewModels
             // Save settings
             _settingsService.Save();
 
-            // Apply updates if available
-            await _updateService.ApplyUpdateAsync(false);
+            // Finalize updates if available
+            await _updateService.FinalizeUpdateAsync();
         }
 
         private void ShowSettings()
@@ -146,8 +146,7 @@ namespace OsuHelper.ViewModels
             {
                 MessengerInstance.Send(new ShowNotificationMessage(
                     "Not configured – set username and API key in settings",
-                    "OPEN",
-                    ShowSettings));
+                    "OPEN", ShowSettings));
                 return;
             }
 

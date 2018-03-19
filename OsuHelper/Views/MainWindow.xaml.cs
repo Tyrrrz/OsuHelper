@@ -22,18 +22,19 @@ namespace OsuHelper.Views
             Snackbar.MessageQueue = new SnackbarMessageQueue(TimeSpan.FromSeconds(5));
 
             // Notification messages
-            Messenger.Default.Register<ShowNotificationMessage>(this,
-                m => Snackbar.MessageQueue.Enqueue(m.Message, m.CallbackCaption, m.Callback));
+            Messenger.Default.Register<ShowNotificationMessage>(this, m =>
+            {
+                if (m.CallbackCaption != null && m.Callback != null)
+                    Snackbar.MessageQueue.Enqueue(m.Message, m.CallbackCaption, m.Callback);
+                else
+                    Snackbar.MessageQueue.Enqueue(m.Message);
+            });
 
             // Dialog messages
-            Messenger.Default.Register<ShowBeatmapDetailsMessage>(this, m =>
-            {
-                DialogHost.Show(new BeatmapDetailsDialog()).Forget();
-            });
-            Messenger.Default.Register<ShowSettingsMessage>(this, m =>
-            {
-                DialogHost.Show(new SettingsDialog()).Forget();
-            });
+            Messenger.Default.Register<ShowBeatmapDetailsMessage>(this,
+                m => { DialogHost.Show(new BeatmapDetailsDialog()).Forget(); });
+            Messenger.Default.Register<ShowSettingsMessage>(this,
+                m => { DialogHost.Show(new SettingsDialog()).Forget(); });
         }
 
         private void UpdateRecommendationsView()

@@ -109,7 +109,7 @@
     <Compile Include="Converters\ModsToStringConverter.cs" />
     <Compile Include="Converters\TimeSpanToShortStringConverter.cs" />
     <Compile Include="Exceptions\HttpErrorStatusCodeException.cs" />
-    <Compile Include="Exceptions\RecommendationsUnavailableException.cs" />
+    <Compile Include="Exceptions\TopPlaysUnavailableException.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="Messages\ShowBeatmapDetailsMessage.cs" />
     <Compile Include="Messages\ShowNotificationMessage.cs" />

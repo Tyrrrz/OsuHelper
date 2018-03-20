@@ -159,9 +159,9 @@ namespace OsuHelper.ViewModels
                 Recommendations = await _recommendationService.GetRecommendationsAsync(progressHandler);
                 _cacheService.Store("LastRecommendations", Recommendations);
             }
-            catch (RecommendationsUnavailableException ex)
+            catch (TopPlaysUnavailableException)
             {
-                MessengerInstance.Send(new ShowNotificationMessage($"Recommendations unavailable – {ex.Reason}"));
+                MessengerInstance.Send(new ShowNotificationMessage("Recommendations unavailable – no top plays set in selected game mode"));
             }
             catch (HttpErrorStatusCodeException ex) when (ex.StatusCode == HttpStatusCode.Unauthorized)
             {

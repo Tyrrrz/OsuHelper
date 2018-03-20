@@ -43,7 +43,7 @@ namespace OsuHelper.Services
 
             // If user doesn't have any plays - throw
             if (!ownTopPlays.Any())
-                throw new RecommendationsUnavailableException("User hasn't set any scores in given game mode.");
+                throw new TopPlaysUnavailableException();
 
             // Set boundaries for recommendations based on PP
             var minPP = ownTopPlays.Average(p => p.PerformancePoints);

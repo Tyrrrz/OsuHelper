@@ -59,10 +59,7 @@ namespace OsuHelper.ViewModels
             TogglePreviewCommand = new RelayCommand(TogglePreview);
 
             // Messages
-            MessengerInstance.Register<ShowBeatmapDetailsMessage>(this, m =>
-            {
-                Beatmap = m.Beatmap;
-            });
+            MessengerInstance.Register<ShowBeatmapDetailsMessage>(this, m => Beatmap = m.Beatmap);
         }
 
         private void OpenPage()

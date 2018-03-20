@@ -20,7 +20,7 @@ namespace OsuHelper.Services
             _settingsService = settingsService;
 
             _manager = new UpdateManager(
-                new GithubPackageResolver("Tyrrrz", "OsuHelper", "osu.helper*.zip"),
+                new GithubPackageResolver("Tyrrrz", "OsuHelper", "osu.helper.zip"),
                 new ZipPackageExtractor());
         }
 
@@ -30,6 +30,9 @@ namespace OsuHelper.Services
             if (!_settingsService.IsAutoUpdateEnabled)
                 return null;
 
+            // Cleanup leftover files
+            _manager.Cleanup();
+
             // Check for updates
             var check = await _manager.CheckForUpdatesAsync();
             if (!check.CanUpdate)
@@ -37,9 +40,8 @@ namespace OsuHelper.Services
 
             // Prepare the update
             await _manager.PrepareUpdateAsync(check.LastVersion);
-            _updateVersion = check.LastVersion;
 
-            return _updateVersion;
+            return _updateVersion = check.LastVersion;
         }
 
         public async Task FinalizeUpdateAsync()

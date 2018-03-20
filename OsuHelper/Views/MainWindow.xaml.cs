@@ -32,9 +32,9 @@ namespace OsuHelper.Views
 
             // Dialog messages
             Messenger.Default.Register<ShowBeatmapDetailsMessage>(this,
-                m => { DialogHost.Show(new BeatmapDetailsDialog()).Forget(); });
+                m => DialogHost.Show(new BeatmapDetailsDialog()).Forget());
             Messenger.Default.Register<ShowSettingsMessage>(this,
-                m => { DialogHost.Show(new SettingsDialog()).Forget(); });
+                m => DialogHost.Show(new SettingsDialog()).Forget());
         }
 
         private void UpdateRecommendationsView()

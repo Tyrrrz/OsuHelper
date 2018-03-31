@@ -9,6 +9,6 @@ namespace OsuHelper.Services
 
         Task<Version> CheckPrepareUpdateAsync();
 
-        Task FinalizeUpdateAsync();
+        void FinalizeUpdate();
     }
 }

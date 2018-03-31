@@ -65,10 +65,10 @@
       <HintPath>..\packages\NAudio.1.8.4\lib\net35\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Onova, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Onova.2.0.0\lib\net46\Onova.dll</HintPath>
+    <Reference Include="Onova, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Onova.2.1.0\lib\net46\Onova.dll</HintPath>
     </Reference>
     <Reference Include="Polly, Version=5.8.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Polly.5.8.0\lib\net45\Polly.dll</HintPath>

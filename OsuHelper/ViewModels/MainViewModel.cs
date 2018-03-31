@@ -112,13 +112,13 @@ namespace OsuHelper.ViewModels
             }
         }
 
-        private async void ViewClosed()
+        private void ViewClosed()
         {
             // Save settings
             _settingsService.Save();
 
             // Finalize updates if available
-            await _updateService.FinalizeUpdateAsync();
+            _updateService.FinalizeUpdate();
         }
 
         private void ShowSettings()

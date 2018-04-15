@@ -1,3 +1,7 @@
+### v2.0.2 (15-Apr-2018)
+
+- Implemented application auto-update (can be disabled in settings).
+
 ### v2.0.1 (31-Dec-2017)
 
 - Fixed a crash when trying to preview a beatmap that doesn't allow previewing for non-logged in users.

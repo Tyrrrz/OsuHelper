@@ -5,6 +5,7 @@
     xmlns:converters="clr-namespace:OsuHelper.Converters"
     xmlns:local="clr-namespace:OsuHelper"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    DispatcherUnhandledException="App_OnDispatcherUnhandledException"
     Exit="App_OnExit"
     Startup="App_OnStartup"
     StartupUri="Views/MainWindow.xaml">

@@ -1,8 +1,8 @@
 ﻿namespace OsuHelper.Views
 {
-    public partial class SettingsDialog
+    public partial class RootView
     {
-        public SettingsDialog()
+        public RootView()
         {
             InitializeComponent();
         }

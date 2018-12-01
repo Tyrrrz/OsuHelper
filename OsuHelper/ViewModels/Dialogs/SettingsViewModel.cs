@@ -1,16 +1,18 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Text.RegularExpressions;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
 using OsuHelper.Models;
 using OsuHelper.Services;
+using OsuHelper.ViewModels.Framework;
 using Tyrrrz.Extensions;
 
-namespace OsuHelper.ViewModels
+namespace OsuHelper.ViewModels.Dialogs
 {
-    public class SettingsViewModel : ViewModelBase, ISettingsViewModel
+    public class SettingsViewModel : DialogScreen
     {
-        private readonly ISettingsService _settingsService;
+        private readonly SettingsService _settingsService;
 
         public string UserId
         {
@@ -34,6 +36,9 @@ namespace OsuHelper.ViewModels
             get => _settingsService.ApiKey;
             set => _settingsService.ApiKey = value;
         }
+
+        public IReadOnlyList<GameMode> AvailableGameModes { get; } =
+            Enum.GetValues(typeof(GameMode)).Cast<GameMode>().ToArray();
 
         public GameMode GameMode
         {
@@ -59,17 +64,12 @@ namespace OsuHelper.ViewModels
             set => _settingsService.IsAutoUpdateEnabled = value;
         }
 
-        public RelayCommand GetApiKeyCommand { get; }
-
-        public SettingsViewModel(ISettingsService settingsService)
+        public SettingsViewModel(SettingsService settingsService)
         {
             _settingsService = settingsService;
-
-            // Commands
-            GetApiKeyCommand = new RelayCommand(GetApiKey);
         }
 
-        private void GetApiKey()
+        public void ObtainApiKey()
         {
             Process.Start("https://osu.ppy.sh/p/api");
         }

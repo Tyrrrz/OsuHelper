@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace OsuHelper.Services
 {
-    public class CacheService : ICacheService
+    public class CacheService
     {
         private readonly string _cacheDirPath;
 
@@ -46,12 +46,14 @@ namespace OsuHelper.Services
             {
                 if (File.Exists(GetCacheFilePath(key)))
                     return (T) (object) File.ReadAllText(GetCacheFilePath(key));
+
                 return defaultValue;
             }
             if (typeof(T) == typeof(Stream))
             {
                 if (File.Exists(GetCacheFilePath(key)))
                     return (T) (object) File.OpenRead(GetCacheFilePath(key));
+
                 return defaultValue;
             }
             else
@@ -61,6 +63,7 @@ namespace OsuHelper.Services
                     var serialized = File.ReadAllText(GetCacheFilePath(key));
                     return JsonConvert.DeserializeObject<T>(serialized);
                 }
+
                 return defaultValue;
             }
         }

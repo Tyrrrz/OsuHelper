@@ -7,10 +7,8 @@ namespace OsuHelper.Exceptions
     {
         public HttpStatusCode StatusCode { get; }
 
-        public override string Message =>
-            $"Response status code does not indicate success: {(int) StatusCode} ({StatusCode}).";
-
         public HttpErrorStatusCodeException(HttpStatusCode statusCode)
+            : base($"Response status code does not indicate success: {(int) statusCode} ({statusCode}).")
         {
             StatusCode = statusCode;
         }

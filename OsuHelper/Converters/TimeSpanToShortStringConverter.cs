@@ -7,6 +7,8 @@ namespace OsuHelper.Converters
     [ValueConversion(typeof(TimeSpan), typeof(string))]
     public class TimeSpanToShortStringConverter : IValueConverter
     {
+        public static TimeSpanToShortStringConverter Instance { get; } = new TimeSpanToShortStringConverter();
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null)
@@ -14,6 +16,7 @@ namespace OsuHelper.Converters
 
             var ts = (TimeSpan) value;
             var fullMins = ts.Hours*60 + ts.Minutes;
+
             return $"{fullMins:00}:{ts.Seconds:00}";
         }
 

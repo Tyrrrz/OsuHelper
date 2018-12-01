@@ -13,10 +13,10 @@ using Tyrrrz.Extensions;
 
 namespace OsuHelper.Services
 {
-    public class DataService : IDataService, IDisposable
+    public class DataService : IDisposable
     {
-        private readonly ISettingsService _settingsService;
-        private readonly ICacheService _cacheService;
+        private readonly SettingsService _settingsService;
+        private readonly CacheService _cacheService;
 
         private readonly HttpClient _httpClient;
         private readonly SemaphoreSlim _requestRateSemaphore;
@@ -26,7 +26,7 @@ namespace OsuHelper.Services
 
         private string ApiKey => _settingsService.ApiKey;
 
-        public DataService(ISettingsService settingsService, ICacheService cacheService)
+        public DataService(SettingsService settingsService, CacheService cacheService)
         {
             _settingsService = settingsService;
             _cacheService = cacheService;

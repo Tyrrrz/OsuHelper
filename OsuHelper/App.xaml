@@ -2,19 +2,20 @@
     x:Class="OsuHelper.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="clr-namespace:OsuHelper.Converters"
     xmlns:local="clr-namespace:OsuHelper"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    DispatcherUnhandledException="App_OnDispatcherUnhandledException"
-    Exit="App_OnExit"
-    Startup="App_OnStartup"
-    StartupUri="Views/MainWindow.xaml">
+    xmlns:s="https://github.com/canton7/Stylet">
     <Application.Resources>
-        <ResourceDictionary>
+        <s:ApplicationLoader>
+            <!--  Bootstrapper  -->
+            <s:ApplicationLoader.Bootstrapper>
+                <local:Bootstrapper />
+            </s:ApplicationLoader.Bootstrapper>
+
+            <!--  Merged dictionaries  -->
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Tyrrrz.WpfExtensions;component/ConvertersDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <!--  Colors  -->
@@ -132,6 +133,7 @@
 
             <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="{x:Type DataGridCell}">
                 <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                <Setter Property="BorderThickness" Value="0" />
                 <Setter Property="Padding" Value="5" />
             </Style>
 
@@ -147,13 +149,6 @@
                 <Setter Property="materialDesign:RippleAssist.Feedback" Value="{DynamicResource MaterialDesignFlatButtonRipple}" />
                 <Setter Property="materialDesign:ShadowAssist.ShadowDepth" Value="Depth0" />
             </Style>
-
-            <!--  Converters  -->
-            <converters:ModsToStringConverter x:Key="ModsToStringConverter" />
-            <converters:TimeSpanToShortStringConverter x:Key="TimeSpanToShortStringConverter" />
-
-            <!--  Container  -->
-            <local:Container x:Key="Locator" />
-        </ResourceDictionary>
+        </s:ApplicationLoader>
     </Application.Resources>
 </Application>

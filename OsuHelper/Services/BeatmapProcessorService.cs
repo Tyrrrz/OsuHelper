@@ -4,7 +4,7 @@ using Tyrrrz.Extensions;
 
 namespace OsuHelper.Services
 {
-    public class BeatmapProcessorService : IBeatmapProcessorService
+    public class BeatmapProcessorService
     {
         private TimeSpan ApproachRateToTime(double ar)
         {

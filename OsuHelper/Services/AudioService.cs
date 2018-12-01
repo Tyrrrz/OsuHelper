@@ -5,22 +5,21 @@ using NAudio.Wave;
 
 namespace OsuHelper.Services
 {
-    public class AudioService : IAudioService, IDisposable
+    public class AudioService : IDisposable
     {
-        private readonly ISettingsService _settingsService;
+        private readonly SettingsService _settingsService;
 
-        private readonly WaveOut _player;
+        private readonly WaveOut _player = new WaveOut();
 
         private TaskCompletionSource<object> _playbackTcs;
 
         public bool IsPlaying => _player.PlaybackState == PlaybackState.Playing;
 
-        public AudioService(ISettingsService settingsService)
+        public AudioService(SettingsService settingsService)
         {
             _settingsService = settingsService;
 
             // Configure player
-            _player = new WaveOut();
             _player.PlaybackStopped += (sender, args) => _playbackTcs?.TrySetResult(null);
         }
 

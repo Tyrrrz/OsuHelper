@@ -3,7 +3,7 @@ using Tyrrrz.Settings;
 
 namespace OsuHelper.Services
 {
-    public class SettingsService : SettingsManager, ISettingsService
+    public class SettingsService : SettingsManager
     {
         public string UserId { get; set; }
 

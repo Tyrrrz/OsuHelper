@@ -66,10 +66,7 @@
     <Compile Include="Converters\TimeSpanToShortStringConverter.cs" />
     <Compile Include="Exceptions\HttpErrorStatusCodeException.cs" />
     <Compile Include="Exceptions\TopPlaysUnavailableException.cs" />
-    <Compile Include="Container.cs" />
-    <Compile Include="Messages\ShowBeatmapDetailsMessage.cs" />
-    <Compile Include="Messages\ShowNotificationMessage.cs" />
-    <Compile Include="Messages\ShowSettingsMessage.cs" />
+    <Compile Include="Bootstrapper.cs" />
     <Compile Include="Models\Beatmap.cs" />
     <Compile Include="Models\BeatmapRankingStatus.cs" />
     <Compile Include="Models\Recommendation.cs" />
@@ -81,46 +78,39 @@
     <Compile Include="Models\PlayRank.cs" />
     <Compile Include="Services\AudioService.cs" />
     <Compile Include="Services\CacheService.cs" />
-    <Compile Include="Services\IUpdateService.cs" />
     <Compile Include="Services\SettingsService.cs" />
-    <Compile Include="Services\IAudioService.cs" />
-    <Compile Include="Services\IBeatmapProcessorService.cs" />
-    <Compile Include="Services\ICacheService.cs" />
-    <Compile Include="Services\IDataService.cs" />
-    <Compile Include="Services\IRecommendationService.cs" />
-    <Compile Include="Services\ISettingsService.cs" />
     <Compile Include="Services\BeatmapProcessorService.cs" />
     <Compile Include="Services\DataService.cs" />
     <Compile Include="Services\RecommendationService.cs" />
     <Compile Include="Services\UpdateService.cs" />
-    <Compile Include="ViewModels\BeatmapDetailsViewModel.cs" />
-    <Compile Include="ViewModels\IBeatmapDetailsViewModel.cs" />
-    <Compile Include="ViewModels\IMainViewModel.cs" />
-    <Compile Include="ViewModels\ISettingsViewModel.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\SettingsViewModel.cs" />
-    <Compile Include="Views\BeatmapDetailsDialog.xaml.cs">
-      <DependentUpon>BeatmapDetailsDialog.xaml</DependentUpon>
+    <Compile Include="ViewModels\Dialogs\BeatmapDetailsViewModel.cs" />
+    <Compile Include="ViewModels\Framework\DialogManager.cs" />
+    <Compile Include="ViewModels\Framework\DialogScreen.cs" />
+    <Compile Include="ViewModels\Framework\IViewModelFactory.cs" />
+    <Compile Include="ViewModels\RootViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\SettingsViewModel.cs" />
+    <Compile Include="Views\Dialogs\BeatmapDetailsView.xaml.cs">
+      <DependentUpon>BeatmapDetailsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="Views\RootView.xaml.cs">
+      <DependentUpon>RootView.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Views\SettingsDialog.xaml.cs">
-      <DependentUpon>SettingsDialog.xaml</DependentUpon>
+    <Compile Include="Views\Dialogs\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\BeatmapDetailsDialog.xaml">
+    <Page Include="Views\Dialogs\BeatmapDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MainWindow.xaml">
+    <Page Include="Views\RootView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\SettingsDialog.xaml">
+    <Page Include="Views\Dialogs\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -141,46 +131,38 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CommonServiceLocator">
-      <Version>2.0.3</Version>
-    </PackageReference>
     <PackageReference Include="MaterialDesignColors">
       <Version>1.1.3</Version>
     </PackageReference>
     <PackageReference Include="MaterialDesignThemes">
-      <Version>2.4.0.1044</Version>
-    </PackageReference>
-    <PackageReference Include="MvvmLightLibs">
-      <Version>5.4.1</Version>
+      <Version>2.5.0.1205</Version>
     </PackageReference>
     <PackageReference Include="NAudio">
-      <Version>1.8.4</Version>
+      <Version>1.8.5</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>11.0.2</Version>
     </PackageReference>
     <PackageReference Include="Onova">
-      <Version>2.1.0</Version>
+      <Version>2.2.0</Version>
     </PackageReference>
     <PackageReference Include="Polly">
       <Version>5.9.0</Version>
     </PackageReference>
+    <PackageReference Include="PropertyChanged.Fody">
+      <Version>2.6.0</Version>
+    </PackageReference>
+    <PackageReference Include="Stylet">
+      <Version>1.1.22</Version>
+    </PackageReference>
     <PackageReference Include="Tyrrrz.Extensions">
-      <Version>1.5.0</Version>
+      <Version>1.5.1</Version>
     </PackageReference>
     <PackageReference Include="Tyrrrz.Settings">
       <Version>1.3.2</Version>
-    </PackageReference>
-    <PackageReference Include="Tyrrrz.WpfExtensions">
-      <Version>1.0.5</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

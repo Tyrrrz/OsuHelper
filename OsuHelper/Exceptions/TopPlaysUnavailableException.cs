@@ -4,6 +4,9 @@ namespace OsuHelper.Exceptions
 {
     public class TopPlaysUnavailableException : Exception
     {
-        public override string Message => "User has no top plays set in given game mode.";
+        public TopPlaysUnavailableException()
+            : base("User has no top plays set in given game mode.")
+        {
+        }
     }
 }

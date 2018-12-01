@@ -8,17 +8,17 @@ using Tyrrrz.Extensions;
 
 namespace OsuHelper.Services
 {
-    public class RecommendationService : IRecommendationService
+    public class RecommendationService
     {
-        private readonly ISettingsService _settingsService;
-        private readonly IDataService _dataService;
-        private readonly IBeatmapProcessorService _beatmapProcessorService;
+        private readonly SettingsService _settingsService;
+        private readonly DataService _dataService;
+        private readonly BeatmapProcessorService _beatmapProcessorService;
 
         private string UserId => _settingsService.UserId;
         private GameMode GameMode => _settingsService.GameMode;
 
-        public RecommendationService(ISettingsService settingsService, IDataService dataService,
-            IBeatmapProcessorService beatmapProcessorService)
+        public RecommendationService(SettingsService settingsService, DataService dataService,
+            BeatmapProcessorService beatmapProcessorService)
         {
             _settingsService = settingsService;
             _dataService = dataService;

@@ -181,27 +181,31 @@ namespace OsuHelper.ViewModels
 
         public async void PopulateRecommendations()
         {
-            // Validate settings
-            if (_settingsService.UserId.IsBlank() || _settingsService.ApiKey.IsBlank())
-            {
-                Notifications.Enqueue("Not configured – set username and API key in settings",
-                    "OPEN", ShowSettings);
-                return;
-            }
-
-            IsBusy = true;
-            Progress = 0;
-
             try
             {
+                // Set busy state and reset progress
+                IsBusy = true;
+                Progress = 0;
+
+                // Validate settings
+                if (_settingsService.UserId.IsBlank() || _settingsService.ApiKey.IsBlank())
+                {
+                    Notifications.Enqueue("Not configured – set username and API key in settings",
+                        "OPEN", ShowSettings);
+                    return;
+                }
+
                 // Set up progress reporting
                 var progressHandler = new Progress<double>(p => Progress = p);
 
                 // Get recommendations
                 Recommendations = await _recommendationService.GetRecommendationsAsync(progressHandler);
-                
-                // Store recommendations in cache for further user
+
+                // Persist recommendations in cache
                 _cacheService.Store("LastRecommendations", Recommendations);
+
+                // Notify completion
+                Notifications.Enqueue("Recommendations updated");
             }
             catch (TopPlaysUnavailableException)
             {
@@ -211,9 +215,12 @@ namespace OsuHelper.ViewModels
             {
                 Notifications.Enqueue("Unauthorized – make sure API key is valid");
             }
-
-            IsBusy = false;
-            Progress = 0;
+            finally
+            {
+                // Reset busy state and progress
+                IsBusy = false;
+                Progress = 0;
+            }
         }
     }
 }

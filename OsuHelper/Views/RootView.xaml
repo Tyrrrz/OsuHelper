@@ -15,6 +15,7 @@
     Background="{DynamicResource MaterialDesignPaper}"
     FontFamily="{DynamicResource MaterialDesignFont}"
     Icon="/osu!helper;component/favicon.ico"
+    RenderOptions.BitmapScalingMode="HighQuality"
     SnapsToDevicePixels="True"
     TextElement.FontSize="13"
     TextElement.FontWeight="Regular"

@@ -98,6 +98,7 @@
                     Orientation="Horizontal">
                     <Button
                         Margin="4,8,0,8"
+                        Padding="4"
                         VerticalAlignment="Center"
                         Command="{s:Action ShowAbout}"
                         Style="{DynamicResource MaterialDesignFlatDarkButton}"
@@ -109,6 +110,7 @@
                     </Button>
                     <Button
                         Margin="4,8,0,8"
+                        Padding="4"
                         VerticalAlignment="Center"
                         Command="{s:Action ShowSettings}"
                         Style="{DynamicResource MaterialDesignFlatDarkButton}"

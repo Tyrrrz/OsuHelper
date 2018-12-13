@@ -139,15 +139,13 @@
 
             <Style
                 x:Key="MaterialDesignFlatDarkButton"
-                BasedOn="{StaticResource MaterialDesignRaisedButton}"
+                BasedOn="{StaticResource MaterialDesignFlatButton}"
                 TargetType="{x:Type Button}">
-                <Setter Property="Background" Value="Transparent" />
-                <Setter Property="BorderBrush" Value="Transparent" />
-                <Setter Property="BorderThickness" Value="0" />
+                <Style.Resources>
+                    <SolidColorBrush x:Key="MaterialDesignFlatButtonClick" Color="#4C4C4C" />
+                </Style.Resources>
+
                 <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidForegroundBrush}" />
-                <Setter Property="Padding" Value="4" />
-                <Setter Property="materialDesign:RippleAssist.Feedback" Value="{DynamicResource MaterialDesignFlatButtonRipple}" />
-                <Setter Property="materialDesign:ShadowAssist.ShadowDepth" Value="Depth0" />
             </Style>
         </s:ApplicationLoader>
     </Application.Resources>

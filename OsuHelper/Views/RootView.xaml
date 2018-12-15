@@ -8,23 +8,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:s="https://github.com/canton7/Stylet"
     xmlns:viewModels="clr-namespace:OsuHelper.ViewModels"
-    Title="osu!helper"
     Width="850"
     Height="625"
     d:DataContext="{d:DesignInstance Type=viewModels:RootViewModel}"
     Background="{DynamicResource MaterialDesignPaper}"
-    FontFamily="{DynamicResource MaterialDesignFont}"
     Icon="/osu!helper;component/favicon.ico"
-    RenderOptions.BitmapScalingMode="HighQuality"
-    SnapsToDevicePixels="True"
-    TextElement.FontSize="13"
-    TextElement.FontWeight="Regular"
-    TextElement.Foreground="{DynamicResource SecondaryTextBrush}"
-    TextOptions.TextFormattingMode="Ideal"
-    TextOptions.TextRenderingMode="Auto"
+    Style="{DynamicResource MaterialDesignRoot}"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-
     <materialDesign:DialogHost CloseOnClickAway="True" SnackbarMessageQueue="{Binding Notifications}">
         <Grid>
             <Grid.RowDefinitions>

@@ -55,7 +55,7 @@ namespace OsuHelper.ViewModels
             _recommendationService = recommendationService;
 
             // Title
-            var version = Assembly.GetExecutingAssembly().GetName().Version;
+            var version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
             DisplayName = $"OsuHelper v{version}";
             
             // Update recommendations view filter when recommendations change

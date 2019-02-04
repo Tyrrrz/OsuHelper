@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Reflection;
 using System.Windows.Data;
+using Gress;
 using MaterialDesignThemes.Wpf;
 using OsuHelper.Exceptions;
 using OsuHelper.Models;
@@ -23,11 +24,11 @@ namespace OsuHelper.ViewModels
         private readonly CacheService _cacheService;
         private readonly RecommendationService _recommendationService;
 
-        public SnackbarMessageQueue Notifications { get; } = new SnackbarMessageQueue(TimeSpan.FromSeconds(5));
+        public ISnackbarMessageQueue Notifications { get; } = new SnackbarMessageQueue(TimeSpan.FromSeconds(5));
+
+        public IProgressManager ProgressManager { get; } = new ProgressManager();
 
         public bool IsBusy { get; private set; }
-
-        public double Progress { get; private set; }
 
         public IReadOnlyList<Recommendation> Recommendations { get; private set; }
 
@@ -58,6 +59,9 @@ namespace OsuHelper.ViewModels
             var version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
             DisplayName = $"OsuHelper v{version}";
             
+            // Update busy state when progress manager changes
+            ProgressManager.Bind(o => o.IsActive, (sender, args) => IsBusy = ProgressManager.IsActive);
+
             // Update recommendations view filter when recommendations change
             this.Bind(o => o.Recommendations, (sender, args) => UpdateRecommendationsViewFilter());
 
@@ -181,12 +185,11 @@ namespace OsuHelper.ViewModels
 
         public async void PopulateRecommendations()
         {
+            // Create progress operation
+            var operation = ProgressManager.CreateOperation();
+
             try
             {
-                // Set busy state and reset progress
-                IsBusy = true;
-                Progress = 0;
-
                 // Validate settings
                 if (_settingsService.UserId.IsBlank() || _settingsService.ApiKey.IsBlank())
                 {
@@ -195,11 +198,8 @@ namespace OsuHelper.ViewModels
                     return;
                 }
 
-                // Set up progress reporting
-                var progressHandler = new Progress<double>(p => Progress = p);
-
                 // Get recommendations
-                Recommendations = await _recommendationService.GetRecommendationsAsync(progressHandler);
+                Recommendations = await _recommendationService.GetRecommendationsAsync(operation);
 
                 // Persist recommendations in cache
                 _cacheService.Store("LastRecommendations", Recommendations);
@@ -217,9 +217,8 @@ namespace OsuHelper.ViewModels
             }
             finally
             {
-                // Reset busy state and progress
-                IsBusy = false;
-                Progress = 0;
+                // Dispose progress operation
+                operation.Dispose();
             }
         }
     }

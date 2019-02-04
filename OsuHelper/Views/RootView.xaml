@@ -136,7 +136,7 @@
             <ProgressBar
                 Grid.Row="1"
                 Background="{DynamicResource PrimaryHueMidBrush}"
-                Value="{Binding Progress, Mode=OneWay}" />
+                Value="{Binding ProgressManager.Progress, Mode=OneWay}" />
 
             <!--  Content  -->
             <Grid Grid.Row="2">

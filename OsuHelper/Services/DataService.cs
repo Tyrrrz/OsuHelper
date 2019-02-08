@@ -5,10 +5,10 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Failsafe;
 using Newtonsoft.Json.Linq;
 using OsuHelper.Exceptions;
 using OsuHelper.Models;
-using Polly;
 using Tyrrrz.Extensions;
 
 namespace OsuHelper.Services
@@ -20,7 +20,7 @@ namespace OsuHelper.Services
 
         private readonly HttpClient _httpClient;
         private readonly SemaphoreSlim _requestRateSemaphore;
-        private readonly Policy _requestPolicy;
+        private readonly IRetry _requestRetryPolicy;
 
         private DateTime _lastRequestDateTime;
 
@@ -46,12 +46,12 @@ namespace OsuHelper.Services
             _requestRateSemaphore = new SemaphoreSlim(1, 1);
             _lastRequestDateTime = DateTime.MinValue;
 
-            // Request policy
+            // Request retry policy
             // (osu web server is inconsistent)
-            _requestPolicy = Policy
-                .Handle<HttpErrorStatusCodeException>(ex => (int) ex.StatusCode >= 500)
-                .Or<HttpRequestException>(ex => ex.InnerException is IOException)
-                .RetryAsync(20);
+            _requestRetryPolicy = Retry.Create()
+                .Catch<HttpErrorStatusCodeException>(false, ex => (int) ex.StatusCode >= 500)
+                .Catch<HttpRequestException>(false, ex => ex.InnerException is IOException)
+                .WithMaxTryCount(20);
         }
 
         private async Task MaintainRateLimitAsync(TimeSpan interval)
@@ -84,7 +84,7 @@ namespace OsuHelper.Services
 
         private async Task<string> GetStringAsync(string url)
         {
-            return await _requestPolicy.ExecuteAsync(async () =>
+            return await _requestRetryPolicy.ExecuteAsync(async () =>
             {
                 using (var request = new HttpRequestMessage(HttpMethod.Get, url))
                 using (var response = await InternalSendRequestAsync(request))
@@ -94,7 +94,7 @@ namespace OsuHelper.Services
 
         private async Task<Stream> GetStreamAsync(string url)
         {
-            return await _requestPolicy.ExecuteAsync(async () =>
+            return await _requestRetryPolicy.ExecuteAsync(async () =>
             {
                 using (var request = new HttpRequestMessage(HttpMethod.Get, url))
                 {

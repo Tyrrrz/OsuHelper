@@ -165,12 +165,8 @@ namespace OsuHelper.ViewModels
             if (!CanShowBeatmapDetails)
                 return;
 
-            // Get beatmap
-            var beatmap = SelectedRecommendation.Beatmap;
-            
             // Create dialog
-            var dialog = _viewModelFactory.CreateBeatmapDetailsViewModel();
-            dialog.Beatmap = beatmap;
+            var dialog = _viewModelFactory.CreateBeatmapDetailsViewModel(SelectedRecommendation.Beatmap);
 
             // Show dialog
             await _dialogManager.ShowDialogAsync(dialog);

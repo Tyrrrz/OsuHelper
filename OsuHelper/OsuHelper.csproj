@@ -86,6 +86,7 @@
     <Compile Include="ViewModels\Dialogs\BeatmapDetailsViewModel.cs" />
     <Compile Include="ViewModels\Framework\DialogManager.cs" />
     <Compile Include="ViewModels\Framework\DialogScreen.cs" />
+    <Compile Include="ViewModels\Framework\Extensions.cs" />
     <Compile Include="ViewModels\Framework\IViewModelFactory.cs" />
     <Compile Include="ViewModels\RootViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\SettingsViewModel.cs" />

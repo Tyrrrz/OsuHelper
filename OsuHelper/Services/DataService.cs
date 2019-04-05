@@ -181,8 +181,8 @@ namespace OsuHelper.Services
             // Don't cache volatile data
 
             // Get
-            var url =
-                $"https://osu.ppy.sh/api/get_user_best?k={ApiKey}&m={(int) gameMode}&u={userId.UrlEncode()}&limit=100";
+            var userIdEncoded = WebUtility.UrlEncode(userId);
+            var url = $"https://osu.ppy.sh/api/get_user_best?k={ApiKey}&m={(int) gameMode}&u={userIdEncoded}&limit=100";
             var response = await GetStringAsync(url);
 
             // Parse

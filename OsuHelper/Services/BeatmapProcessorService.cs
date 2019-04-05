@@ -51,12 +51,12 @@ namespace OsuHelper.Services
             var tempo = beatmap.Traits.Tempo;
             if (mods.HasFlag(Mods.DoubleTime))
             {
-                duration = beatmap.Traits.Duration.Divide(1.5);
+                duration = TimeSpan.FromSeconds(beatmap.Traits.Duration.Seconds / 1.5);
                 tempo = beatmap.Traits.Tempo * 1.5;
             }
             else if (mods.HasFlag(Mods.HalfTime))
             {
-                duration = beatmap.Traits.Duration.Divide(0.75);
+                duration = TimeSpan.FromSeconds(beatmap.Traits.Duration.Seconds / 0.75);
                 tempo = beatmap.Traits.Tempo * 0.75;
             }
 
@@ -75,13 +75,13 @@ namespace OsuHelper.Services
             }
             if (mods.HasFlag(Mods.DoubleTime))
             {
-                ar = TimeToApproachRate(ApproachRateToTime(ar).Divide(1.5));
-                od = TimeToOverallDifficulty(OverallDifficultyToTime(od).Divide(1.5));
+                ar = TimeToApproachRate(TimeSpan.FromSeconds(ApproachRateToTime(ar).Seconds / 1.5));
+                od = TimeToOverallDifficulty(TimeSpan.FromSeconds(OverallDifficultyToTime(od).Seconds / 1.5));
             }
             else if (mods.HasFlag(Mods.HalfTime))
             {
-                ar = TimeToApproachRate(ApproachRateToTime(ar).Divide(0.75));
-                od = TimeToOverallDifficulty(OverallDifficultyToTime(od).Divide(0.75));
+                ar = TimeToApproachRate(TimeSpan.FromSeconds(ApproachRateToTime(ar).Seconds / 0.75));
+                od = TimeToOverallDifficulty(TimeSpan.FromSeconds(OverallDifficultyToTime(od).Seconds / 0.75));
             }
 
             // Calculate CS and HP

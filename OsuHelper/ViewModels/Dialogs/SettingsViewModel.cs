@@ -22,7 +22,7 @@ namespace OsuHelper.ViewModels.Dialogs
                 if (value != null)
                 {
                     var fromUrl = Regex.Match(value, @".*?.ppy.sh/\w/([\w\d]+)").Groups[1].Value;
-                    _settingsService.UserId = !fromUrl.IsEmpty() ? fromUrl : value;
+                    _settingsService.UserId = !fromUrl.IsNullOrWhiteSpace() ? fromUrl : value;
                 }
                 else
                 {

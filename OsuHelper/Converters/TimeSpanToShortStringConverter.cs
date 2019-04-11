@@ -11,13 +11,13 @@ namespace OsuHelper.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
-                throw new ArgumentNullException(nameof(value));
+            if (value is null)
+                return null;
 
-            var ts = (TimeSpan) value;
-            var fullMins = ts.Hours*60 + ts.Minutes;
+            var time = (TimeSpan) value;
+            var fullMins = time.Hours * 60 + time.Minutes;
 
-            return $"{fullMins:00}:{ts.Seconds:00}";
+            return $"{fullMins:00}:{time.Seconds:00}";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

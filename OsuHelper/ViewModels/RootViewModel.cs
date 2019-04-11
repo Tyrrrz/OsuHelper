@@ -187,7 +187,7 @@ namespace OsuHelper.ViewModels
             try
             {
                 // Validate settings
-                if (_settingsService.UserId == null || _settingsService.ApiKey == null)
+                if (_settingsService.UserId.IsNullOrWhiteSpace() || _settingsService.ApiKey.IsNullOrWhiteSpace())
                 {
                     Notifications.Enqueue("Not configured – set username and API key in settings",
                         "OPEN", ShowSettings);

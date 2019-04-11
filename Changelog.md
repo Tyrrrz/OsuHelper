@@ -1,3 +1,9 @@
+### v2.0.3 (11-Apr-2019)
+
+- Improved render quality of beatmap images.
+- Current progress is now also shown in the taskbar.
+- Fixed an issue where popup dialog would sometimes appear over other windows.
+
 ### v2.0.2 (15-Apr-2018)
 
 - Implemented application auto-update (can be disabled in settings).

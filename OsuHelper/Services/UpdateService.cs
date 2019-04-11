@@ -11,7 +11,7 @@ namespace OsuHelper.Services
         private readonly SettingsService _settingsService;
 
         private readonly IUpdateManager _updateManager = new UpdateManager(
-            new GithubPackageResolver("Tyrrrz", "OsuHelper", "osu.helper.zip"),
+            new GithubPackageResolver("Tyrrrz", "OsuHelper", "OsuHelper.zip"),
             new ZipPackageExtractor());
 
         private Version _updateVersion;

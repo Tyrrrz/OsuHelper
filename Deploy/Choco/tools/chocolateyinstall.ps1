@@ -6,7 +6,7 @@ $installDirPath = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 $packageArgs = @{
     packageName   = $packageName
     unzipLocation = $installDirPath
-    url           = 'https://github.com/Tyrrrz/OsuHelper/releases/download/2.0.2/osu.helper.zip'
+    url           = 'https://github.com/Tyrrrz/OsuHelper/releases/download/2.0.3/OsuHelper.zip'
 }
 Install-ChocolateyZipPackage @packageArgs
 

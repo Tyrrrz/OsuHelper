@@ -76,7 +76,7 @@
                 
                 <!--  Download button  -->
                 <Button
-                    ToolTip="Download beatmap (right click for more options)"
+                    ToolTip="Download beatmap"
                     Command="{s:Action Download}">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon

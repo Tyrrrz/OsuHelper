@@ -19,7 +19,7 @@
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo ProgressState="Normal" ProgressValue="{Binding ProgressManager.Progress}" />
     </Window.TaskbarItemInfo>
-    <materialDesign:DialogHost SnackbarMessageQueue="{Binding Notifications}" Style="{DynamicResource MaterialDesignEmbeddedDialogHost}">
+    <materialDesign:DialogHost SnackbarMessageQueue="{Binding Notifications}" Style="{DynamicResource MaterialDesignEmbeddedDialogHost}" CloseOnClickAway="True">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />

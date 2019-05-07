@@ -143,22 +143,6 @@ namespace OsuHelper.Services
             return result;
         }
 
-        public async Task<string> GetBeatmapRawAsync(string beatmapId)
-        {
-            // Try get from cache first
-            var cached = _cacheService.RetrieveOrDefault<string>($"BeatmapRaw-{beatmapId}");
-            if (cached != null) return cached;
-
-            // Get
-            var url = $"https://osu.ppy.sh/osu/{beatmapId}";
-            var response = await GetStringAsync(url);
-
-            // Save to cache
-            _cacheService.Store($"BeatmapRaw-{beatmapId}", response);
-
-            return response;
-        }
-
         public async Task<Stream> GetBeatmapSetPreviewAsync(string mapSetId)
         {
             // Try get from cache first

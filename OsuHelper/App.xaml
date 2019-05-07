@@ -107,8 +107,24 @@
             </Style>
 
             <Style TargetType="{x:Type Hyperlink}">
-                <Setter Property="FontSize" Value="13" />
                 <Setter Property="FontWeight" Value="Regular" />
+                <Setter Property="TextDecorations" Value="None" />
+                <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+                <Style.Triggers>
+                    <MultiTrigger>
+                        <MultiTrigger.Conditions>
+                            <Condition Property="IsEnabled" Value="True" />
+                            <Condition Property="IsMouseOver" Value="True" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="TextDecorations" Value="Underline" />
+                    </MultiTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style
+                x:Key="MaterialDesignAccentHyperlink"
+                BasedOn="{StaticResource {x:Type Hyperlink}}"
+                TargetType="{x:Type Hyperlink}">
                 <Setter Property="Foreground" Value="{DynamicResource AccentDarkTextBrush}" />
                 <Style.Triggers>
                     <MultiTrigger>

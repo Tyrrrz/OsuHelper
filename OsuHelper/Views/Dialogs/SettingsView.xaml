@@ -78,7 +78,7 @@
         <DockPanel LastChildFill="False">
             <!--  API key link  -->
             <TextBlock Margin="16" DockPanel.Dock="Left">
-                <Hyperlink Command="{s:Action ObtainApiKey}">Generate API key</Hyperlink>
+                <Hyperlink Command="{s:Action ObtainApiKey}" Style="{DynamicResource MaterialDesignAccentHyperlink}">Generate API key</Hyperlink>
             </TextBlock>
 
             <!--  Save button  -->

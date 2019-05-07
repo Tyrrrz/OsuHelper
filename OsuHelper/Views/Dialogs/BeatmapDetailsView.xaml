@@ -7,31 +7,25 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:s="https://github.com/canton7/Stylet"
+    Width="450"
     d:DataContext="{d:DesignInstance Type=dialogs:BeatmapDetailsViewModel}"
     Style="{DynamicResource MaterialDesignRoot}"
-    Width="450"
     mc:Ignorable="d">
     <StackPanel Orientation="Vertical">
         <!--  Beatmap set title  -->
         <TextBlock
             Margin="6,6,6,0"
-            MaxWidth="446"
             Background="Transparent"
             FontSize="18"
-            FontWeight="SemiBold"
-            TextDecorations="Underline"
-            Foreground="{DynamicResource PrimaryTextBrush}"
-            Text="{Binding Beatmap.MapSetFullName}"
             TextTrimming="CharacterEllipsis"
-            ToolTip="{Binding Beatmap.MapSetFullName}"
-            Cursor="Hand"
-            MouseLeftButtonDown="{s:Action OpenPage}"/>
+            ToolTip="{Binding Beatmap.MapSetFullName}">
+            <Hyperlink Command="{s:Action OpenPage}">
+                <Run FontWeight="SemiBold" Text="{Binding Beatmap.MapSetFullName, Mode=OneWay}" />
+            </Hyperlink>
+        </TextBlock>
 
         <!--  Creator info  -->
-        <TextBlock
-            Margin="6,0,6,6"
-            MaxWidth="446"
-            Foreground="{DynamicResource DimTextBrush}">
+        <TextBlock Margin="6,0,6,6" Foreground="{DynamicResource DimTextBrush}">
             <Run Text="Mapset by" />
             <Run FontWeight="SemiBold" Text="{Binding Beatmap.Creator, Mode=OneWay}" />
             <Run Text="  " />
@@ -55,54 +49,54 @@
                 ToolTip="(left click for sound preview)" />
         </Grid>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <StackPanel.Resources>
-                <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
-                    <Setter Property="Margin" Value="2,8,2,10"/>
-                </Style>
-            </StackPanel.Resources>
-
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
             <!--  Download button  -->
             <Button
-                    ToolTip="Download beatmap"
-                    Command="{s:Action Download}">
-                <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon
-                            Width="24"
-                            Height="24"
-                            Kind="FileDownload" />
-                    <TextBlock
-                            Margin="4,0,0,0"
-                            VerticalAlignment="Center"
-                            Text="Download" />
-                </StackPanel>
-            </Button>
-
-            <!--  osu!Direct Download Button  -->
-            <Button 
-                    ToolTip="Download beatmap via osu! direct"
-                    Command="{s:Action DownloadDirect}">
-                <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon
-                            Width="24"
-                            Height="24"
-                            Kind="Download"/>
-                    <TextBlock
-                            Margin="4,0,0,0"
-                            VerticalAlignment="Center"
-                            Text="osu!Direct" />
-                </StackPanel>
-            </Button>
-
-            <!--  Bloodcat Download Button  -->
-            <Button
-                    ToolTip="Download beatmap via Bloodcat"
-                    Command="{s:Action DownloadBloodcat}">
+                Margin="8,8,0,8"
+                Command="{s:Action Download}"
+                Style="{DynamicResource MaterialDesignFlatButton}"
+                ToolTip="Download beatmap">
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon
                         Width="24"
                         Height="24"
-                        Kind="Cat"/>
+                        Kind="FileDownload" />
+                    <TextBlock
+                        Margin="4,0,0,0"
+                        VerticalAlignment="Center"
+                        Text="Download" />
+                </StackPanel>
+            </Button>
+
+            <!--  Download via osu!direct button  -->
+            <Button
+                Margin="4,8,0,8"
+                Command="{s:Action DownloadDirect}"
+                Style="{DynamicResource MaterialDesignFlatButton}"
+                ToolTip="Download beatmap via osu!direct">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon
+                        Width="24"
+                        Height="24"
+                        Kind="Download" />
+                    <TextBlock
+                        Margin="4,0,0,0"
+                        VerticalAlignment="Center"
+                        Text="osu!direct" />
+                </StackPanel>
+            </Button>
+
+            <!--  Download via Bloodcat button  -->
+            <Button
+                Margin="4,8,0,8"
+                Command="{s:Action DownloadBloodcat}"
+                Style="{DynamicResource MaterialDesignFlatButton}"
+                ToolTip="Download beatmap via Bloodcat">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon
+                        Width="24"
+                        Height="24"
+                        Kind="Cat" />
                     <TextBlock
                         Margin="4,0,0,0"
                         VerticalAlignment="Center"

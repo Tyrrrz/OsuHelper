@@ -1,3 +1,8 @@
+### v2.1 (07-May-2019)
+
+- Improved button layout on the beatmap details popup. Removed "close" button, dialog now closes on click away. Removed "open page" button, clicking beatmap title will now open its page. Pulled alternative download options from context menu to separate buttons, for easier access.
+- Updated some links to point to the new osu! website.
+
 ### v2.0.3 (11-Apr-2019)
 
 - Improved render quality of beatmap images.

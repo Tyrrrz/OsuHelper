@@ -27,13 +27,17 @@ namespace OsuHelper.ViewModels.Dialogs
 
         public void OpenPage()
         {
-            Process.Start($"https://osu.ppy.sh/b/{Beatmap.Id}");
+            Process.Start($"https://osu.ppy.sh/beatmaps/{Beatmap.Id}");
         }
 
         public void Download()
         {
-            var url = $"https://osu.ppy.sh/d/{Beatmap.MapSetId}";
-            if (_settingsService.DownloadWithoutVideo) url += 'n';
+            var url = $"https://osu.ppy.sh/beatmapsets/{Beatmap.MapSetId}/download";
+
+            // If configured to download without video - append a parameter to the request
+            if (_settingsService.DownloadWithoutVideo)
+                url += "?noVideo=1";
+
             Process.Start(url);
         }
 

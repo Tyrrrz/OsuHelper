@@ -69,9 +69,6 @@ namespace OsuHelper.ViewModels.Dialogs
             _settingsService = settingsService;
         }
 
-        public void ObtainApiKey()
-        {
-            Process.Start("https://osu.ppy.sh/p/api");
-        }
+        public void ObtainApiKey() => Process.Start("https://osu.ppy.sh/p/api/");
     }
 }

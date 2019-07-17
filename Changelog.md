@@ -1,3 +1,8 @@
+### v2.1.1 (17-Jul-2019)
+
+- Updated the URL that opens when you click "Generate API key" in the settings dialog.
+- Updated visual style of scrollbars.
+
 ### v2.1 (07-May-2019)
 
 - Improved button layout on the beatmap details popup. Removed "close" button, dialog now closes on click away. Removed "open page" button, clicking beatmap title will now open its page. Pulled alternative download options from context menu to separate buttons, for easier access.

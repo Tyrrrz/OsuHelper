@@ -24,8 +24,8 @@ osu!helper is an application that recommends beatmaps in osu! based on your curr
 
 ## Screenshots
 
-![](http://www.tyrrrz.me/Projects/OsuHelper/Images/1.png)
-![](http://www.tyrrrz.me/Projects/OsuHelper/Images/2.png)
+![list](.screenshots/list.png)
+![beatmap](.screenshots/beatmap.png)
 
 ## Libraries used
 

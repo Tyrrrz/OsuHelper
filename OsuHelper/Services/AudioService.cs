@@ -39,15 +39,13 @@ namespace OsuHelper.Services
 
         public async Task StopAsync()
         {
-            if (_playbackTcs == null) return;
+            if (_playbackTcs == null)
+                return;
 
             _player.Stop();
             await _playbackTcs.Task;
         }
 
-        public void Dispose()
-        {
-            _player.Dispose();
-        }
+        public void Dispose() => _player.Dispose();
     }
 }

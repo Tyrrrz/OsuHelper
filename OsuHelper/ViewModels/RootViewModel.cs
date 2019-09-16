@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Data;
 using Gress;
 using MaterialDesignThemes.Wpf;
@@ -58,7 +59,7 @@ namespace OsuHelper.ViewModels
             // Title
             var version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
             DisplayName = $"OsuHelper v{version}";
-            
+
             // Update busy state when progress manager changes
             ProgressManager.Bind(o => o.IsActive, (sender, args) => IsBusy = ProgressManager.IsActive);
 
@@ -73,6 +74,39 @@ namespace OsuHelper.ViewModels
             this.Bind(o => o.IsOtherFilterEnabled, (sender, args) => UpdateRecommendationsViewFilter());
         }
 
+        private async Task HandleAutoUpdateAsync()
+        {
+            try
+            {
+                // Don't check for updates if auto-update is disabled
+                if (!_settingsService.IsAutoUpdateEnabled)
+                    return;
+
+                // Check for updates
+                var updateVersion = await _updateService.CheckForUpdatesAsync();
+                if (updateVersion == null)
+                    return;
+
+                // Notify user of an update and prepare it
+                Notifications.Enqueue($"Downloading update to osu!helper v{updateVersion}...");
+                await _updateService.PrepareUpdateAsync(updateVersion);
+
+                // Prompt user to install update (otherwise install it when application exits)
+                Notifications.Enqueue(
+                    "Update has been downloaded and will be installed when you exit",
+                    "INSTALL NOW", () =>
+                    {
+                        _updateService.FinalizeUpdate(true);
+                        RequestClose();
+                    });
+            }
+            catch
+            {
+                // Failure to update shouldn't crash the application
+                Notifications.Enqueue("Failed to perform application update");
+            }
+        }
+
         protected override async void OnViewLoaded()
         {
             base.OnViewLoaded();
@@ -82,25 +116,9 @@ namespace OsuHelper.ViewModels
 
             // Load last recommendations
             Recommendations = _cacheService.RetrieveOrDefault<IReadOnlyList<Recommendation>>("LastRecommendations");
-            
+
             // Check and prepare update
-            try
-            {
-                var updateVersion = await _updateService.CheckPrepareUpdateAsync();
-                if (updateVersion != null)
-                {
-                    Notifications.Enqueue($"Update to osu!helper v{updateVersion} will be installed when you exit",
-                        "INSTALL NOW", () =>
-                        {
-                            _updateService.FinalizeUpdate(true);
-                            RequestClose();
-                        });
-                }
-            }
-            catch
-            {
-                Notifications.Enqueue("Failed to perform application auto-update");
-            }
+            await HandleAutoUpdateAsync();
         }
 
         protected override void OnClose()
@@ -203,7 +221,7 @@ namespace OsuHelper.ViewModels
                 // Notify completion
                 Notifications.Enqueue("Recommendations updated");
             }
-            catch (TopPlaysUnavailableException)
+            catch (RecommendationsUnavailableException)
             {
                 Notifications.Enqueue("Recommendations unavailable – no top plays set in selected game mode");
             }

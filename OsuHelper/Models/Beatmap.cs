@@ -12,7 +12,7 @@ namespace OsuHelper.Models
 
         public string Creator { get; }
 
-        public DateTime LastUpdate { get; }
+        public DateTimeOffset LastUpdate { get; }
 
         public string Artist { get; }
 
@@ -32,7 +32,7 @@ namespace OsuHelper.Models
 
         public string CardUrl => $"https://assets.ppy.sh/beatmaps/{MapSetId}/covers/card.jpg";
 
-        public Beatmap(string id, string mapSetId, GameMode gameMode, string creator, DateTime lastUpdate,
+        public Beatmap(string id, string mapSetId, GameMode gameMode, string creator, DateTimeOffset lastUpdate,
             string artist, string title, string version, BeatmapTraits traits)
         {
             Id = id;

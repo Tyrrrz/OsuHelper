@@ -49,6 +49,7 @@ namespace OsuHelper.Services
             // Calculate duration and tempo
             var duration = beatmap.Traits.Duration;
             var tempo = beatmap.Traits.Tempo;
+
             if (mods.HasFlag(Mods.DoubleTime))
             {
                 duration = TimeSpan.FromSeconds(beatmap.Traits.Duration.Seconds / 1.5);
@@ -63,6 +64,7 @@ namespace OsuHelper.Services
             // Calculate AR and OD
             var ar = beatmap.Traits.ApproachRate;
             var od = beatmap.Traits.OverallDifficulty;
+
             if (mods.HasFlag(Mods.HardRock))
             {
                 ar = (ar * 1.4).ClampMax(10);
@@ -73,6 +75,7 @@ namespace OsuHelper.Services
                 ar = ar / 2;
                 od = od / 2;
             }
+
             if (mods.HasFlag(Mods.DoubleTime))
             {
                 ar = TimeToApproachRate(TimeSpan.FromSeconds(ApproachRateToTime(ar).Seconds / 1.5));
@@ -87,6 +90,7 @@ namespace OsuHelper.Services
             // Calculate CS and HP
             var cs = beatmap.Traits.CircleSize;
             var hp = beatmap.Traits.Drain;
+
             if (mods.HasFlag(Mods.HardRock))
             {
                 cs = (cs * 1.4).ClampMax(10);

@@ -43,7 +43,7 @@ namespace OsuHelper.Services
 
             // If user doesn't have any plays - throw
             if (!ownTopPlays.Any())
-                throw new TopPlaysUnavailableException();
+                throw new RecommendationsUnavailableException($"User [{UserId}] doesn't have any top plays in [{GameMode}].");
 
             // Set boundaries for recommendations based on PP
             var minPP = ownTopPlays.Average(p => p.PerformancePoints);
@@ -58,8 +58,7 @@ namespace OsuHelper.Services
                 // Get the map's top plays
                 var mapTopPlays =
                     (await _dataService.GetBeatmapTopPlaysAsync(ownTopPlay.BeatmapId, GameMode, ownTopPlay.Mods))
-                    .OrderBy(p =>
-                        Math.Abs(p.PerformancePoints - ownTopPlay.PerformancePoints)) // order by PP similarity
+                    .OrderBy(p => Math.Abs(p.PerformancePoints - ownTopPlay.PerformancePoints)) // order by PP similarity
                     .Take(20) // only take top 20
                     .ToArray();
 
@@ -74,8 +73,7 @@ namespace OsuHelper.Services
                         .Where(p => p.Rank >= PlayRank.S) // only S ranks
                         .Where(p => p.PerformancePoints >= minPP) // limit by minPP
                         .Where(p => p.PerformancePoints <= maxPP) // limit by maxPP
-                        .OrderBy(p =>
-                            Math.Abs(p.PerformancePoints - ownTopPlay.PerformancePoints)) // order by PP similarity
+                        .OrderBy(p => Math.Abs(p.PerformancePoints - ownTopPlay.PerformancePoints)) // order by PP similarity
                         .Take(20); // only take top 20
 
                     // Add these plays to candidates
@@ -110,8 +108,7 @@ namespace OsuHelper.Services
                 var traitsWithMods = _beatmapProcessorService.CalculateBeatmapTraitsWithMods(beatmap, play.Mods);
 
                 // Add recommendation to the list
-                var recommendation = new Recommendation(beatmap, count, play.Mods, traitsWithMods, play.Accuracy,
-                    play.PerformancePoints);
+                var recommendation = new Recommendation(beatmap, count, play.Mods, traitsWithMods, play.Accuracy, play.PerformancePoints);
                 result.Add(recommendation);
 
                 // Progress

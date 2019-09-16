@@ -10,13 +10,13 @@ namespace OsuHelper.Services
 
         public CacheService()
         {
-            _cacheDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Cache\\");
+            _cacheDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Cache");
         }
 
         private string GetCacheFilePath(string id)
         {
             Directory.CreateDirectory(_cacheDirPath);
-            return Path.Combine(_cacheDirPath, id + ".ch");
+            return Path.Combine(_cacheDirPath, $"{id}.ch");
         }
 
         public void Store(string key, object obj)
@@ -40,7 +40,7 @@ namespace OsuHelper.Services
             }
         }
 
-        public T RetrieveOrDefault<T>(string key, T defaultValue = default(T))
+        public T RetrieveOrDefault<T>(string key, T defaultValue = default)
         {
             if (typeof(T) == typeof(string))
             {

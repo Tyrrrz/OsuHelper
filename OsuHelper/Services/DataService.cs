@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Failsafe;
 using Newtonsoft.Json.Linq;
 using OsuHelper.Exceptions;
+using OsuHelper.Internal;
 using OsuHelper.Models;
 using Tyrrrz.Extensions;
 
@@ -22,7 +23,7 @@ namespace OsuHelper.Services
         private readonly SemaphoreSlim _requestRateSemaphore;
         private readonly IRetry _requestRetryPolicy;
 
-        private DateTime _lastRequestDateTime;
+        private DateTimeOffset _lastRequestInstant;
 
         private string ApiKey => _settingsService.ApiKey;
 
@@ -31,10 +32,10 @@ namespace OsuHelper.Services
             _settingsService = settingsService;
             _cacheService = cacheService;
 
-            // Connection limit
+            // Unlock connection limit
             ServicePointManager.DefaultConnectionLimit = 999;
 
-            // Client
+            // Set up client
             var handler = new HttpClientHandler();
             if (handler.SupportsAutomaticDecompression)
                 handler.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
@@ -44,7 +45,7 @@ namespace OsuHelper.Services
 
             // Rate limiting
             _requestRateSemaphore = new SemaphoreSlim(1, 1);
-            _lastRequestDateTime = DateTime.MinValue;
+            _lastRequestInstant = DateTimeOffset.MinValue;
 
             // Request retry policy
             // (osu web server is inconsistent)
@@ -56,13 +57,24 @@ namespace OsuHelper.Services
 
         private async Task MaintainRateLimitAsync(TimeSpan interval)
         {
+            // Gain lock
             await _requestRateSemaphore.WaitAsync();
-            var timePassedSinceLastRequest = DateTime.Now - _lastRequestDateTime;
-            var remainingTime = interval - timePassedSinceLastRequest;
-            if (remainingTime > TimeSpan.Zero)
-                await Task.Delay(remainingTime);
-            _lastRequestDateTime = DateTime.Now;
-            _requestRateSemaphore.Release();
+
+            try
+            {
+                // Wait until enough time has passed since last request
+                var timePassedSinceLastRequest = DateTimeOffset.Now - _lastRequestInstant;
+                var remainingTime = interval - timePassedSinceLastRequest;
+                if (remainingTime > TimeSpan.Zero)
+                    await Task.Delay(remainingTime);
+
+                _lastRequestInstant = DateTimeOffset.Now;
+            }
+            finally
+            {
+                // Release the lock
+                _requestRateSemaphore.Release();
+            }
         }
 
         private async Task<HttpResponseMessage> InternalSendRequestAsync(HttpRequestMessage request)
@@ -108,7 +120,8 @@ namespace OsuHelper.Services
         {
             // Try to get from cache first
             var cached = _cacheService.RetrieveOrDefault<Beatmap>($"Beatmap-{beatmapId}");
-            if (cached != null) return cached;
+            if (cached != null)
+                return cached;
 
             // Get
             var url = $"https://osu.ppy.sh/api/get_beatmaps?k={ApiKey}&m={(int) gameMode}&b={beatmapId}&limit=1&a=1";
@@ -121,7 +134,7 @@ namespace OsuHelper.Services
             var id = beatmapJson["beatmap_id"].Value<string>();
             var setId = beatmapJson["beatmapset_id"].Value<string>();
             var creator = beatmapJson["creator"].Value<string>();
-            var lastUpdate = beatmapJson["last_update"].Value<DateTime>();
+            var lastUpdate = beatmapJson["last_update"].Value<DateTime>().ToDateTimeOffset();
             var artist = beatmapJson["artist"].Value<string>();
             var title = beatmapJson["title"].Value<string>();
             var version = beatmapJson["version"].Value<string>();
@@ -147,7 +160,8 @@ namespace OsuHelper.Services
         {
             // Try get from cache first
             var cached = _cacheService.RetrieveOrDefault<Stream>($"BeatmapPreview-{mapSetId}");
-            if (cached != null) return cached;
+            if (cached != null)
+                return cached;
 
             // Get
             var url = $"https://b.ppy.sh/preview/{mapSetId}.mp3";
@@ -156,7 +170,7 @@ namespace OsuHelper.Services
             // Save to cache
             _cacheService.Store($"BeatmapPreview-{mapSetId}", response);
 
-            // Load from cache because this stream cannot seek
+            // Load from cache because HTTP stream cannot seek
             return _cacheService.RetrieveOrDefault<Stream>($"BeatmapPreview-{mapSetId}");
         }
 

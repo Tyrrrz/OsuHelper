@@ -98,9 +98,10 @@ namespace OsuHelper.Services
         {
             return await _requestRetryPolicy.ExecuteAsync(async () =>
             {
-                using (var request = new HttpRequestMessage(HttpMethod.Get, url))
-                using (var response = await InternalSendRequestAsync(request))
-                    return await response.Content.ReadAsStringAsync();
+                using var request = new HttpRequestMessage(HttpMethod.Get, url);
+                using var response = await InternalSendRequestAsync(request);
+
+                return await response.Content.ReadAsStringAsync();
             });
         }
 
@@ -108,11 +109,10 @@ namespace OsuHelper.Services
         {
             return await _requestRetryPolicy.ExecuteAsync(async () =>
             {
-                using (var request = new HttpRequestMessage(HttpMethod.Get, url))
-                {
-                    var response = await InternalSendRequestAsync(request);
-                    return await response.Content.ReadAsStreamAsync();
-                }
+                using var request = new HttpRequestMessage(HttpMethod.Get, url);
+                var response = await InternalSendRequestAsync(request);
+
+                return await response.Content.ReadAsStreamAsync();
             });
         }
 

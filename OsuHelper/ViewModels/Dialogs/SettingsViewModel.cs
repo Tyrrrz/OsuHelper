@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
+using OsuHelper.Internal;
 using OsuHelper.Models;
 using OsuHelper.Services;
 using OsuHelper.ViewModels.Framework;
@@ -69,6 +69,6 @@ namespace OsuHelper.ViewModels.Dialogs
             _settingsService = settingsService;
         }
 
-        public void ObtainApiKey() => Process.Start("https://osu.ppy.sh/p/api/");
+        public void ObtainApiKey() => "https://osu.ppy.sh/p/api/".ToUri().OpenInBrowser();
     }
 }

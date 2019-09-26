@@ -29,8 +29,8 @@ namespace OsuHelper.Services
             else if (obj is Stream objStream)
             {
                 Directory.CreateDirectory(_cacheDirPath);
-                using (var output = File.Create(GetCacheFilePath(key)))
-                    objStream.CopyTo(output);
+                using var output = File.Create(GetCacheFilePath(key));
+                objStream.CopyTo(output);
             }
             else
             {

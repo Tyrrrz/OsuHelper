@@ -1,9 +1,10 @@
-﻿using System.Diagnostics;
-using System.Net;
+﻿using System.Net;
 using OsuHelper.Exceptions;
+using OsuHelper.Internal;
 using OsuHelper.Models;
 using OsuHelper.Services;
 using OsuHelper.ViewModels.Framework;
+using Tyrrrz.Extensions;
 
 namespace OsuHelper.ViewModels.Dialogs
 {
@@ -25,10 +26,7 @@ namespace OsuHelper.ViewModels.Dialogs
             _audioService = audioService;
         }
 
-        public void OpenPage()
-        {
-            Process.Start($"https://osu.ppy.sh/beatmaps/{Beatmap.Id}");
-        }
+        public void OpenPage() => $"https://osu.ppy.sh/beatmaps/{Beatmap.Id}".ToUri().OpenInBrowser();
 
         public void Download()
         {
@@ -38,18 +36,12 @@ namespace OsuHelper.ViewModels.Dialogs
             if (_settingsService.DownloadWithoutVideo)
                 url += "?noVideo=1";
 
-            Process.Start(url);
+            url.ToUri().OpenInBrowser();
         }
 
-        public void DownloadDirect()
-        {
-            Process.Start($"osu://dl/{Beatmap.MapSetId}");
-        }
+        public void DownloadDirect() => $"osu://dl/{Beatmap.MapSetId}".ToUri().OpenInBrowser();
 
-        public void DownloadBloodcat()
-        {
-            Process.Start($"http://bloodcat.com/osu/s/{Beatmap.MapSetId}");
-        }
+        public void DownloadBloodcat() => $"http://bloodcat.com/osu/s/{Beatmap.MapSetId}".ToUri().OpenInBrowser();
 
         public bool CanPlayPreview => !IsPreviewPlaying;
 
@@ -59,15 +51,17 @@ namespace OsuHelper.ViewModels.Dialogs
 
             try
             {
-                using (var stream = await _dataService.GetBeatmapSetPreviewAsync(Beatmap.MapSetId))
-                    await _audioService.PlayAsync(stream);
+                await using var stream = await _dataService.GetBeatmapSetPreviewAsync(Beatmap.MapSetId);
+                await _audioService.PlayAsync(stream);
             }
             catch (HttpErrorStatusCodeException ex) when (ex.StatusCode == HttpStatusCode.Forbidden)
             {
                 // Preview not available
             }
-
-            IsPreviewPlaying = false;
+            finally
+            {
+                IsPreviewPlaying = false;
+            }
         }
 
         public bool CanStopPreview => IsPreviewPlaying;

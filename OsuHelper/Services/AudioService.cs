@@ -9,7 +9,7 @@ namespace OsuHelper.Services
     {
         private readonly SettingsService _settingsService;
 
-        private readonly WaveOut _player = new WaveOut();
+        private readonly WaveOutEvent _player = new WaveOutEvent();
 
         private TaskCompletionSource<object> _playbackTcs;
 
@@ -27,14 +27,14 @@ namespace OsuHelper.Services
         {
             await StopAsync();
 
-            using (var reader = new Mp3FileReader(stream))
-            {
-                _playbackTcs = new TaskCompletionSource<object>();
-                _player.Init(reader);
-                _player.Volume = (float) _settingsService.PreviewVolume;
-                _player.Play();
-                await _playbackTcs.Task;
-            }
+            await using var reader = new Mp3FileReader(stream);
+
+            _playbackTcs = new TaskCompletionSource<object>();
+            _player.Init(reader);
+            _player.Volume = (float) _settingsService.PreviewVolume;
+            _player.Play();
+
+            await _playbackTcs.Task;
         }
 
         public async Task StopAsync()

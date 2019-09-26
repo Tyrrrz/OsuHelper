@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -8,6 +7,7 @@ using System.Windows.Data;
 using Gress;
 using MaterialDesignThemes.Wpf;
 using OsuHelper.Exceptions;
+using OsuHelper.Internal;
 using OsuHelper.Models;
 using OsuHelper.Services;
 using OsuHelper.ViewModels.Framework;
@@ -190,10 +190,7 @@ namespace OsuHelper.ViewModels
             await _dialogManager.ShowDialogAsync(dialog);
         }
 
-        public void ShowAbout()
-        {
-            Process.Start("https://github.com/Tyrrrz/OsuHelper");
-        }
+        public void ShowAbout() => "https://github.com/Tyrrrz/OsuHelper".ToUri().OpenInBrowser();
 
         public bool CanPopulateRecommendations => !IsBusy;
 

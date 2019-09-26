@@ -116,6 +116,12 @@ namespace OsuHelper.Services
             });
         }
 
+        private async Task<JToken> GetJsonAsync(string url)
+        {
+            var raw = await GetStringAsync(url);
+            return JToken.Parse(raw);
+        }
+
         public async Task<Beatmap> GetBeatmapAsync(string beatmapId, GameMode gameMode)
         {
             // Try to get from cache first
@@ -125,12 +131,10 @@ namespace OsuHelper.Services
 
             // Get
             var url = $"https://osu.ppy.sh/api/get_beatmaps?k={ApiKey}&m={(int) gameMode}&b={beatmapId}&limit=1&a=1";
-            var response = await GetStringAsync(url);
-
-            // Parse
-            var beatmapJson = JToken.Parse(response).First;
+            var responseJson = await GetJsonAsync(url);
 
             // Extract data
+            var beatmapJson = responseJson.First;
             var id = beatmapJson["beatmap_id"].Value<string>();
             var setId = beatmapJson["beatmapset_id"].Value<string>();
             var creator = beatmapJson["creator"].Value<string>();
@@ -181,14 +185,11 @@ namespace OsuHelper.Services
             // Get
             var userIdEncoded = WebUtility.UrlEncode(userId);
             var url = $"https://osu.ppy.sh/api/get_user_best?k={ApiKey}&m={(int) gameMode}&u={userIdEncoded}&limit=100";
-            var response = await GetStringAsync(url);
-
-            // Parse
-            var playsJson = JToken.Parse(response);
+            var responseJson = await GetJsonAsync(url);
 
             // Extract data
             var result = new List<Play>();
-            foreach (var playJson in playsJson)
+            foreach (var playJson in responseJson)
             {
                 var playerId = playJson["user_id"].Value<string>();
                 var mapId = playJson["beatmap_id"].Value<string>();
@@ -214,14 +215,11 @@ namespace OsuHelper.Services
 
             // Get
             var url = $"https://osu.ppy.sh/api/get_scores?k={ApiKey}&m={(int) gameMode}&b={beatmapId}&limit=100";
-            var response = await GetStringAsync(url);
-
-            // Parse
-            var playsJson = JToken.Parse(response);
+            var responseJson = await GetJsonAsync(url);
 
             // Extract data
             var result = new List<Play>();
-            foreach (var playJson in playsJson)
+            foreach (var playJson in responseJson)
             {
                 var playerId = playJson["user_id"].Value<string>();
                 var rank = playJson["rank"].Value<string>().ParseEnum<PlayRank>();

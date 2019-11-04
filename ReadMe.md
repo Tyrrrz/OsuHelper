@@ -10,8 +10,8 @@ osu!helper is an application that recommends beatmaps in osu! based on your curr
 
 ## Download
 
-- [Stable releases](https://github.com/Tyrrrz/OsuHelper/releases)
-- [Continuous integration](https://ci.appveyor.com/project/Tyrrrz/OsuHelper)
+- **[Latest release](https://github.com/Tyrrrz/OsuHelper/releases/latest)**
+- [CI build](https://ci.appveyor.com/project/Tyrrrz/OsuHelper/branch/master/artifacts)
 
 ## Features
 

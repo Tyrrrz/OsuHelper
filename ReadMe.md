@@ -1,6 +1,6 @@
 # osu!helper
 
-[![Build](https://img.shields.io/appveyor/ci/Tyrrrz/OsuHelper/master.svg)](https://ci.appveyor.com/project/Tyrrrz/OsuHelper)
+[![Build](https://github.com/Tyrrrz/OsuHelper/workflows/CI/badge.svg?branch=master)](https://github.com/Tyrrrz/OsuHelper/actions)
 [![Release](https://img.shields.io/github/release/Tyrrrz/OsuHelper.svg)](https://github.com/Tyrrrz/OsuHelper/releases)
 [![Downloads](https://img.shields.io/github/downloads/Tyrrrz/OsuHelper/total.svg)](https://github.com/Tyrrrz/OsuHelper/releases)
 [![Donate](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://patreon.com/tyrrrz)
@@ -11,7 +11,7 @@ osu!helper is an application that recommends beatmaps in osu! based on your curr
 ## Download
 
 - **[Latest release](https://github.com/Tyrrrz/OsuHelper/releases/latest)**
-- [CI build](https://ci.appveyor.com/project/Tyrrrz/OsuHelper/branch/master/artifacts)
+- [CI build](https://github.com/Tyrrrz/OsuHelper/actions)
 
 ## Features
 

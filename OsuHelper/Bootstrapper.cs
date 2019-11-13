@@ -1,10 +1,13 @@
-﻿using System.Windows;
-using System.Windows.Threading;
-using OsuHelper.Services;
+﻿using OsuHelper.Services;
 using OsuHelper.ViewModels;
 using OsuHelper.ViewModels.Framework;
 using Stylet;
 using StyletIoC;
+
+#if !DEBUG
+using System.Windows;
+using System.Windows.Threading;
+#endif
 
 namespace OsuHelper
 {

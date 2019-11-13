@@ -14,7 +14,7 @@ namespace OsuHelper.ViewModels.Dialogs
     {
         private readonly SettingsService _settingsService;
 
-        public string UserId
+        public string? UserId
         {
             get => _settingsService.UserId;
             set
@@ -31,7 +31,7 @@ namespace OsuHelper.ViewModels.Dialogs
             }
         }
 
-        public string ApiKey
+        public string? ApiKey
         {
             get => _settingsService.ApiKey;
             set => _settingsService.ApiKey = value;

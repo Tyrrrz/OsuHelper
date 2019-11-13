@@ -13,7 +13,7 @@ namespace OsuHelper.ViewModels.Dialogs
         private readonly SettingsService _settingsService;
         private readonly DataService _dataService;
         private readonly AudioService _audioService;
-
+        
         public Beatmap Beatmap { get; set; }
 
         public bool IsPreviewPlaying { get; private set; }

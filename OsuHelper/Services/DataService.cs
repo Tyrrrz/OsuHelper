@@ -25,7 +25,8 @@ namespace OsuHelper.Services
 
         private DateTimeOffset _lastRequestInstant;
 
-        private string ApiKey => _settingsService.ApiKey;
+        // API key is assumed to have been set by now
+        private string ApiKey => _settingsService.ApiKey!;
 
         public DataService(SettingsService settingsService, CacheService cacheService)
         {
@@ -41,7 +42,7 @@ namespace OsuHelper.Services
                 handler.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
             handler.UseCookies = false;
             _httpClient = new HttpClient(handler, true);
-            _httpClient.DefaultRequestHeaders.Add("User-Agent", "osu!helper (github.com/Tyrrrz/OsuHelper)");
+            _httpClient.DefaultRequestHeaders.Add("User-Agent", $"{App.Name} ({App.GitHubProjectUrl})");
 
             // Rate limiting
             _requestRateSemaphore = new SemaphoreSlim(1, 1);

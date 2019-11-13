@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Newtonsoft.Json;
 
 namespace OsuHelper.Services
@@ -10,7 +9,7 @@ namespace OsuHelper.Services
 
         public CacheService()
         {
-            _cacheDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Cache");
+            _cacheDirPath = Path.Combine(App.ExecutableDirPath, "Cache");
         }
 
         private string GetCacheFilePath(string id)

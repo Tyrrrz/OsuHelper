@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using Gress;
@@ -31,9 +30,9 @@ namespace OsuHelper.ViewModels
 
         public bool IsBusy { get; private set; }
 
-        public IReadOnlyList<Recommendation> Recommendations { get; private set; }
+        public IReadOnlyList<Recommendation>? Recommendations { get; private set; }
 
-        public Recommendation SelectedRecommendation { get; set; }
+        public Recommendation? SelectedRecommendation { get; set; }
 
         public bool IsNomodFilterEnabled { get; set; } = true;
 
@@ -57,8 +56,7 @@ namespace OsuHelper.ViewModels
             _recommendationService = recommendationService;
 
             // Title
-            var version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
-            DisplayName = $"OsuHelper v{version}";
+            DisplayName = $"{App.Name} v{App.VersionString}";
 
             // Update busy state when progress manager changes
             ProgressManager.Bind(o => o.IsActive, (sender, args) => IsBusy = ProgressManager.IsActive);
@@ -88,7 +86,7 @@ namespace OsuHelper.ViewModels
                     return;
 
                 // Notify user of an update and prepare it
-                Notifications.Enqueue($"Downloading update to osu!helper v{updateVersion}...");
+                Notifications.Enqueue($"Downloading update to {App.Name} v{updateVersion}...");
                 await _updateService.PrepareUpdateAsync(updateVersion);
 
                 // Prompt user to install update (otherwise install it when application exits)
@@ -184,13 +182,13 @@ namespace OsuHelper.ViewModels
                 return;
 
             // Create dialog
-            var dialog = _viewModelFactory.CreateBeatmapDetailsViewModel(SelectedRecommendation.Beatmap);
+            var dialog = _viewModelFactory.CreateBeatmapDetailsViewModel(SelectedRecommendation!.Beatmap);
 
             // Show dialog
             await _dialogManager.ShowDialogAsync(dialog);
         }
 
-        public void ShowAbout() => "https://github.com/Tyrrrz/OsuHelper".ToUri().OpenInBrowser();
+        public void ShowAbout() => App.GitHubProjectUrl.ToUri().OpenInBrowser();
 
         public bool CanPopulateRecommendations => !IsBusy;
 

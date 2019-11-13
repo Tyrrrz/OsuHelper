@@ -11,7 +11,7 @@ namespace OsuHelper.Services
 
         private readonly WaveOutEvent _player = new WaveOutEvent();
 
-        private TaskCompletionSource<object> _playbackTcs;
+        private TaskCompletionSource<object>? _playbackTcs;
 
         public bool IsPlaying => _player.PlaybackState == PlaybackState.Playing;
 
@@ -20,7 +20,7 @@ namespace OsuHelper.Services
             _settingsService = settingsService;
 
             // Configure player
-            _player.PlaybackStopped += (sender, args) => _playbackTcs?.TrySetResult(null);
+            _player.PlaybackStopped += (sender, args) => _playbackTcs?.TrySetResult(null!);
         }
 
         public async Task PlayAsync(Stream stream)

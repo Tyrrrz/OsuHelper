@@ -10,7 +10,7 @@ namespace OsuHelper.Converters
     {
         public static ModsToStringConverter Instance { get; } = new ModsToStringConverter();
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is null)
                 return null;

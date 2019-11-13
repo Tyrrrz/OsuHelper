@@ -14,7 +14,8 @@ namespace OsuHelper.Services
         private readonly DataService _dataService;
         private readonly BeatmapProcessorService _beatmapProcessorService;
 
-        private string UserId => _settingsService.UserId;
+        // User ID is assumed to have been set by now
+        private string UserId => _settingsService.UserId!;
         private GameMode GameMode => _settingsService.GameMode;
 
         public RecommendationService(SettingsService settingsService, DataService dataService,

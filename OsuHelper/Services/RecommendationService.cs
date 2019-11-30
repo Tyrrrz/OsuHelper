@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using OsuHelper.Exceptions;
+using OsuHelper.Logic;
 using OsuHelper.Models;
 using Tyrrrz.Extensions;
 
@@ -12,18 +13,15 @@ namespace OsuHelper.Services
     {
         private readonly SettingsService _settingsService;
         private readonly DataService _dataService;
-        private readonly BeatmapProcessorService _beatmapProcessorService;
 
         // User ID is assumed to have been set by now
         private string UserId => _settingsService.UserId!;
         private GameMode GameMode => _settingsService.GameMode;
 
-        public RecommendationService(SettingsService settingsService, DataService dataService,
-            BeatmapProcessorService beatmapProcessorService)
+        public RecommendationService(SettingsService settingsService, DataService dataService)
         {
             _settingsService = settingsService;
             _dataService = dataService;
-            _beatmapProcessorService = beatmapProcessorService;
         }
 
         public async Task<IReadOnlyList<Recommendation>> GetRecommendationsAsync(IProgress<double> progressHandler)
@@ -106,7 +104,7 @@ namespace OsuHelper.Services
                 var beatmap = await _dataService.GetBeatmapAsync(play.BeatmapId, GameMode);
 
                 // Calculate traits with mods
-                var traitsWithMods = _beatmapProcessorService.CalculateBeatmapTraitsWithMods(beatmap, play.Mods);
+                var traitsWithMods = BeatmapTraitsLogic.CalculateTraitsWithMods(beatmap.Traits, play.Mods, GameMode);
 
                 // Add recommendation to the list
                 var recommendation = new Recommendation(beatmap, count, play.Mods, traitsWithMods, play.Accuracy, play.PerformancePoints);

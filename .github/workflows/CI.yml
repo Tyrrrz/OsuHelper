@@ -15,6 +15,9 @@ jobs:
       with:
         dotnet-version: 3.0.100
 
+    - name: Build & test
+      run: dotnet test --configuration Release
+
     - name: Build & publish
       run: dotnet publish OsuHelper/ -o OsuHelper/bin/Publish/ --configuration Release
 

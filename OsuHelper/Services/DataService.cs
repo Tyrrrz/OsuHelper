@@ -5,11 +5,11 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Failsafe;
 using Newtonsoft.Json.Linq;
 using OsuHelper.Exceptions;
 using OsuHelper.Internal;
 using OsuHelper.Models;
+using Polly;
 using Tyrrrz.Extensions;
 
 namespace OsuHelper.Services
@@ -21,7 +21,7 @@ namespace OsuHelper.Services
 
         private readonly HttpClient _httpClient;
         private readonly SemaphoreSlim _requestRateSemaphore;
-        private readonly IRetry _requestRetryPolicy;
+        private readonly IAsyncPolicy _requestRetryPolicy;
 
         private DateTimeOffset _lastRequestInstant;
 
@@ -50,10 +50,10 @@ namespace OsuHelper.Services
 
             // Request retry policy
             // (osu web server is inconsistent)
-            _requestRetryPolicy = Retry.Create()
-                .Catch<HttpErrorStatusCodeException>(false, ex => (int) ex.StatusCode >= 500)
-                .Catch<HttpRequestException>(false, ex => ex.InnerException is IOException)
-                .WithMaxTryCount(20);
+            _requestRetryPolicy = Policy
+                .Handle<HttpErrorStatusCodeException>(ex => (int) ex.StatusCode >= 500)
+                .Or<HttpRequestException>(ex => ex.InnerException is IOException)
+                .WaitAndRetryAsync(10, _ => TimeSpan.FromSeconds(3));
         }
 
         private async Task MaintainRateLimitAsync(TimeSpan interval)
@@ -135,22 +135,22 @@ namespace OsuHelper.Services
             var responseJson = await GetJsonAsync(url);
 
             // Extract data
-            var beatmapJson = responseJson.First;
-            var id = beatmapJson["beatmap_id"].Value<string>();
-            var setId = beatmapJson["beatmapset_id"].Value<string>();
-            var creator = beatmapJson["creator"].Value<string>();
-            var lastUpdate = beatmapJson["last_update"].Value<DateTime>().ToDateTimeOffset();
-            var artist = beatmapJson["artist"].Value<string>();
-            var title = beatmapJson["title"].Value<string>();
-            var version = beatmapJson["version"].Value<string>();
-            var maxCombo = beatmapJson["max_combo"].Value<int?>() ?? 0; // can be null sometimes
-            var duration = TimeSpan.FromSeconds(beatmapJson["hit_length"].Value<double>());
-            var bpm = beatmapJson["bpm"].Value<double>();
-            var sr = beatmapJson["difficultyrating"].Value<double>();
-            var ar = beatmapJson["diff_approach"].Value<double>();
-            var od = beatmapJson["diff_overall"].Value<double>();
-            var cs = beatmapJson["diff_size"].Value<double>();
-            var hp = beatmapJson["diff_drain"].Value<double>();
+            var beatmapJson = responseJson.First!;
+            var id = beatmapJson["beatmap_id"]!.Value<string>();
+            var setId = beatmapJson["beatmapset_id"]!.Value<string>();
+            var creator = beatmapJson["creator"]!.Value<string>();
+            var lastUpdate = beatmapJson["last_update"]!.Value<DateTime>().ToDateTimeOffset();
+            var artist = beatmapJson["artist"]!.Value<string>();
+            var title = beatmapJson["title"]!.Value<string>();
+            var version = beatmapJson["version"]!.Value<string>();
+            var maxCombo = beatmapJson["max_combo"]!.Value<int?>() ?? 0; // can be null sometimes
+            var duration = TimeSpan.FromSeconds(beatmapJson["hit_length"]!.Value<double>());
+            var bpm = beatmapJson["bpm"]!.Value<double>();
+            var sr = beatmapJson["difficultyrating"]!.Value<double>();
+            var ar = beatmapJson["diff_approach"]!.Value<double>();
+            var od = beatmapJson["diff_overall"]!.Value<double>();
+            var cs = beatmapJson["diff_size"]!.Value<double>();
+            var hp = beatmapJson["diff_drain"]!.Value<double>();
 
             var traits = new BeatmapTraits(maxCombo, duration, bpm, sr, ar, od, cs, hp);
             var result = new Beatmap(id, setId, gameMode, creator, lastUpdate, artist, title, version, traits);
@@ -192,16 +192,16 @@ namespace OsuHelper.Services
             var result = new List<Play>();
             foreach (var playJson in responseJson)
             {
-                var playerId = playJson["user_id"].Value<string>();
-                var mapId = playJson["beatmap_id"].Value<string>();
-                var mods = (Mods) playJson["enabled_mods"].Value<int>();
-                var rank = playJson["rank"].Value<string>().ParseEnum<PlayRank>();
-                var combo = playJson["maxcombo"].Value<int>();
-                var count300 = playJson["count300"].Value<int>();
-                var count100 = playJson["count100"].Value<int>();
-                var count50 = playJson["count50"].Value<int>();
-                var countMiss = playJson["countmiss"].Value<int>();
-                var pp = playJson["pp"].Value<double>();
+                var playerId = playJson["user_id"]!.Value<string>();
+                var mapId = playJson["beatmap_id"]!.Value<string>();
+                var mods = (Mods) playJson["enabled_mods"]!.Value<int>();
+                var rank = playJson["rank"]!.Value<string>().ParseEnum<PlayRank>();
+                var combo = playJson["maxcombo"]!.Value<int>();
+                var count300 = playJson["count300"]!.Value<int>();
+                var count100 = playJson["count100"]!.Value<int>();
+                var count50 = playJson["count50"]!.Value<int>();
+                var countMiss = playJson["countmiss"]!.Value<int>();
+                var pp = playJson["pp"]!.Value<double>();
 
                 var play = new Play(playerId, mapId, mods, rank, combo, count300, count100, count50, countMiss, pp);
                 result.Add(play);
@@ -222,14 +222,14 @@ namespace OsuHelper.Services
             var result = new List<Play>();
             foreach (var playJson in responseJson)
             {
-                var playerId = playJson["user_id"].Value<string>();
-                var rank = playJson["rank"].Value<string>().ParseEnum<PlayRank>();
-                var combo = playJson["maxcombo"].Value<int>();
-                var count300 = playJson["count300"].Value<int>();
-                var count100 = playJson["count100"].Value<int>();
-                var count50 = playJson["count50"].Value<int>();
-                var countMiss = playJson["countmiss"].Value<int>();
-                var pp = playJson["pp"].Value<double>();
+                var playerId = playJson["user_id"]!.Value<string>();
+                var rank = playJson["rank"]!.Value<string>().ParseEnum<PlayRank>();
+                var combo = playJson["maxcombo"]!.Value<int>();
+                var count300 = playJson["count300"]!.Value<int>();
+                var count100 = playJson["count100"]!.Value<int>();
+                var count50 = playJson["count50"]!.Value<int>();
+                var countMiss = playJson["countmiss"]!.Value<int>();
+                var pp = playJson["pp"]!.Value<double>();
 
                 var play = new Play(playerId, beatmapId, mods, rank, combo, count300, count100, count50, countMiss, pp);
                 result.Add(play);

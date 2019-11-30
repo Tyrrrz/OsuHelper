@@ -22,7 +22,7 @@ namespace OsuHelper.ViewModels.Dialogs
                 if (value != null)
                 {
                     var fromUrl = Regex.Match(value, @".*?.ppy.sh/\w/([\w\d]+)").Groups[1].Value;
-                    _settingsService.UserId = !fromUrl.IsNullOrWhiteSpace() ? fromUrl : value;
+                    _settingsService.UserId = !string.IsNullOrWhiteSpace(fromUrl) ? fromUrl : value;
                 }
                 else
                 {
@@ -69,6 +69,6 @@ namespace OsuHelper.ViewModels.Dialogs
             _settingsService = settingsService;
         }
 
-        public void ObtainApiKey() => "https://osu.ppy.sh/p/api/".ToUri().OpenInBrowser();
+        public void ObtainApiKey() => ProcessEx.StartShellExecute("https://osu.ppy.sh/p/api/");
     }
 }

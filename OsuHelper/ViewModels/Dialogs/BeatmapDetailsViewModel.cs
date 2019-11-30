@@ -4,7 +4,6 @@ using OsuHelper.Internal;
 using OsuHelper.Models;
 using OsuHelper.Services;
 using OsuHelper.ViewModels.Framework;
-using Tyrrrz.Extensions;
 
 namespace OsuHelper.ViewModels.Dialogs
 {
@@ -26,7 +25,7 @@ namespace OsuHelper.ViewModels.Dialogs
             _audioService = audioService;
         }
 
-        public void OpenPage() => $"https://osu.ppy.sh/beatmaps/{Beatmap.Id}".ToUri().OpenInBrowser();
+        public void OpenPage() => ProcessEx.StartShellExecute($"https://osu.ppy.sh/beatmaps/{Beatmap.Id}");
 
         public void Download()
         {
@@ -36,12 +35,12 @@ namespace OsuHelper.ViewModels.Dialogs
             if (_settingsService.DownloadWithoutVideo)
                 url += "?noVideo=1";
 
-            url.ToUri().OpenInBrowser();
+            ProcessEx.StartShellExecute(url);
         }
 
-        public void DownloadDirect() => $"osu://dl/{Beatmap.MapSetId}".ToUri().OpenInBrowser();
+        public void DownloadDirect() => ProcessEx.StartShellExecute($"osu://dl/{Beatmap.MapSetId}");
 
-        public void DownloadBloodcat() => $"http://bloodcat.com/osu/s/{Beatmap.MapSetId}".ToUri().OpenInBrowser();
+        public void DownloadBloodcat() => ProcessEx.StartShellExecute($"http://bloodcat.com/osu/s/{Beatmap.MapSetId}");
 
         public bool CanPlayPreview => !IsPreviewPlaying;
 

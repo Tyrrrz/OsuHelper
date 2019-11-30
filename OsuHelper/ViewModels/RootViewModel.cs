@@ -11,7 +11,6 @@ using OsuHelper.Models;
 using OsuHelper.Services;
 using OsuHelper.ViewModels.Framework;
 using Stylet;
-using Tyrrrz.Extensions;
 
 namespace OsuHelper.ViewModels
 {
@@ -188,7 +187,7 @@ namespace OsuHelper.ViewModels
             await _dialogManager.ShowDialogAsync(dialog);
         }
 
-        public void ShowAbout() => App.GitHubProjectUrl.ToUri().OpenInBrowser();
+        public void ShowAbout() => ProcessEx.StartShellExecute(App.GitHubProjectUrl);
 
         public bool CanPopulateRecommendations => !IsBusy;
 
@@ -200,7 +199,7 @@ namespace OsuHelper.ViewModels
             try
             {
                 // Validate settings
-                if (_settingsService.UserId.IsNullOrWhiteSpace() || _settingsService.ApiKey.IsNullOrWhiteSpace())
+                if (string.IsNullOrWhiteSpace(_settingsService.UserId) || string.IsNullOrWhiteSpace(_settingsService.ApiKey))
                 {
                     Notifications.Enqueue("Not configured – set username and API key in settings",
                         "OPEN", ShowSettings);

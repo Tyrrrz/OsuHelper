@@ -4,7 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>osu!helper</AssemblyName>
-    <Version>2.1.1</Version>
+    <Version>2.2</Version>
     <Company>Tyrrrz</Company>
     <Copyright>Copyright (c) Alexey Golub</Copyright>
     <Nullable>enable</Nullable>

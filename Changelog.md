@@ -1,3 +1,8 @@
+### v2.2 (30-Nov-2019)
+
+- Migrated to .NET Core 3.0. You will need to install .NET Core runtime in order to run this application starting from this version. You can download it [here](https://dotnet.microsoft.com/download/dotnet-core/3.0/runtime).
+- Fixed an issue where map traits were incorrectly calculated with doubletime and halftime mods.
+
 ### v2.1.1 (17-Jul-2019)
 
 - Updated the URL that opens when you click "Generate API key" in the settings dialog.

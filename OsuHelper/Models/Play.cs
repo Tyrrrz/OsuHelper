@@ -20,8 +20,9 @@
 
         public int CountMiss { get; }
 
-        public double Accuracy
-            => (Count50*50 + Count100*100 + Count300*300)/(300.0*(Count50 + Count100 + Count300 + CountMiss));
+        public double Accuracy =>
+            (50 * Count50 + 100 * Count100 + 300 * Count300) /
+            (300.0 * (Count50 + Count100 + Count300 + CountMiss));
 
         public double PerformancePoints { get; }
 

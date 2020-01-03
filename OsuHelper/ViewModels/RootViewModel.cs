@@ -75,10 +75,6 @@ namespace OsuHelper.ViewModels
         {
             try
             {
-                // Don't check for updates if auto-update is disabled
-                if (!_settingsService.IsAutoUpdateEnabled)
-                    return;
-
                 // Check for updates
                 var updateVersion = await _updateService.CheckForUpdatesAsync();
                 if (updateVersion == null)

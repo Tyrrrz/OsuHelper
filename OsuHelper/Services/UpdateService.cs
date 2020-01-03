@@ -12,17 +12,30 @@ namespace OsuHelper.Services
             new GithubPackageResolver("Tyrrrz", "OsuHelper", "OsuHelper.zip"),
             new ZipPackageExtractor());
 
+        private readonly SettingsService _settingsService;
+
         private Version? _updateVersion;
         private bool _updaterLaunched;
 
+        public UpdateService(SettingsService settingsService)
+        {
+            _settingsService = settingsService;
+        }
+
         public async Task<Version?> CheckForUpdatesAsync()
         {
+            if (!_settingsService.IsAutoUpdateEnabled)
+                return null;
+
             var check = await _updateManager.CheckForUpdatesAsync();
             return check.CanUpdate ? check.LastVersion : null;
         }
 
         public async Task PrepareUpdateAsync(Version version)
         {
+            if (!_settingsService.IsAutoUpdateEnabled)
+                return;
+
             try
             {
                 await _updateManager.PrepareUpdateAsync(_updateVersion = version);
@@ -39,13 +52,15 @@ namespace OsuHelper.Services
 
         public void FinalizeUpdate(bool needRestart)
         {
+            if (!_settingsService.IsAutoUpdateEnabled)
+                return;
+
+            if (_updateVersion == null || _updaterLaunched)
+                return;
+
             try
             {
-                if (_updateVersion == null || _updaterLaunched)
-                    return;
-
                 _updateManager.LaunchUpdater(_updateVersion, needRestart);
-
                 _updaterLaunched = true;
             }
             catch (UpdaterAlreadyLaunchedException)

@@ -16,7 +16,7 @@ jobs:
         dotnet-version: 3.1.100
 
     - name: Build & test
-      run: dotnet test --configuration Release --logger GitHubActions
+      run: dotnet test -c Release -l GitHubActions
 
     - name: Build & publish
       run: dotnet publish OsuHelper/ -o OsuHelper/bin/Publish/ -c Release -r win-x86 --self-contained false

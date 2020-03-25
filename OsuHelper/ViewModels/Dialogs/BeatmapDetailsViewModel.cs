@@ -12,8 +12,8 @@ namespace OsuHelper.ViewModels.Dialogs
         private readonly SettingsService _settingsService;
         private readonly DataService _dataService;
         private readonly AudioService _audioService;
-        
-        public Beatmap Beatmap { get; set; }
+
+        public Beatmap? Beatmap { get; set; }
 
         public bool IsPreviewPlaying { get; private set; }
 
@@ -25,11 +25,11 @@ namespace OsuHelper.ViewModels.Dialogs
             _audioService = audioService;
         }
 
-        public void OpenPage() => ProcessEx.StartShellExecute($"https://osu.ppy.sh/beatmaps/{Beatmap.Id}");
+        public void OpenPage() => ProcessEx.StartShellExecute($"https://osu.ppy.sh/beatmaps/{Beatmap!.Id}");
 
         public void Download()
         {
-            var url = $"https://osu.ppy.sh/beatmapsets/{Beatmap.MapSetId}/download";
+            var url = $"https://osu.ppy.sh/beatmapsets/{Beatmap!.MapSetId}/download";
 
             // If configured to download without video - append a parameter to the request
             if (_settingsService.DownloadWithoutVideo)
@@ -38,9 +38,9 @@ namespace OsuHelper.ViewModels.Dialogs
             ProcessEx.StartShellExecute(url);
         }
 
-        public void DownloadDirect() => ProcessEx.StartShellExecute($"osu://dl/{Beatmap.MapSetId}");
+        public void DownloadDirect() => ProcessEx.StartShellExecute($"osu://dl/{Beatmap!.MapSetId}");
 
-        public void DownloadBloodcat() => ProcessEx.StartShellExecute($"http://bloodcat.com/osu/s/{Beatmap.MapSetId}");
+        public void DownloadBloodcat() => ProcessEx.StartShellExecute($"http://bloodcat.com/osu/s/{Beatmap!.MapSetId}");
 
         public bool CanPlayPreview => !IsPreviewPlaying;
 
@@ -50,7 +50,7 @@ namespace OsuHelper.ViewModels.Dialogs
 
             try
             {
-                await using var stream = await _dataService.GetBeatmapSetPreviewAsync(Beatmap.MapSetId);
+                await using var stream = await _dataService.GetBeatmapSetPreviewAsync(Beatmap!.MapSetId);
                 await _audioService.PlayAsync(stream);
             }
             catch (HttpErrorStatusCodeException ex) when (ex.StatusCode == HttpStatusCode.Forbidden)

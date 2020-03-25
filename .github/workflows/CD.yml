@@ -19,7 +19,7 @@ jobs:
         dotnet-version: 3.1.100
 
     - name: Build & publish
-      run: dotnet publish OsuHelper/ -o OsuHelper/bin/Publish/ --configuration Release
+      run: dotnet publish OsuHelper/ -o OsuHelper/bin/Publish/ -c Release -r win-x86 --self-contained false
 
     - name: Pack
       run: Compress-Archive -Path OsuHelper/bin/Publish/* -DestinationPath OsuHelper/bin/Publish/Archive.zip -Force

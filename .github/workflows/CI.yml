@@ -19,7 +19,7 @@ jobs:
       run: dotnet test -c Release -l GitHubActions
 
     - name: Build & publish
-      run: dotnet publish OsuHelper/ -o OsuHelper/bin/Publish/ -c Release -r win-x86 --self-contained false
+      run: dotnet publish OsuHelper/ -o OsuHelper/bin/Publish/ --configuration Release
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v1

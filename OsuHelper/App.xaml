@@ -3,7 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:OsuHelper"
-    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:s="https://github.com/canton7/Stylet">
     <Application.Resources>
         <s:ApplicationLoader>
@@ -36,47 +35,6 @@
             <SolidColorBrush x:Key="SecondaryAccentBrush" Color="{DynamicResource AccentColor}" />
             <SolidColorBrush x:Key="SecondaryAccentForegroundBrush" Color="{DynamicResource TextColor}" />
 
-            <SolidColorBrush
-                x:Key="PrimaryTextBrush"
-                Opacity="0.87"
-                Color="{DynamicResource TextColor}" />
-            <SolidColorBrush
-                x:Key="SecondaryTextBrush"
-                Opacity="0.64"
-                Color="{DynamicResource TextColor}" />
-            <SolidColorBrush
-                x:Key="DimTextBrush"
-                Opacity="0.45"
-                Color="{DynamicResource TextColor}" />
-            <SolidColorBrush
-                x:Key="PrimaryInverseTextBrush"
-                Opacity="1"
-                Color="{DynamicResource InverseTextColor}" />
-            <SolidColorBrush
-                x:Key="SecondaryInverseTextBrush"
-                Opacity="0.7"
-                Color="{DynamicResource InverseTextColor}" />
-            <SolidColorBrush
-                x:Key="DimInverseTextBrush"
-                Opacity="0.52"
-                Color="{DynamicResource InverseTextColor}" />
-            <SolidColorBrush
-                x:Key="AccentTextBrush"
-                Opacity="1"
-                Color="{DynamicResource AccentColor}" />
-            <SolidColorBrush
-                x:Key="AccentDarkTextBrush"
-                Opacity="1"
-                Color="{DynamicResource AccentDarkColor}" />
-            <SolidColorBrush
-                x:Key="DividerBrush"
-                Opacity="0.12"
-                Color="{DynamicResource TextColor}" />
-            <SolidColorBrush
-                x:Key="InverseDividerBrush"
-                Opacity="0.12"
-                Color="{DynamicResource InverseTextColor}" />
-
             <!--  Styles  -->
             <Style x:Key="MaterialDesignRoot" TargetType="{x:Type Control}">
                 <Setter Property="FontFamily" Value="{DynamicResource MaterialDesignFont}" />
@@ -84,7 +42,6 @@
                 <Setter Property="SnapsToDevicePixels" Value="True" />
                 <Setter Property="TextElement.FontSize" Value="13" />
                 <Setter Property="TextElement.FontWeight" Value="Regular" />
-                <Setter Property="TextElement.Foreground" Value="{DynamicResource SecondaryTextBrush}" />
                 <Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
                 <Setter Property="TextOptions.TextRenderingMode" Value="Auto" />
                 <Setter Property="UseLayoutRounding" Value="True" />
@@ -100,41 +57,19 @@
                 <Setter Property="Minimum" Value="0" />
             </Style>
 
-            <Style BasedOn="{StaticResource MaterialDesignTextBox}" TargetType="{x:Type TextBox}">
-                <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
-            </Style>
+            <Style BasedOn="{StaticResource MaterialDesignTextBox}" TargetType="{x:Type TextBox}" />
 
-            <Style BasedOn="{StaticResource MaterialDesignComboBox}" TargetType="{x:Type ComboBox}">
-                <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
-            </Style>
+            <Style BasedOn="{StaticResource MaterialDesignComboBox}" TargetType="{x:Type ComboBox}" />
 
             <Style TargetType="{x:Type Hyperlink}">
                 <Setter Property="FontWeight" Value="Regular" />
                 <Setter Property="TextDecorations" Value="None" />
-                <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
                 <Style.Triggers>
                     <MultiTrigger>
                         <MultiTrigger.Conditions>
                             <Condition Property="IsEnabled" Value="True" />
                             <Condition Property="IsMouseOver" Value="True" />
                         </MultiTrigger.Conditions>
-                        <Setter Property="TextDecorations" Value="Underline" />
-                    </MultiTrigger>
-                </Style.Triggers>
-            </Style>
-
-            <Style
-                x:Key="MaterialDesignAccentHyperlink"
-                BasedOn="{StaticResource {x:Type Hyperlink}}"
-                TargetType="{x:Type Hyperlink}">
-                <Setter Property="Foreground" Value="{DynamicResource AccentDarkTextBrush}" />
-                <Style.Triggers>
-                    <MultiTrigger>
-                        <MultiTrigger.Conditions>
-                            <Condition Property="IsEnabled" Value="True" />
-                            <Condition Property="IsMouseOver" Value="True" />
-                        </MultiTrigger.Conditions>
-                        <Setter Property="Foreground" Value="{DynamicResource AccentTextBrush}" />
                         <Setter Property="TextDecorations" Value="Underline" />
                     </MultiTrigger>
                 </Style.Triggers>

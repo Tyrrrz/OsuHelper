@@ -34,7 +34,7 @@
             <Grid
                 Grid.Row="0"
                 Background="{DynamicResource PrimaryHueMidBrush}"
-                TextElement.Foreground="{DynamicResource SecondaryInverseTextBrush}">
+                TextElement.Foreground="{DynamicResource PrimaryHueMidForegroundBrush}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
@@ -56,35 +56,35 @@
                         Margin="4,0,0,0"
                         VerticalAlignment="Center"
                         Content="Nomod"
-                        Foreground="{DynamicResource PrimaryInverseTextBrush}"
+                        Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                         IsChecked="{Binding IsNomodFilterEnabled}"
                         Style="{DynamicResource MaterialDesignUserForegroundCheckBox}" />
                     <CheckBox
                         Margin="4,0,0,0"
                         VerticalAlignment="Center"
                         Content="HD"
-                        Foreground="{DynamicResource PrimaryInverseTextBrush}"
+                        Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                         IsChecked="{Binding IsHiddenFilterEnabled}"
                         Style="{DynamicResource MaterialDesignUserForegroundCheckBox}" />
                     <CheckBox
                         Margin="4,0,0,0"
                         VerticalAlignment="Center"
                         Content="HR"
-                        Foreground="{DynamicResource PrimaryInverseTextBrush}"
+                        Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                         IsChecked="{Binding IsHardRockFilterEnabled}"
                         Style="{DynamicResource MaterialDesignUserForegroundCheckBox}" />
                     <CheckBox
                         Margin="4,0,0,0"
                         VerticalAlignment="Center"
                         Content="DT"
-                        Foreground="{DynamicResource PrimaryInverseTextBrush}"
+                        Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                         IsChecked="{Binding IsDoubleTimeFilterEnabled}"
                         Style="{DynamicResource MaterialDesignUserForegroundCheckBox}" />
                     <CheckBox
                         Margin="4,0,0,0"
                         VerticalAlignment="Center"
                         Content="Other"
-                        Foreground="{DynamicResource PrimaryInverseTextBrush}"
+                        Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                         IsChecked="{Binding IsOtherFilterEnabled}"
                         Style="{DynamicResource MaterialDesignUserForegroundCheckBox}" />
                 </StackPanel>
@@ -155,7 +155,7 @@
                     TextWrapping="WrapWithOverflow"
                     Visibility="{Binding Recommendations, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}">
                     <Run Text="Press the" />
-                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="Update" />
+                    <Run FontWeight="SemiBold" Text="Update" />
                     <Run Text="button to analyze your plays and generate recommendations" />
                 </TextBlock>
 
@@ -189,7 +189,7 @@
                                 <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsStarRatingAffected}" Value="True">
-                                            <Setter Property="Foreground" Value="{DynamicResource AccentDarkTextBrush}" />
+                                            <Setter Property="FontWeight" Value="SemiBold" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -201,7 +201,7 @@
                                 <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsApproachRateAffected}" Value="True">
-                                            <Setter Property="Foreground" Value="{DynamicResource AccentDarkTextBrush}" />
+                                            <Setter Property="FontWeight" Value="SemiBold" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -213,7 +213,7 @@
                                 <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsOverallDifficultyAffected}" Value="True">
-                                            <Setter Property="Foreground" Value="{DynamicResource AccentDarkTextBrush}" />
+                                            <Setter Property="FontWeight" Value="SemiBold" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -225,7 +225,7 @@
                                 <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsTempoAffected}" Value="True">
-                                            <Setter Property="Foreground" Value="{DynamicResource AccentDarkTextBrush}" />
+                                            <Setter Property="FontWeight" Value="SemiBold" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -237,7 +237,7 @@
                                 <Style BasedOn="{StaticResource {x:Type DataGridCell}}" TargetType="{x:Type DataGridCell}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsDurationAffected}" Value="True">
-                                            <Setter Property="Foreground" Value="{DynamicResource AccentDarkTextBrush}" />
+                                            <Setter Property="FontWeight" Value="SemiBold" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>

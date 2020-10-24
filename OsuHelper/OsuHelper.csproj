@@ -26,4 +26,9 @@
     <PackageReference Include="PropertyChanged.Fody" Version="3.2.9" PrivateAssets="all" />
   </ItemGroup>
 
+  <Target Name="Format XAML" AfterTargets="BeforeBuild">
+    <Exec Command="dotnet tool restore" />
+    <Exec Command="dotnet xstyler -r -d ." />
+  </Target>
+
 </Project>

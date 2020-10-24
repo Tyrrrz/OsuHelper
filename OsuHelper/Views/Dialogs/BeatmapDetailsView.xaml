@@ -25,12 +25,12 @@
         </TextBlock>
 
         <!--  Creator info  -->
-        <TextBlock Margin="6,0,6,6" Foreground="{DynamicResource DimTextBrush}">
-            <Run Text="Mapset by" />
-            <Run FontWeight="SemiBold" Text="{Binding Beatmap.Creator, Mode=OneWay}" />
-            <Run Text="  " />
-            <Run Text="Last changed on" />
-            <Run FontWeight="SemiBold" Text="{Binding Beatmap.LastUpdate, StringFormat=\{0:MMM d\, yyyy\}, Mode=OneWay}" />
+        <TextBlock Margin="6,0,6,6">
+            <Run FontWeight="Light" Text="Mapset by" />
+            <Run FontWeight="Medium" Text="{Binding Beatmap.Creator, Mode=OneWay}" />
+            <Run FontWeight="Light" Text="  " />
+            <Run FontWeight="Light" Text="Last changed on" />
+            <Run FontWeight="Medium" Text="{Binding Beatmap.LastUpdate, StringFormat=\{0:MMM d\, yyyy\}, Mode=OneWay}" />
         </TextBlock>
 
         <Grid Height="125">

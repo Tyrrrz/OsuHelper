@@ -186,7 +186,11 @@ namespace OsuHelper.Tests.Logic
 
         [Test]
         [TestCaseSource(nameof(GetTestCases_CalculateTraitsWithMods))]
-        public void CalculateTraitsWithMods(BeatmapTraits nomodTraits, Mods mods, GameMode mode, BeatmapTraits expectedTraits)
+        public void CalculateTraitsWithMods(
+            BeatmapTraits nomodTraits,
+            Mods mods,
+            GameMode mode,
+            BeatmapTraits expectedTraits)
         {
             // Act
             var traits = BeatmapTraitsLogic.CalculateTraitsWithMods(nomodTraits, mods, mode);

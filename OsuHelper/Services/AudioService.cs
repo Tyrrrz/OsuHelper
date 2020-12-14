@@ -9,7 +9,7 @@ namespace OsuHelper.Services
     {
         private readonly SettingsService _settingsService;
 
-        private readonly WaveOutEvent _player = new WaveOutEvent();
+        private readonly WaveOutEvent _player = new();
 
         private TaskCompletionSource<object>? _playbackTcs;
 

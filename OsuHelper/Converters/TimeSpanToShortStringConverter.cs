@@ -7,9 +7,9 @@ namespace OsuHelper.Converters
     [ValueConversion(typeof(TimeSpan), typeof(string))]
     public class TimeSpanToShortStringConverter : IValueConverter
     {
-        public static TimeSpanToShortStringConverter Instance { get; } = new TimeSpanToShortStringConverter();
+        public static TimeSpanToShortStringConverter Instance { get; } = new();
 
-        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object? value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is null)
                 return null;
@@ -20,9 +20,7 @@ namespace OsuHelper.Converters
             return $"{fullMins:00}:{time.Seconds:00}";
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
             throw new NotImplementedException();
-        }
     }
 }

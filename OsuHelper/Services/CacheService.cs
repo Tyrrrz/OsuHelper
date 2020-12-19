@@ -46,14 +46,14 @@ namespace OsuHelper.Services
                 if (File.Exists(GetCacheFilePath(key)))
                     return (T) (object) File.ReadAllText(GetCacheFilePath(key));
 
-                return defaultValue;
+                return defaultValue!;
             }
             if (typeof(T) == typeof(Stream))
             {
                 if (File.Exists(GetCacheFilePath(key)))
                     return (T) (object) File.OpenRead(GetCacheFilePath(key));
 
-                return defaultValue;
+                return defaultValue!;
             }
             else
             {
@@ -63,7 +63,7 @@ namespace OsuHelper.Services
                     return JsonConvert.DeserializeObject<T>(serialized);
                 }
 
-                return defaultValue;
+                return defaultValue!;
             }
         }
     }

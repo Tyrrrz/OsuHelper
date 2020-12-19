@@ -5,7 +5,7 @@
 [![Downloads](https://img.shields.io/github/downloads/Tyrrrz/OsuHelper/total.svg)](https://github.com/Tyrrrz/OsuHelper/releases)
 [![Donate](https://img.shields.io/badge/donate-$$$-purple.svg)](https://tyrrrz.me/donate)
 
-**Project status: maintenance mode** (bug fixes only).
+**Project status: discontinued**.
 
 osu!helper is an application that recommends beatmaps in osu! based on your current performance. It searches for players who did similarly well on maps you've played in the past and uses their top plays as basis for recommendation. The recommended maps are then displayed in a grid where users are able to see the map's attributes adjusted by the suggested mods, as well as some other useful information. Maps can also be previewed and downloaded straight from the application.
 

@@ -1,3 +1,10 @@
+### v2.3 (19-Dec-2020)
+
+- Migrated to .NET Core 3.1.
+- Fixed a few minor issues.
+
+Note: This is the final release of osu!helper. No future development is expected.
+
 ### v2.2 (30-Nov-2019)
 
 - Migrated to .NET Core 3.0. You will need to install .NET Core runtime in order to run this application starting from this version. You can download it [here](https://dotnet.microsoft.com/download/dotnet-core/3.0/runtime).

@@ -14,7 +14,8 @@ osu!helper is an application that recommends beatmaps in osu! based on your curr
 - **[Latest release](https://github.com/Tyrrrz/OsuHelper/releases/latest)**
 - [CI build](https://github.com/Tyrrrz/OsuHelper/actions)
 
-**Important**: This application requires **.NET Core v3.1** runtime in order to run. Some download options come with the runtime pre-packaged, but those marked with `[requires .NET runtime]` do not. To install the runtime, find the suitable download option below:
+**Important**: This application requires **.NET Core v3.1** desktop runtime in order to run.
+To install the runtime, find the suitable download option below:
 
 - [Windows x64](https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-desktop-3.1.10-windows-x64-installer)
 - [Windows x86](https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-desktop-3.1.10-windows-x86-installer)

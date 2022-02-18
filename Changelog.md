@@ -1,3 +1,10 @@
+### v2.4 (18-Feb-2022)
+
+- Migrated to .NET 6.
+- Added bootstrapper that installs application dependencies automatically.
+
+Note: This is _definitely_ the final release of osu!helper.
+
 ### v2.3 (19-Dec-2020)
 
 - Migrated to .NET Core 3.1.

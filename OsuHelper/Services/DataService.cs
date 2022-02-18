@@ -136,13 +136,13 @@ namespace OsuHelper.Services
 
             // Extract data
             var beatmapJson = responseJson.First!;
-            var id = beatmapJson["beatmap_id"]!.Value<string>();
-            var setId = beatmapJson["beatmapset_id"]!.Value<string>();
-            var creator = beatmapJson["creator"]!.Value<string>();
+            var id = beatmapJson["beatmap_id"]!.Value<string>()!;
+            var setId = beatmapJson["beatmapset_id"]!.Value<string>()!;
+            var creator = beatmapJson["creator"]!.Value<string>()!;
             var lastUpdate = beatmapJson["last_update"]!.Value<DateTime>().ToDateTimeOffset();
-            var artist = beatmapJson["artist"]!.Value<string>();
-            var title = beatmapJson["title"]!.Value<string>();
-            var version = beatmapJson["version"]!.Value<string>();
+            var artist = beatmapJson["artist"]!.Value<string>()!;
+            var title = beatmapJson["title"]!.Value<string>()!;
+            var version = beatmapJson["version"]!.Value<string>()!;
             var maxCombo = beatmapJson["max_combo"]!.Value<int?>() ?? 0; // can be null sometimes
             var duration = TimeSpan.FromSeconds(beatmapJson["hit_length"]!.Value<double>());
             var bpm = beatmapJson["bpm"]!.Value<double>();
@@ -176,7 +176,7 @@ namespace OsuHelper.Services
             _cacheService.Store($"BeatmapPreview-{mapSetId}", response);
 
             // Load from cache because HTTP stream cannot seek
-            return _cacheService.RetrieveOrDefault<Stream>($"BeatmapPreview-{mapSetId}");
+            return _cacheService.RetrieveOrDefault<Stream>($"BeatmapPreview-{mapSetId}")!;
         }
 
         public async Task<IReadOnlyList<Play>> GetUserTopPlaysAsync(string userId, GameMode gameMode)
@@ -192,10 +192,10 @@ namespace OsuHelper.Services
             var result = new List<Play>();
             foreach (var playJson in responseJson)
             {
-                var playerId = playJson["user_id"]!.Value<string>();
-                var mapId = playJson["beatmap_id"]!.Value<string>();
+                var playerId = playJson["user_id"]!.Value<string>()!;
+                var mapId = playJson["beatmap_id"]!.Value<string>()!;
                 var mods = (Mods) playJson["enabled_mods"]!.Value<int>();
-                var rank = playJson["rank"]!.Value<string>().ParseEnum<PlayRank>();
+                var rank = playJson["rank"]!.Value<string>()!.ParseEnum<PlayRank>();
                 var combo = playJson["maxcombo"]!.Value<int>();
                 var count300 = playJson["count300"]!.Value<int>();
                 var count100 = playJson["count100"]!.Value<int>();
@@ -222,8 +222,8 @@ namespace OsuHelper.Services
             var result = new List<Play>();
             foreach (var playJson in responseJson)
             {
-                var playerId = playJson["user_id"]!.Value<string>();
-                var rank = playJson["rank"]!.Value<string>().ParseEnum<PlayRank>();
+                var playerId = playJson["user_id"]!.Value<string>()!;
+                var rank = playJson["rank"]!.Value<string>()!.ParseEnum<PlayRank>();
                 var combo = playJson["maxcombo"]!.Value<int>();
                 var count300 = playJson["count300"]!.Value<int>();
                 var count100 = playJson["count100"]!.Value<int>();

@@ -39,7 +39,7 @@ namespace OsuHelper.Services
             }
         }
 
-        public T RetrieveOrDefault<T>(string key, T defaultValue = default)
+        public T? RetrieveOrDefault<T>(string key, T? defaultValue = default)
         {
             if (typeof(T) == typeof(string))
             {
